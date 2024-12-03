@@ -17,6 +17,8 @@ import com.example.sa3id.BaseActivity;
 import com.example.sa3id.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -80,6 +82,9 @@ public class MainActivity extends BaseActivity {
         announcementsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Toast.makeText(MainActivity.this,"i love shrek", Toast.LENGTH_SHORT).show();
+//                DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://sa3idsite-default-rtdb.europe-west1.firebasedatabase.app").getReference("Users");
+//                databaseReference.child("ssssss").setValue("shrek");
 
             }
         });

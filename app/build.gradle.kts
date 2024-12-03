@@ -58,7 +58,6 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.firebase.storage)
     implementation(libs.firebase.inappmessaging.display)
-    implementation(libs.firebase.firestore)
     implementation("com.squareup.picasso:picasso:2.8")
     implementation("com.google.android.material:material:1.12.0")
 
@@ -70,9 +69,14 @@ dependencies {
         exclude(group = "org.apache.httpcomponents")
     }
     implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
-    implementation("com.google.android.gms:play-services-auth:21.2.0")
+    implementation("com.google.android.gms:play-services-auth:20.5.0")
+
+
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.firestore)
+
 
 
 
@@ -81,5 +85,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
 
 }

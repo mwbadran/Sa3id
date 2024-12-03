@@ -3,6 +3,7 @@ package com.example.sa3id.UserActivities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,10 +17,12 @@ import com.example.sa3id.R;
 import com.example.sa3id.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class SignUp extends AppCompatActivity {
@@ -27,13 +30,14 @@ public class SignUp extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-
-    EditText etUsername,etEmail, etPassword;
-    Button loginButton, signupButton;
-    TextView tvAlreadyHaveAnAccount;
-    String email, password, username;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private EditText etUsername, etEmail, etPassword;
+    private Button loginButton, signupButton;
+    private TextView tvAlreadyHaveAnAccount;
+    private String email, password, username;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
 
 
     @Override
@@ -41,11 +45,16 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        if (FirebaseApp.getApps(this).isEmpty()) {
+            FirebaseApp.initializeApp(this);
+        }
+
         // Initialize SharedPreferences and editor
         sharedPreferences = getSharedPreferences("UserDetailsSP", MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
         mAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance("https://sa3idsite-default-rtdb.europe-west1.firebasedatabase.app").getReference("Users");
 
         initViews();
 
@@ -59,9 +68,6 @@ public class SignUp extends AppCompatActivity {
 
         loginButton = findViewById(R.id.login_button);
         signupButton = findViewById(R.id.signup_button);
-
-
-
 
 
         signupButton.setOnClickListener(new View.OnClickListener() {
@@ -83,51 +89,42 @@ public class SignUp extends AppCompatActivity {
     }
 
     public void register(View view) {
-        email = etEmail.getText().toString().trim();
-        password = etPassword.getText().toString().trim();
-        username = etUsername.getText().toString().trim();
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        email = etEmail.getText().toString();
+        password = etPassword.getText().toString();
 
-                            FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            db.collection("users")
-                                    .document(firebaseUser.getUid())
-                                    .set(new User(username, email))
-                                    .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(SignUp.this, "Authentication Successful.", Toast.LENGTH_SHORT).show();
-                                        editor.putString("userEmail", email);
-                                        editor.putString("username", username);
-                                        editor.apply();
-                                        startActivity(new Intent(SignUp.this, MainActivity.class));
-                                        finish();
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Toast.makeText(SignUp.this, "Failed to save username.", Toast.LENGTH_SHORT).show();
-                                    });
-                        } else {
-                            Toast.makeText(SignUp.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    if (user != null) {
+                        String username = etUsername.getText().toString();
+                        String userId = user.getUid();
+                        databaseReference.child(userId).child("username").setValue(username);
+                        databaseReference.child(userId).child("email").setValue(email);
+                        Toast.makeText(SignUp.this, "Authentication Successful.", Toast.LENGTH_SHORT).show();
                     }
-                });
+                } else {
+                    Toast.makeText(SignUp.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
+
 
     @Override
     protected void onStart() {
         super.onStart();
         firebaseUser = mAuth.getCurrentUser();
-        if (firebaseUser==null) {
+        if (firebaseUser == null) {
             Toast.makeText(SignUp.this, "no user logged in", Toast.LENGTH_SHORT).show();
         } else {
-            editor.putString("userEmail",firebaseUser.getDisplayName());
+            editor.putString("userEmail", firebaseUser.getDisplayName());
             startActivity(new Intent(SignUp.this, MainActivity.class));
             finish();
         }
     }
+
 
 
 }

@@ -4,6 +4,7 @@ androidPdfViewer = "3.2.0-beta.1"
 androidPdfViewerVersion = "2.8.2"
 firebaseFirestore = "25.1.1"
 googleHttpClientGson = "1.26.0"
+googlePlayServicesAuth = "21.2.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -20,12 +21,14 @@ googleGmsGoogleServices = "4.4.2"
 materialVersion = "1.9.0"
 playServicesAuth = "20.5.0"
 playServicesAuthVersion = "20.4.1"
+firebaseMessaging = "24.1.0"
 
 [libraries]
 android-pdf-viewer = { module = "com.github.barteksc:android-pdf-viewer", version.ref = "androidPdfViewer" }
 android-pdf-viewer-v282 = { module = "com.github.barteksc:android-pdf-viewer", version.ref = "androidPdfViewerVersion" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore", version.ref = "firebaseFirestore" }
 firebase-inappmessaging-display = { module = "com.google.firebase:firebase-inappmessaging-display", version.ref = "firebaseDatabase" }
+gms-play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "googlePlayServicesAuth" }
 google-http-client-gson = { module = "com.google.http-client:google-http-client-gson", version.ref = "googleHttpClientGson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -42,6 +45,7 @@ firebase-storage = { group = "com.google.firebase", name = "firebase-storage", v
 material-v190 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
 play-services-auth = { module = "com.google.gms:play-services-auth", version.ref = "playServicesAuth" }
 play-services-auth-v2041 = { module = "com.google.gms:play-services-auth", version.ref = "playServicesAuthVersion" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

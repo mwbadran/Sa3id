@@ -91,17 +91,19 @@ public class SignUp extends AppCompatActivity {
     public void register(View view) {
         email = etEmail.getText().toString();
         password = etPassword.getText().toString();
+        username = etUsername.getText().toString().trim();
 
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    if (user != null) {
-                        String username = etUsername.getText().toString();
-                        String userId = user.getUid();
-                        databaseReference.child(userId).child("username").setValue(username);
-                        databaseReference.child(userId).child("email").setValue(email);
+                    FirebaseUser firebaseUserCurrent = mAuth.getCurrentUser();
+                    if (firebaseUserCurrent != null) {
+                        String userId = firebaseUserCurrent.getUid();
+                        User theUser = new User(email, username);
+                        databaseReference.child(userId).setValue(theUser);
+//                        databaseReference.child(userId).child("username").setValue(username);
+//                        databaseReference.child(userId).child("email").setValue(email);
                         Toast.makeText(SignUp.this, "Authentication Successful.", Toast.LENGTH_SHORT).show();
                     }
                 } else {

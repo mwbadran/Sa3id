@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="end"
+    android:layoutDirection="rtl"
+    tools:context=".UserActivities.MaterialsChooseActivity"
+    >
+
+    <include layout="@layout/navigation_layout"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/board_bg"
+        android:orientation="vertical"
+        >
+
+
+        <include layout="@layout/toolbar_layout" />
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:maxHeight="1000dp"
+            android:layout_gravity="center"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:id="@+id/main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_marginStart="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="اختر موضوعًا"
+                    android:textSize="22sp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/rpt_bold"
+                    />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/grid_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:textDirection="rtl">
+
+                    <!-- Arabic Subject -->
+                    <LinearLayout
+                        android:id="@+id/arabic_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/rounded_square"
+                        android:elevation="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/english_button"
+                        app:layout_constraintWidth_percent="0.46"
+                        android:layout_marginTop="8dp"                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintHorizontal_chainStyle="spread">
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="80"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/sub_arabic" />
+
+                        <TextView
+                            android:layout_weight="20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:fontFamily="@font/rpt_bold"
+                            android:text="اللغة العربية"
+                            android:textAlignment="center"
+                            android:textSize="26sp"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeMaxTextSize="24sp"
+                            android:autoSizeStepGranularity="1sp" />
+                    </LinearLayout>
+
+                    <!-- English Subject -->
+                    <LinearLayout
+                        android:id="@+id/english_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/rounded_square"
+                        android:elevation="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toEndOf="@id/arabic_button"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintWidth_percent="0.46"
+                        android:layout_marginTop="8dp"                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintHorizontal_chainStyle="spread">
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="80"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/sub_english" />
+
+                        <TextView
+                            android:layout_weight="20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:fontFamily="@font/rpt_bold"
+                            android:text="اللغة الانجليزية"
+                            android:textAlignment="center"
+                            android:textSize="26sp"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeMaxTextSize="24sp"
+                            android:autoSizeStepGranularity="1sp" />
+                    </LinearLayout>
+
+                    <!-- New Subjects Start -->
+
+                    <!-- Electronics -->
+                    <LinearLayout
+                        android:id="@+id/electronics_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/rounded_square"
+                        android:elevation="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/arabic_button"
+                        app:layout_constraintEnd_toStartOf="@id/mechanics_physics_button"
+                        app:layout_constraintWidth_percent="0.46"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintHorizontal_chainStyle="spread">
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="80"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/sub_raif" />
+
+                        <TextView
+                            android:layout_weight="20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:fontFamily="@font/rpt_bold"
+                            android:text="الكترونيكا"
+                            android:textAlignment="center"
+                            android:textSize="26sp"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeMaxTextSize="24sp"
+                            android:autoSizeStepGranularity="1sp" />
+                    </LinearLayout>
+
+                    <!-- Mechanics Physics -->
+                    <LinearLayout
+                        android:id="@+id/mechanics_physics_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/rounded_square"
+                        android:elevation="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toEndOf="@id/electronics_button"
+                        app:layout_constraintTop_toBottomOf="@id/english_button"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintWidth_percent="0.46"
+                        android:layout_marginTop="8dp"                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintHorizontal_chainStyle="spread">
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="80"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/sub_mech" />
+
+                        <TextView
+                            android:layout_weight="20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:fontFamily="@font/rpt_bold"
+                            android:text="فيزياء ميكانيكا"
+                            android:textAlignment="center"
+                            android:textSize="26sp"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeMaxTextSize="24sp"
+                            android:autoSizeStepGranularity="1sp" />
+                    </LinearLayout>
+
+                    <!-- Physics Electricity -->
+                    <LinearLayout
+                        android:id="@+id/electricity_physics_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/rounded_square"
+                        android:elevation="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/electronics_button"
+                        app:layout_constraintEnd_toStartOf="@id/math_button"
+                        app:layout_constraintWidth_percent="0.46"
+                        android:layout_marginTop="8dp"                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintHorizontal_chainStyle="spread">
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="80"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/sub_kahraba" />
+
+                        <TextView
+                            android:layout_weight="20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:fontFamily="@font/rpt_bold"
+                            android:text="فيزياء كهرباء"
+                            android:textAlignment="center"
+                            android:textSize="26sp"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeMaxTextSize="24sp"
+                            android:autoSizeStepGranularity="1sp" />
+                    </LinearLayout>
+
+                    <!-- Math -->
+                    <LinearLayout
+                        android:id="@+id/math_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/rounded_square"
+                        android:elevation="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toEndOf="@id/electricity_physics_button"
+                        app:layout_constraintTop_toBottomOf="@id/mechanics_physics_button"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintWidth_percent="0.46"
+                        android:layout_marginTop="8dp"                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintHorizontal_chainStyle="spread">
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="80"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/sub_math" />
+
+                        <TextView
+                            android:layout_weight="20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:fontFamily="@font/rpt_bold"
+                            android:text="الرياضيات"
+                            android:textAlignment="center"
+                            android:textSize="26sp"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeMaxTextSize="24sp"
+                            android:autoSizeStepGranularity="1sp" />
+                    </LinearLayout>
+
+                    <!-- Hebrew -->
+                    <LinearLayout
+                        android:id="@+id/hebrew_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/rounded_square"
+                        android:elevation="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/electricity_physics_button"
+                        app:layout_constraintEnd_toStartOf="@id/history_button"
+                        app:layout_constraintWidth_percent="0.46"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintHorizontal_chainStyle="spread">
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="80"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/sub_hebrew" />
+
+                        <TextView
+                            android:layout_weight="20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:fontFamily="@font/rpt_bold"
+                            android:text="اللغة العبرية"
+                            android:textAlignment="center"
+                            android:textSize="26sp"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeMaxTextSize="24sp"
+                            android:autoSizeStepGranularity="1sp" />
+                    </LinearLayout>
+
+                    <!-- History -->
+                    <LinearLayout
+                        android:id="@+id/history_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/rounded_square"
+                        android:elevation="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toEndOf="@id/hebrew_button"
+                        app:layout_constraintTop_toBottomOf="@id/math_button"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintWidth_percent="0.46"
+                        android:layout_marginTop="8dp"                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintHorizontal_chainStyle="spread">
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="80"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/sub_history" />
+
+                        <TextView
+                            android:layout_weight="20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:fontFamily="@font/rpt_bold"
+                            android:text="تاريخ"
+                            android:textAlignment="center"
+                            android:textSize="26sp"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeMaxTextSize="24sp"
+                            android:autoSizeStepGranularity="1sp" />
+                    </LinearLayout>
+
+                    <!-- Civics -->
+                    <LinearLayout
+                        android:id="@+id/civics_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/rounded_square"
+                        android:elevation="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/hebrew_button"
+                        app:layout_constraintEnd_toStartOf="@id/religion_button"
+                        app:layout_constraintWidth_percent="0.46"
+                        android:layout_marginTop="8dp"                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintHorizontal_chainStyle="spread">
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="80"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/sub_nizae" />
+
+                        <TextView
+                            android:layout_weight="20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:fontFamily="@font/rpt_bold"
+                            android:text="مدنيات"
+                            android:textAlignment="center"
+                            android:textSize="26sp"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeMaxTextSize="24sp"
+                            android:autoSizeStepGranularity="1sp" />
+                    </LinearLayout>
+
+                    <!-- Religion -->
+                    <LinearLayout
+                        android:id="@+id/religion_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/rounded_square"
+                        android:elevation="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toEndOf="@id/civics_button"
+                        app:layout_constraintTop_toBottomOf="@id/history_button"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintWidth_percent="0.46"
+                        android:layout_marginTop="8dp"                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintHorizontal_chainStyle="spread">
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="80"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/sub_islam" />
+
+                        <TextView
+                            android:layout_weight="20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:fontFamily="@font/rpt_bold"
+                            android:text="الدين الاسلامي"
+                            android:textAlignment="center"
+                            android:textSize="26sp"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeMaxTextSize="24sp"
+                            android:autoSizeStepGranularity="1sp" />
+                    </LinearLayout>
+
+                    <!-- Biology -->
+                    <LinearLayout
+                        android:id="@+id/biology_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/rounded_square"
+                        android:elevation="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/civics_button"
+                        app:layout_constraintEnd_toStartOf="@id/health_button"
+                        app:layout_constraintWidth_percent="0.46"
+                        android:layout_marginTop="8dp"                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintHorizontal_chainStyle="spread">
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="80"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/sub_biology" />
+
+                        <TextView
+                            android:layout_weight="20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:fontFamily="@font/rpt_bold"
+                            android:text="البيولوجيا"
+                            android:textAlignment="center"
+                            android:textSize="26sp"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeMaxTextSize="24sp"
+                            android:autoSizeStepGranularity="1sp" />
+                    </LinearLayout>
+
+                    <!-- Health -->
+                    <LinearLayout
+                        android:id="@+id/health_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/rounded_square"
+                        android:elevation="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toEndOf="@id/biology_button"
+                        app:layout_constraintTop_toBottomOf="@id/religion_button"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintWidth_percent="0.46"
+                        android:layout_marginTop="8dp"                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintHorizontal_chainStyle="spread">
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="80"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/sub_health_sci" />
+
+                        <TextView
+                            android:layout_weight="20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:fontFamily="@font/rpt_bold"
+                            android:text="علم الصحة"
+                            android:textAlignment="center"
+                            android:textSize="26sp"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeMaxTextSize="24sp"
+                            android:autoSizeStepGranularity="1sp" />
+                    </LinearLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

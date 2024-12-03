@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="end"
+    android:layoutDirection="rtl"
+    tools:context=".UserActivities.OurBooks"
+    >
+
+    <include layout="@layout/navigation_layout"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".UserActivities.MainActivity"
+        android:background="@drawable/board_bg"
+        >
+
+
+        <include layout="@layout/toolbar_layout" />
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context=".UserActivities.MainActivity"
+                android:background="@drawable/board_bg"
+                >
+
+                <TextView
+                    android:layout_marginStart="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="@string/our_books"
+                    android:textSize="22sp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/rpt_bold"
+                    />
+
+                <WebView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/webViewBooks"
+                    />
+
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

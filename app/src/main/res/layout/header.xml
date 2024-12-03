@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@drawable/menu_background"
+    android:layoutDirection="rtl"
+    android:orientation="vertical"
+    android:paddingRight="8dp"
+    android:paddingTop="100dp"
+    >
+
+
+
+
+    <TextView
+
+        android:textDirection="rtl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="سَاعِدْ"
+        android:textSize="40sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/rpt_bold"
+
+        />
+
+    <TextView
+
+        android:textDirection="rtl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="المنصة المجانية الأولى للبجروت في الوسط العربي"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:fontFamily="@font/rpt_bold"
+
+        />
+
+
+</LinearLayout>

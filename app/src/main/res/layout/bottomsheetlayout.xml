@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/profiledialogbg"
+    android:textDirection="rtl"
+    >
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/round_remove_24"
+        android:layout_gravity="center|top"
+        android:scaleType="centerCrop"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/profile_pic"
+            android:id="@+id/profile_pic"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/tvUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shadi Jaber"
+                android:paddingTop="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="@color/white"
+
+                android:fontFamily="@font/rpt_bold"
+                android:textSize="28sp" />
+
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ShadiJab@gmail.com"
+                android:padding="8dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/rpt_bold"
+                android:textSize="20sp" />
+    </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layoutDirection="rtl">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/baseline_checklist_rtl_24"
+            android:contentDescription="Icon"
+            app:tint="@color/white"
+            />
+
+        <TextView
+            android:id="@+id/tvEditBagrutExams"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="اختيار نماذج البجروت"
+            android:padding="2dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/rpt_bold"
+            android:textSize="27sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layoutDirection="rtl">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/baseline_settings_24"
+            android:contentDescription="Icon"
+            app:tint="@color/white"
+            />
+
+        <TextView
+            android:id="@+id/tvUserSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="إعدادات الحساب"
+            android:padding="2dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/rpt_bold"
+            android:textSize="27sp" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/rpt_bold"
+        android:text="تسجيل الخروج"
+        android:textColor="@color/black" />
+
+
+
+
+
+</LinearLayout>

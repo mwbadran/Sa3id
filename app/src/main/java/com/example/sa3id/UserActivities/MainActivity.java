@@ -26,7 +26,6 @@ public class MainActivity extends BaseActivity {
 
     //FirebaseUser firebaseUser;
     FirebaseAuth mAuth;
-    TextView tvEmail;
     SharedPreferences announcementsSP, userDetailsSP;
     SharedPreferences.Editor annoucementsEditor, userDetailsEditor;
 
@@ -56,9 +55,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initViews() {
-        tvEmail = findViewById(R.id.tvEmail);
 
-        tvEmail.setText(userDetailsSP.getString("userEmail", "Guest"));
         navigationView = findViewById(R.id.nav_view);
 
         announcementsListView = findViewById(R.id.announcementsListView);
@@ -97,13 +94,7 @@ public class MainActivity extends BaseActivity {
                 Toast.makeText(MainActivity.this, "Signed out", Toast.LENGTH_SHORT);
             }
         });
-        tvEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, SignIn.class));
-                finish();
-            }
-        });
+
 
     }
 
@@ -215,7 +206,7 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        tvEmail.setText(userDetailsSP.getString("userEmail", "Guest"));
+        //tvEmail.setText(userDetailsSP.getString("userEmail", "Guest"));
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         for (int i = 0; i < navigationView.getMenu().size(); i++) {
@@ -226,7 +217,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        tvEmail.setText(userDetailsSP.getString("userEmail", "Guest"));
+        //tvEmail.setText(userDetailsSP.getString("userEmail", "Guest"));
 
     }
 

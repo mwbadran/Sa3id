@@ -5,29 +5,23 @@ import static com.example.sa3id.Constants.userSP;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.example.sa3id.BaseActivity;
 import com.example.sa3id.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.example.sa3id.Constants;
 
-public class SignIn extends BaseActivity {
+public class SignIn extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
@@ -35,15 +29,16 @@ public class SignIn extends BaseActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
-    EditText usernameEditText, passwordEditText;
-    Button loginButton, signupButton;
+    EditText etEmail, etPassword;
+    Button loginButton;
     String email, password;
     Intent comeIntent = getIntent();
+    TextView tvDontHaveAnAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_sign_in);
 
         // Initialize SharedPreferences and editor
         sharedPreferences = getSharedPreferences(userSP, MODE_PRIVATE);
@@ -57,17 +52,17 @@ public class SignIn extends BaseActivity {
     }
 
     private void initViews() {
-        usernameEditText = findViewById(R.id.username);
-        passwordEditText = findViewById(R.id.password);
-
+        etEmail = findViewById(R.id.etEmail);
+        etPassword = findViewById(R.id.password);
+        tvDontHaveAnAccount = findViewById(R.id.tvDontHaveAnAccount);
 
         if (comeIntent != null) {
-            usernameEditText.setText((comeIntent.getStringExtra("userEmail") == null) ? "" : comeIntent.getStringExtra("userEmail"));
-            passwordEditText.setText((comeIntent.getStringExtra("userPassword")==null)?"":comeIntent.getStringExtra("userPassword"));
+            etEmail.setText((comeIntent.getStringExtra("userEmail") == null) ? "" : comeIntent.getStringExtra("userEmail"));
+            etPassword.setText((comeIntent.getStringExtra("userPassword")==null)?"":comeIntent.getStringExtra("userPassword"));
         }
 
         loginButton = findViewById(R.id.login_button);
-        signupButton = findViewById(R.id.signup_button);
+
 
 
 
@@ -78,20 +73,24 @@ public class SignIn extends BaseActivity {
                 login(view);
             }
         });
-        signupButton.setOnClickListener(new View.OnClickListener() {
+
+        tvDontHaveAnAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SignIn.this, SignUp.class);
+                email = etEmail.getText().toString().trim();
+                password = etPassword.getText().toString().trim();
+                intent.putExtra("userEmail", email);
+                intent.putExtra("userPassword", password);
                 startActivity(intent);
-                finish();
             }
         });
 
 }
 
 public void login(View view) {
-    email = usernameEditText.getText().toString();
-    password = passwordEditText.getText().toString();
+    email = etEmail.getText().toString().trim();
+    password = etPassword.getText().toString().trim();
 
 
     mAuth.signInWithEmailAndPassword(email, password)
@@ -120,15 +119,13 @@ public void login(View view) {
             Toast.makeText(SignIn.this, "no user logged in", Toast.LENGTH_SHORT).show();
         } else {
             editor.putString("userEmail", firebaseUser.getEmail());
+            //editor.putString("username", firebaseUser.getDisplayName());
+            editor.apply();
             startActivity(new Intent(SignIn.this, MainActivity.class));
             finish();
         }
     }
 
 
-    @Override
-protected int getLayoutResourceId() {
-    return R.layout.activity_sign_in;
-}
 
 }

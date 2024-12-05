@@ -2,6 +2,7 @@ package com.example.sa3id;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -18,25 +19,43 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.sa3id.R;
 import com.example.sa3id.UserActivities.*;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Objects;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
-
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    Toolbar toolbar;
-    ImageView ivUserIcon;
-    FrameLayout bottomSheet;
+    private TextView tvEmail, tvUsername;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
+    private ImageView ivUserIcon;
+    private FrameLayout bottomSheet;
+    private SharedPreferences userDetailsSP;
+    private SharedPreferences.Editor userDetailsEditor;
     private BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResourceId());
+
+        userDetailsSP = getSharedPreferences("UserDetailsSP", MODE_PRIVATE);
+        userDetailsEditor = userDetailsSP.edit();
+
 
         initBottomSheet();
         initViews();
@@ -81,7 +100,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         // Set up toolbar
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         navigationView.bringToFront();
 
         // Custom menu button
@@ -165,18 +184,62 @@ ivUserIcon.setOnClickListener(new View.OnClickListener() {
 
 
     private void initBottomSheet() {
-        try  {
+        try {
             bottomSheet = findViewById(R.id.bottomSheetProfile);
             bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             bottomSheetBehavior.setPeekHeight(0);
-        }
-       catch (Exception e) {
-            bottomSheet =null;
-            Log.e("BottomSheet", "Error initializing bottom sheet", e);
-       }
+            tvUsername = bottomSheet.findViewById(R.id.tvUsername);
+            tvEmail = bottomSheet.findViewById(R.id.tvEmail);
 
+            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            DatabaseReference database = FirebaseDatabase.getInstance("https://sa3idsite-default-rtdb.europe-west1.firebasedatabase.app").getReference("Users");
+
+            if (firebaseUser != null) {
+                database.child(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            DataSnapshot snapshot = task.getResult();
+                            String username = snapshot.child("username").getValue(String.class);
+                            String email = snapshot.child("email").getValue(String.class);
+
+                            if (username != null) {
+                                tvUsername.setText(username);
+                            } else {
+                                tvUsername.setText("Guest");
+                            }
+
+                            if (email != null) {
+                                tvEmail.setText(email);
+                            } else {
+                                tvEmail.setText("No Email Available");
+                            }
+                        } else {
+                            Log.e("Firebase", "Failed to fetch user data", task.getException());
+                            tvUsername.setText("Guest");
+                            tvEmail.setText("No Email Available");
+                        }
+                    }
+                });
+            } else {
+                tvUsername.setText("Guest");
+                tvEmail.setText("No Email Available");
+            }
+
+            tvEmail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getApplicationContext(), SignIn.class));
+                }
+            });
+
+        } catch (Exception e) {
+            bottomSheet = null;
+            Log.e("BottomSheet", "Error initializing bottom sheet", e);
+        }
     }
+
 
     public void toggleBottomSheet() {
         try {

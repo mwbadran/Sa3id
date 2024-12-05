@@ -21,8 +21,11 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 
 public class SignUp extends AppCompatActivity {
@@ -38,13 +41,14 @@ public class SignUp extends AppCompatActivity {
     private String email, password, username;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
-
+    private Intent comeIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        comeIntent = getIntent();
         if (FirebaseApp.getApps(this).isEmpty()) {
             FirebaseApp.initializeApp(this);
         }
@@ -70,6 +74,13 @@ public class SignUp extends AppCompatActivity {
         signupButton = findViewById(R.id.signup_button);
 
 
+        if (comeIntent != null) {
+            etEmail.setText((comeIntent.getStringExtra("userEmail") == null) ? "" : comeIntent.getStringExtra("userEmail"));
+            etPassword.setText((comeIntent.getStringExtra("userPassword")==null)?"":comeIntent.getStringExtra("userPassword"));
+        }
+
+
+
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,6 +92,8 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SignUp.this, SignIn.class);
+                email = etEmail.getText().toString().trim();
+                password = etPassword.getText().toString().trim();
                 intent.putExtra("userEmail", email);
                 intent.putExtra("userPassword", password);
                 startActivity(intent);
@@ -100,7 +113,7 @@ public class SignUp extends AppCompatActivity {
                     FirebaseUser firebaseUserCurrent = mAuth.getCurrentUser();
                     if (firebaseUserCurrent != null) {
                         String userId = firebaseUserCurrent.getUid();
-                        User theUser = new User(email, username);
+                        User theUser = new User(username, email);
                         databaseReference.child(userId).setValue(theUser);
 //                        databaseReference.child(userId).child("username").setValue(username);
 //                        databaseReference.child(userId).child("email").setValue(email);
@@ -119,13 +132,33 @@ public class SignUp extends AppCompatActivity {
         super.onStart();
         firebaseUser = mAuth.getCurrentUser();
         if (firebaseUser == null) {
-            Toast.makeText(SignUp.this, "no user logged in", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignUp.this, "No user logged in", Toast.LENGTH_SHORT).show();
         } else {
-            editor.putString("userEmail", firebaseUser.getDisplayName());
-            startActivity(new Intent(SignUp.this, MainActivity.class));
-            finish();
+            String userId = firebaseUser.getUid();
+            databaseReference.child(userId).child("username").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        String username = task.getResult().getValue(String.class);
+                        if (username != null) {
+                            editor.putString("userEmail", firebaseUser.getEmail());
+                            editor.putString("username", username);
+                            etEmail.setText(firebaseUser.getEmail());
+                            etUsername.setText(username);
+                            editor.apply();
+                            startActivity(new Intent(SignUp.this, MainActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(SignUp.this, "Username not found", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(SignUp.this, "Failed to fetch username", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
+
 
 
 

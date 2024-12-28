@@ -9,139 +9,157 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.example.sa3id.BaseActivity;
+import com.example.sa3id.MaterialRequestItemAdapter;
 import com.example.sa3id.R;
+import com.example.sa3id.UploadRequest;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.example.sa3id.Material;
+
+import java.util.ArrayList;
 
 public class UploadMaterials extends BaseActivity {
 
-    FirebaseDatabase firebaseDatabase;
-    StorageReference storageReference;
-    DatabaseReference databaseReference;
-    EditText etMatName, etMatDescription;
-    Uri filePathUri;
-    Button btnChooseFile, btnSend;
-    ImageView imgMaterial;
-    final int IMAGE_REQUEST_CODE = 7;
+    private FirebaseDatabase firebaseDatabase;
+    private StorageReference storageReference;
+    private DatabaseReference databaseReference;
+
+    private EditText etDescription;
+    private Button btnSendRequest;
+    private ListView lvMaterialsList;
+    private ArrayList<Uri> selectedFilesList;
+    private MaterialRequestItemAdapter materialAdapter;
+    private ImageView btnChooseFiles, btnClearMaterialsList;
+
+    private final int FILE_REQUEST_CODE = 10;
 
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_upload_materials;
     }
 
-    //I have to add new material type only for firebase suggestions to admins seperate from drive material class
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+        initViews();
+    }
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        //setContentView(R.layout.activity_upload_materials);
-//
-//
-//        Button btnShrek = findViewById(R.id.btnShrek);
-//        btnShrek.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(UploadMaterials.this,"i love shrek", Toast.LENGTH_SHORT).show();
-//                databaseReference = FirebaseDatabase.getInstance().getReference();
-//                databaseReference.child("garis").setValue("shrek");
-//
-//            }
-//        });
-//
-//
-//
-//        initViews();
-//
-//
-//    }
-//
-//    private void initViews() {
-//        etMatDescription = findViewById(R.id.etMatDescription);
-//        etMatName = findViewById(R.id.etMatName);
-//        imgMaterial = findViewById(R.id.image_material);
-//        btnChooseFile = findViewById(R.id.btnChooseFile);
-//        btnSend = findViewById(R.id.btnSend);
-//        btnChooseFile.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                chooseImage();
-//            }
-//        });
-//        btnSend.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                uploadFile();
-//                Toast.makeText(getApplicationContext(), "saving", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        firebaseDatabase = FirebaseDatabase.getInstance();
-//        storageReference = FirebaseStorage.getInstance().getReference("Materials");
-//        databaseReference = FirebaseDatabase.getInstance().getReference("MaterialsFolder");
-//
-//
-//    }
-//    private void chooseImage(){
-//        Intent intent = new Intent();
-//        intent.setType("image/*");
-//        intent.setAction(Intent.ACTION_GET_CONTENT);
-//        startActivityForResult(Intent.createChooser(intent,"SelectImage"), IMAGE_REQUEST_CODE);
-//
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null){
-//            filePathUri = data.getData();
-//            imgMaterial.setImageURI(filePathUri);
-//        }
-//    }
-//
-//    public String getFileExtension(Uri uri) {
-//        ContentResolver contentResolver = UploadMaterials.this.getContentResolver();
-//        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-//        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
-//    }
-//
-//    public void uploadFile() {
-//        if (filePathUri != null) {
-//            String fileName = System.currentTimeMillis() + "." + getFileExtension(filePathUri);
-//            StorageReference fileReference = storageReference.child(fileName);
-//            fileReference.putFile(filePathUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                        @Override
-//                        public void onSuccess(Uri uri) {
-//                            String url = uri.toString();
-//                            String matName = etMatName.getText().toString().trim();
-//                            String matDescription = etMatDescription.getText().toString().trim();
-//
-//                            // Create a Material object with name, description, and download URL
-//                            Material material = new Material(matName, matDescription, url);
-//
-//                            // Store the material object in the Firebase Realtime Database
-//                            databaseReference = firebaseDatabase.getReference("MaterialsFolder").push();
-//                            material.setKey(databaseReference.getKey());
-//                            databaseReference.setValue(material);
-//                        }
-//                    });
-//                }
-//            });
-//        }
-//    }
+    private void initViews() {
+        etDescription = findViewById(R.id.etDescription);
+        btnChooseFiles = findViewById(R.id.btnChooseFiles);
+        btnClearMaterialsList = findViewById(R.id.btnClearMaterialsList);
+        btnSendRequest = findViewById(R.id.btnSendRequest);
+        lvMaterialsList = findViewById(R.id.lvMaterialsList);
 
+        selectedFilesList = new ArrayList<>();
+        materialAdapter = new MaterialRequestItemAdapter(this, selectedFilesList);
+        lvMaterialsList.setAdapter(materialAdapter);
 
+        btnChooseFiles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseFiles();
+            }
+        });
+
+        btnSendRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUploadRequest();
+            }
+        });
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference("Materials");
+        databaseReference = firebaseDatabase.getReference("UploadRequests");
+    }
+
+    private void chooseFiles() {
+        Intent intent = new Intent();
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Files"), FILE_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FILE_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (data != null) {
+                if (data.getClipData() != null) { // Multiple files selected
+                    int count = data.getClipData().getItemCount();
+                    for (int i = 0; i < count; i++) {
+                        Uri fileUri = data.getClipData().getItemAt(i).getUri();
+                        selectedFilesList.add(fileUri);
+                    }
+                } else if (data.getData() != null) { // Single file selected
+                    Uri fileUri = data.getData();
+                    selectedFilesList.add(fileUri);
+                }
+                materialAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+    private void sendUploadRequest() {
+        if (!selectedFilesList.isEmpty()) {
+            String description = etDescription.getText().toString().trim();
+            if (description.isEmpty()) {
+                Toast.makeText(this, "Please add a description for the materials.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            ArrayList<String> fileUrls = new ArrayList<>();
+            for (Uri fileUri : selectedFilesList) {
+                String fileName = System.currentTimeMillis() + "." + getFileExtension(fileUri);
+                StorageReference fileReference = storageReference.child(fileName);
+                fileReference.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                fileUrls.add(uri.toString());
+                                if (fileUrls.size() == selectedFilesList.size()) {
+                                    saveRequestToDatabase(description, fileUrls);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        } else {
+            Toast.makeText(this, "No files selected to upload.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void saveRequestToDatabase(String description, ArrayList<String> fileUrls) {
+        UploadRequest uploadRequest = new UploadRequest();
+        uploadRequest.setDescription(description);
+        uploadRequest.setMaterialsList(fileUrls);
+
+        DatabaseReference newRequestRef = databaseReference.push();
+        newRequestRef.setValue(uploadRequest);
+        Toast.makeText(this, "Request sent successfully.", Toast.LENGTH_SHORT).show();
+        selectedFilesList.clear();
+        materialAdapter.notifyDataSetChanged();
+        etDescription.setText("");
+    }
 }

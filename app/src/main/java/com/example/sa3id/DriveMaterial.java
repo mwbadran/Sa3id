@@ -1,21 +1,19 @@
 package com.example.sa3id;
 
-import android.net.Uri;
-
-public class Material {
+public class DriveMaterial {
     private String title;
     private String type, arabicType;
     private int iconResId;
     private String url;
     private String id;
 
-    public Material(String title, String type, int iconResId) {
+    public DriveMaterial(String title, String type, int iconResId) {
         this.title = title;
         this.type = type;
         this.iconResId = iconResId;
     }
 
-    public Material(String name, String type,String arabicType, int icFileDrawable, String url, String id) {
+    public DriveMaterial(String name, String type, String arabicType, int icFileDrawable, String url, String id) {
         this.title = name;
         this.type = type;
         this.arabicType = arabicType;
@@ -32,7 +30,7 @@ public class Material {
         this.arabicType = arabicType;
     }
 
-    public Material() {}
+    public DriveMaterial() {}
 
     public void setTitle(String title) {
         this.title = title;

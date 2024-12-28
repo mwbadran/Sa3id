@@ -96,6 +96,7 @@ public class SignUp extends AppCompatActivity {
                 intent.putExtra("userEmail", email);
                 intent.putExtra("userPassword", password);
                 startActivity(intent);
+                finish();
             }
         });
     }

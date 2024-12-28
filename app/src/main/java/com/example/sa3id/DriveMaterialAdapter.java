@@ -17,31 +17,29 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.sa3id.UserActivities.MaterialsChooseActivity;
 import com.example.sa3id.UserActivities.MaterialsPage;
-import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 
 import java.util.List;
 
-public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.MaterialViewHolder> {
+public class DriveMaterialAdapter extends RecyclerView.Adapter<DriveMaterialAdapter.DriveMaterialViewHolder> {
 
-    private List<Material> materialItems;
+    private List<DriveMaterial> materialItems;
     Context context;
-    public MaterialAdapter(List<Material> materialItems) {
+    public DriveMaterialAdapter(List<DriveMaterial> materialItems) {
         this.materialItems = materialItems;
     }
 
     @NonNull
     @Override
-    public MaterialViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.material_layout, parent, false);
-        return new MaterialViewHolder(view);
+    public DriveMaterialViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.drive_material_layout, parent, false);
+        return new DriveMaterialViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MaterialViewHolder holder, int position) {
-        Material item = materialItems.get(position);
+    public void onBindViewHolder(@NonNull DriveMaterialViewHolder holder, int position) {
+        DriveMaterial item = materialItems.get(position);
         holder.title.setText(item.getTitle());
         holder.type.setText(item.getArabicType());
         holder.icon.setImageResource(item.getIconResId());
@@ -86,7 +84,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
 
     }
 
-    private void openFolderShortCut(Material item) {
+    private void openFolderShortCut(DriveMaterial item) {
         String shortcutId = item.getId();
 
         new Thread(() -> {
@@ -115,7 +113,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
 
 
 
-    private void openGenericFile(Material item) {
+    private void openGenericFile(DriveMaterial item) {
         String fileId = item.getId();
         String pdfUrl = "https://drive.google.com/uc?id=" + fileId;
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(pdfUrl));
@@ -124,7 +122,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
     }
 
 
-    private void openImage(Material item) {
+    private void openImage(DriveMaterial item) {
         // Open Image file using an Intent
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse(item.getUrl()), "image/*");
@@ -133,7 +131,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
     }
 
 
-    private void openFolder(Material item) {
+    private void openFolder(DriveMaterial item) {
         String folderId = item.getId();
         MaterialsPage activity = (MaterialsPage) context;
         activity.listFilesInFolder(folderId);
@@ -145,11 +143,11 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
         return materialItems.size();
     }
 
-    static class MaterialViewHolder extends RecyclerView.ViewHolder {
+    static class DriveMaterialViewHolder extends RecyclerView.ViewHolder {
         TextView title, type;
         ImageView icon;
 
-        public MaterialViewHolder(@NonNull View itemView) {
+        public DriveMaterialViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.materialTitle);
             type = itemView.findViewById(R.id.materialType);

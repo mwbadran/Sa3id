@@ -200,14 +200,12 @@ public abstract class BaseActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     startActivity(new Intent(getApplicationContext(), SignIn.class));
-                    finish();
                 }
             });
             btnSignUp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     startActivity(new Intent(getApplicationContext(), SignUp.class));
-                    finish();
                 }
             });
             btnLogout.setOnClickListener(new View.OnClickListener() {

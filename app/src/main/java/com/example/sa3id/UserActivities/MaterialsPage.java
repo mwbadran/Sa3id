@@ -1,7 +1,6 @@
 package com.example.sa3id.UserActivities;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -10,15 +9,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sa3id.BaseActivity;
-import com.example.sa3id.Material;
-import com.example.sa3id.MaterialAdapter;
+import com.example.sa3id.DriveMaterial;
+import com.example.sa3id.DriveMaterialAdapter;
 import com.example.sa3id.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
@@ -37,8 +35,8 @@ public class MaterialsPage extends BaseActivity {
     private static final int REQUEST_CODE_SIGN_IN = 1;
     private Drive googleDriveService;
     private RecyclerView recyclerView;
-    private MaterialAdapter adapter;
-    private List<Material> materialItemList;
+    private DriveMaterialAdapter adapter;
+    private List<DriveMaterial> materialItemList;
     private Stack<String> folderStack;
     Intent backIntent;
 
@@ -82,7 +80,7 @@ public class MaterialsPage extends BaseActivity {
         materialItemList = new ArrayList<>();
         //populateMaterials();
 
-        adapter = new MaterialAdapter(materialItemList);
+        adapter = new DriveMaterialAdapter(materialItemList);
         recyclerView.setAdapter(adapter);
     }
 
@@ -195,7 +193,7 @@ public class MaterialsPage extends BaseActivity {
                         }
 
 
-                        Material material = new Material(fileName, type, arabicType, iconResDrawable, fileUrl,fileId);
+                        DriveMaterial material = new DriveMaterial(fileName, type, arabicType, iconResDrawable, fileUrl,fileId);
                         //Toast.makeText(this, fileUrl, Toast.LENGTH_SHORT).show();
 
                         materialItemList.add(material);
@@ -220,9 +218,9 @@ public class MaterialsPage extends BaseActivity {
 
     private void populateMaterials() {
         //example for testing
-        materialItemList.add(new Material("Introduction to Math", "PDF", R.drawable.ic_pdf));
-        materialItemList.add(new Material("Chemistry Notes", "Document", R.drawable.ic_generic_file));
-        materialItemList.add(new Material("Biology Diagrams", "Image", R.drawable.ic_image));
+        materialItemList.add(new DriveMaterial("Introduction to Math", "PDF", R.drawable.ic_pdf));
+        materialItemList.add(new DriveMaterial("Chemistry Notes", "Document", R.drawable.ic_generic_file));
+        materialItemList.add(new DriveMaterial("Biology Diagrams", "Image", R.drawable.ic_image));
     }
 
     public Drive getGoogleDriveService() {

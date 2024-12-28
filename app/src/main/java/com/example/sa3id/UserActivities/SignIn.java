@@ -83,6 +83,7 @@ public class SignIn extends AppCompatActivity {
                 intent.putExtra("userEmail", email);
                 intent.putExtra("userPassword", password);
                 startActivity(intent);
+                finish();
             }
         });
 

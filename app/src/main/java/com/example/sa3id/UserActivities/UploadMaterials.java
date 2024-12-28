@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sa3id.BaseActivity;
 import com.example.sa3id.MaterialRequestItemAdapter;
@@ -35,7 +37,7 @@ public class UploadMaterials extends BaseActivity {
 
     private EditText etDescription;
     private Button btnSendRequest;
-    private ListView lvMaterialsList;
+    private RecyclerView rvMaterialsList;
     private ArrayList<Uri> selectedFilesList;
     private MaterialRequestItemAdapter materialAdapter;
     private ImageView btnChooseFiles, btnClearMaterialsList;
@@ -59,16 +61,25 @@ public class UploadMaterials extends BaseActivity {
         btnChooseFiles = findViewById(R.id.btnChooseFiles);
         btnClearMaterialsList = findViewById(R.id.btnClearMaterialsList);
         btnSendRequest = findViewById(R.id.btnSendRequest);
-        lvMaterialsList = findViewById(R.id.lvMaterialsList);
-
+        rvMaterialsList = findViewById(R.id.rvMaterialsList);
+        rvMaterialsList.setLayoutManager(new GridLayoutManager(this, 3)); // 3 columns
         selectedFilesList = new ArrayList<>();
         materialAdapter = new MaterialRequestItemAdapter(this, selectedFilesList);
-        lvMaterialsList.setAdapter(materialAdapter);
+        rvMaterialsList.setAdapter(materialAdapter);
 
         btnChooseFiles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chooseFiles();
+            }
+        });
+
+        btnClearMaterialsList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedFilesList.clear();
+                materialAdapter.notifyDataSetChanged();
+                Toast.makeText(getApplicationContext(), "تم مسح جميع العناصر", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -1,68 +1,102 @@
 package com.example.sa3id;
 
-
 import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
-import android.widget.BaseAdapter;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class MaterialRequestItemAdapter extends BaseAdapter implements ListAdapter {
+public class MaterialRequestItemAdapter extends RecyclerView.Adapter<MaterialRequestItemAdapter.MaterialViewHolder> {
 
     private Context context;
     private ArrayList<Uri> materialsList;
+
 
     public MaterialRequestItemAdapter(Context context, ArrayList<Uri> materialsList) {
         this.context = context;
         this.materialsList = materialsList;
     }
 
+    @NonNull
     @Override
-    public int getCount() {
+    public MaterialViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.material_request_item_layout, parent, false);
+        return new MaterialViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull MaterialViewHolder holder, int position) {
+        Uri fileUri = materialsList.get(position);
+        String fileName = fileUri.getLastPathSegment();
+
+
+        if (fileName != null) {
+            fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
+        }
+
+        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(fileUri.toString()));
+
+        if (mimeType != null) {
+            if (mimeType.contains("pdf")) {
+                holder.ivMaterialIcon.setImageResource(R.drawable.ic_pdf);
+            } else if (fileName.endsWith("doc") || fileName.endsWith("docx")) {
+                holder.ivMaterialIcon.setImageResource(R.drawable.ic_word);
+            } else if (fileName.endsWith("pptx") || fileName.endsWith("ppt")) {
+                holder.ivMaterialIcon.setImageResource(R.drawable.ic_powerpoint);
+            } else if (fileName.endsWith("xls") || fileName.endsWith("xlsx")) {
+                holder.ivMaterialIcon.setImageResource(R.drawable.ic_excel);
+                fileName = "Excel";
+            } else if (mimeType.contains("image")) {
+                holder.ivMaterialIcon.setImageURI(fileUri);
+                fileName = "صورة";
+            } else {
+                holder.ivMaterialIcon.setImageResource(R.drawable.ic_generic_file);
+            }
+        } else {
+            holder.ivMaterialIcon.setImageResource(R.drawable.ic_generic_file);
+        }
+
+        holder.tvMaterialName.setText(fileName != null ? fileName : "Unknown File");
+
+        holder.ivDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int positionToDelete = holder.getAdapterPosition();
+                if (positionToDelete != RecyclerView.NO_POSITION) {
+
+                    materialsList.remove(positionToDelete);
+                    notifyItemRemoved(positionToDelete);
+                    notifyItemRangeChanged(positionToDelete, materialsList.size());
+                }
+            }
+        });
+    }
+
+
+    @Override
+    public int getItemCount() {
         return materialsList.size();
     }
 
-    @Override
-    public Object getItem(int position) {
-        return materialsList.get(position);
-    }
+    public static class MaterialViewHolder extends RecyclerView.ViewHolder {
+        TextView tvMaterialName;
+        ImageView ivMaterialIcon;
+        ImageView ivDelete;
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.material_request_item_layout, null);
+        public MaterialViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvMaterialName = itemView.findViewById(R.id.tvMaterialName);
+            ivMaterialIcon = itemView.findViewById(R.id.ivMaterialIcon);
+            ivDelete = itemView.findViewById(R.id.ivDelete);
         }
-
-        TextView tvMaterialName = convertView.findViewById(R.id.tvMaterialName);
-        ImageView ivRemove = convertView.findViewById(R.id.ivRemove);
-
-        // Display the file name (extracted from the URI)
-        String fileName = materialsList.get(position).getLastPathSegment();
-        tvMaterialName.setText(fileName != null ? fileName : "Unknown File");
-
-        // Set a click listener for the remove icon
-        ivRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                materialsList.remove(position);
-                notifyDataSetChanged();
-            }
-        });
-
-        return convertView;
     }
+
 }
-
-

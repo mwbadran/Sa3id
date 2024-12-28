@@ -1,6 +1,7 @@
 package com.example.sa3id;
 
 public class Constants {
+    public final static String FIREBASE_REALTIME_LINK = "https://sa3idsite-default-rtdb.europe-west1.firebasedatabase.app";
     public final static String userSP = "UserDetailsSP";
     public final static String announcementsSP = "AnnouncementsSP";
 

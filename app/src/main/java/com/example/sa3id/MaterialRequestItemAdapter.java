@@ -12,13 +12,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class MaterialRequestItemAdapter extends RecyclerView.Adapter<MaterialRequestItemAdapter.MaterialViewHolder> {
 
     private Context context;
     private ArrayList<Uri> materialsList;
-
 
     public MaterialRequestItemAdapter(Context context, ArrayList<Uri> materialsList) {
         this.context = context;
@@ -37,15 +38,14 @@ public class MaterialRequestItemAdapter extends RecyclerView.Adapter<MaterialReq
         Uri fileUri = materialsList.get(position);
         String fileName = fileUri.getLastPathSegment();
 
-
-        if (fileName != null) {
-            fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
+        if (fileName == null) {
+            fileName = "ملف";
         }
 
         String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(fileUri.toString()));
 
         if (mimeType != null) {
-            if (mimeType.contains("pdf")) {
+            if (mimeType.contains("pdf") || fileName.endsWith("pdf")) {
                 holder.ivMaterialIcon.setImageResource(R.drawable.ic_pdf);
             } else if (fileName.endsWith("doc") || fileName.endsWith("docx")) {
                 holder.ivMaterialIcon.setImageResource(R.drawable.ic_word);
@@ -53,9 +53,15 @@ public class MaterialRequestItemAdapter extends RecyclerView.Adapter<MaterialReq
                 holder.ivMaterialIcon.setImageResource(R.drawable.ic_powerpoint);
             } else if (fileName.endsWith("xls") || fileName.endsWith("xlsx")) {
                 holder.ivMaterialIcon.setImageResource(R.drawable.ic_excel);
-                fileName = "Excel";
             } else if (mimeType.contains("image")) {
-                holder.ivMaterialIcon.setImageURI(fileUri);
+                if (fileName.endsWith(".gif")) {
+                    Glide.with(context)
+                            .asGif()
+                            .load(fileUri)
+                            .into(holder.ivMaterialIcon);
+                } else {
+                    holder.ivMaterialIcon.setImageURI(fileUri);
+                }
                 fileName = "صورة";
             } else {
                 holder.ivMaterialIcon.setImageResource(R.drawable.ic_generic_file);
@@ -64,14 +70,20 @@ public class MaterialRequestItemAdapter extends RecyclerView.Adapter<MaterialReq
             holder.ivMaterialIcon.setImageResource(R.drawable.ic_generic_file);
         }
 
-        holder.tvMaterialName.setText(fileName != null ? fileName : "Unknown File");
+        // trim the filename
+        fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
+        int dotIndex = fileName.lastIndexOf(".");
+        if (dotIndex != -1) {
+            fileName = fileName.substring(0, dotIndex);
+        }
+
+        holder.tvMaterialName.setText(fileName);
 
         holder.ivDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int positionToDelete = holder.getAdapterPosition();
                 if (positionToDelete != RecyclerView.NO_POSITION) {
-
                     materialsList.remove(positionToDelete);
                     notifyItemRemoved(positionToDelete);
                     notifyItemRangeChanged(positionToDelete, materialsList.size());
@@ -79,7 +91,6 @@ public class MaterialRequestItemAdapter extends RecyclerView.Adapter<MaterialReq
             }
         });
     }
-
 
     @Override
     public int getItemCount() {
@@ -98,5 +109,4 @@ public class MaterialRequestItemAdapter extends RecyclerView.Adapter<MaterialReq
             ivDelete = itemView.findViewById(R.id.ivDelete);
         }
     }
-
 }

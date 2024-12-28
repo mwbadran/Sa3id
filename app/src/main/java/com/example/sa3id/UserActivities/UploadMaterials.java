@@ -1,5 +1,7 @@
 package com.example.sa3id.UserActivities;
 
+import static com.example.sa3id.Constants.FIREBASE_REALTIME_LINK;
+
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -37,10 +39,11 @@ public class UploadMaterials extends BaseActivity {
 
     private EditText etDescription;
     private Button btnSendRequest;
+    private ImageView btnChooseFiles, btnClearMaterialsList;
+
     private RecyclerView rvMaterialsList;
     private ArrayList<Uri> selectedFilesList;
     private MaterialRequestItemAdapter materialAdapter;
-    private ImageView btnChooseFiles, btnClearMaterialsList;
 
     private final int FILE_REQUEST_CODE = 10;
 
@@ -90,7 +93,7 @@ public class UploadMaterials extends BaseActivity {
             }
         });
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance(FIREBASE_REALTIME_LINK);
         storageReference = FirebaseStorage.getInstance().getReference("Materials");
         databaseReference = firebaseDatabase.getReference("UploadRequests");
     }
@@ -108,7 +111,7 @@ public class UploadMaterials extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == FILE_REQUEST_CODE && resultCode == RESULT_OK) {
             if (data != null) {
-                if (data.getClipData() != null) { // Multiple files selected
+                if (data.getClipData() != null) {
                     int count = data.getClipData().getItemCount();
                     for (int i = 0; i < count; i++) {
                         Uri fileUri = data.getClipData().getItemAt(i).getUri();
@@ -133,7 +136,7 @@ public class UploadMaterials extends BaseActivity {
         if (!selectedFilesList.isEmpty()) {
             String description = etDescription.getText().toString().trim();
             if (description.isEmpty()) {
-                Toast.makeText(this, "Please add a description for the materials.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "الرجاء اضافة وصف", Toast.LENGTH_SHORT).show();
                 return;
             }
 

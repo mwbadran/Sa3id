@@ -2,6 +2,7 @@
 agp = "8.6.0"
 androidPdfViewer = "3.2.0-beta.1"
 androidPdfViewerVersion = "2.8.2"
+compiler = "4.15.1"
 firebaseFirestore = "25.1.1"
 googleHttpClientGson = "1.26.0"
 googlePlayServicesAuth = "21.2.0"
@@ -26,8 +27,10 @@ firebaseMessaging = "24.1.0"
 [libraries]
 android-pdf-viewer = { module = "com.github.barteksc:android-pdf-viewer", version.ref = "androidPdfViewer" }
 android-pdf-viewer-v282 = { module = "com.github.barteksc:android-pdf-viewer", version.ref = "androidPdfViewerVersion" }
+compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore", version.ref = "firebaseFirestore" }
 firebase-inappmessaging-display = { module = "com.google.firebase:firebase-inappmessaging-display", version.ref = "firebaseDatabase" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "compiler" }
 gms-play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "googlePlayServicesAuth" }
 google-http-client-gson = { module = "com.google.http-client:google-http-client-gson", version.ref = "googleHttpClientGson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

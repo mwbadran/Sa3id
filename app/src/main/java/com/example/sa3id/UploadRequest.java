@@ -5,7 +5,15 @@ import java.util.ArrayList;
 public class UploadRequest {
     private String description;
     private ArrayList<String> materialsList;
+    private String sender;
 
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
 
     public String getDescription() {
         return description;

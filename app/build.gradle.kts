@@ -71,6 +71,9 @@ dependencies {
     implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
     implementation("com.google.android.gms:play-services-auth:20.5.0")
 
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler)
+
 
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")

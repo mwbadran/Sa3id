@@ -1,5 +1,7 @@
 package com.example.sa3id.UserActivities;
 
+import static com.example.sa3id.Constants.FIREBASE_REALTIME_LINK;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -57,7 +59,7 @@ public class SignUp extends AppCompatActivity {
         editor = sharedPreferences.edit();
 
         mAuth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance("https://sa3idsite-default-rtdb.europe-west1.firebasedatabase.app").getReference("Users");
+        databaseReference = FirebaseDatabase.getInstance(FIREBASE_REALTIME_LINK).getReference("Users");
 
         initViews();
 

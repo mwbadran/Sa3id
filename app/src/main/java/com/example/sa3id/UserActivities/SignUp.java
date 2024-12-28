@@ -53,7 +53,6 @@ public class SignUp extends AppCompatActivity {
             FirebaseApp.initializeApp(this);
         }
 
-        // Initialize SharedPreferences and editor
         sharedPreferences = getSharedPreferences("UserDetailsSP", MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
@@ -118,6 +117,11 @@ public class SignUp extends AppCompatActivity {
 //                        databaseReference.child(userId).child("username").setValue(username);
 //                        databaseReference.child(userId).child("email").setValue(email);
                         Toast.makeText(SignUp.this, "Authentication Successful.", Toast.LENGTH_SHORT).show();
+                        editor.putString("userEmail", email);
+                        editor.putString("username", username);
+                        editor.apply();
+                        startActivity(new Intent(SignUp.this, SignIn.class));
+                        finish();
                     }
                 } else {
                     Toast.makeText(SignUp.this, "Authentication failed.", Toast.LENGTH_SHORT).show();

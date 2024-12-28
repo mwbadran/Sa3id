@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -31,6 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,17 +46,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ImageView ivUserIcon;
     private FrameLayout bottomSheet;
-    private SharedPreferences userDetailsSP;
-    private SharedPreferences.Editor userDetailsEditor;
     private BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
+    private Button btnSignIn, btnSignUp, btnLogout;
+    private FirebaseAuth mAuth;
+    private LinearLayout onlyForLoggedIn, onlyForLoggedOut;
+    private boolean isLoggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResourceId());
 
-        userDetailsSP = getSharedPreferences("UserDetailsSP", MODE_PRIVATE);
-        userDetailsEditor = userDetailsSP.edit();
+        isLoggedIn = false;
+        mAuth = FirebaseAuth.getInstance();
 
 
         initBottomSheet();
@@ -81,8 +85,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
 
 
-
-
     }
 
 
@@ -98,12 +100,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
 
-        // Set up toolbar
+        // toolbar
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         navigationView.bringToFront();
 
-        // Custom menu button
+        // menu button
         ImageView menuButton = findViewById(R.id.menu_button);
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,12 +127,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
 
 
-ivUserIcon.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        toggleBottomSheet();
-    }
-});
+        ivUserIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleBottomSheet();
+            }
+        });
 
     }
 
@@ -140,15 +142,13 @@ ivUserIcon.setOnClickListener(new View.OnClickListener() {
         if (itemId == R.id.nav_annoucements && !(this instanceof Announcements)) {
             startActivity(new Intent(context, Announcements.class));
             finish();
-        }else if (itemId == R.id.nav_home && !(this instanceof MainActivity)) {
+        } else if (itemId == R.id.nav_home && !(this instanceof MainActivity)) {
             startActivity(new Intent(context, MainActivity.class));
             finish();
-        }
-        else if (itemId == R.id.nav_upload_materials && !(this instanceof UploadMaterials)) {
+        } else if (itemId == R.id.nav_upload_materials && !(this instanceof UploadMaterials)) {
             startActivity(new Intent(context, UploadMaterials.class));
             finish();
-        }
-        else if (itemId == R.id.nav_our_books && !(this instanceof OurBooks)) {
+        } else if (itemId == R.id.nav_our_books && !(this instanceof OurBooks)) {
             startActivity(new Intent(context, OurBooks.class));
             finish();
         } else if (itemId == R.id.nav_materials && !(this instanceof MaterialsChooseActivity)) {
@@ -182,7 +182,6 @@ ivUserIcon.setOnClickListener(new View.OnClickListener() {
     }
 
 
-
     private void initBottomSheet() {
         try {
             bottomSheet = findViewById(R.id.bottomSheetProfile);
@@ -191,48 +190,62 @@ ivUserIcon.setOnClickListener(new View.OnClickListener() {
             bottomSheetBehavior.setPeekHeight(0);
             tvUsername = bottomSheet.findViewById(R.id.tvUsername);
             tvEmail = bottomSheet.findViewById(R.id.tvEmail);
+            btnSignIn = bottomSheet.findViewById(R.id.btnSignin);
+            btnSignUp = bottomSheet.findViewById(R.id.btnSignup);
+            btnLogout = bottomSheet.findViewById(R.id.btnLogout);
+            onlyForLoggedIn = bottomSheet.findViewById(R.id.onlyForLoggedIn);
+            onlyForLoggedOut = bottomSheet.findViewById(R.id.onlyForLoggedOut);
+
+            btnSignIn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getApplicationContext(), SignIn.class));
+                    finish();
+                }
+            });
+            btnSignUp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getApplicationContext(), SignUp.class));
+                    finish();
+                }
+            });
+            btnLogout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mAuth.signOut();
+                    setDefaultCredentials();
+                    Toast.makeText(getApplicationContext(), "Signed out", Toast.LENGTH_SHORT).show();
+                }
+            });
 
             FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             DatabaseReference database = FirebaseDatabase.getInstance("https://sa3idsite-default-rtdb.europe-west1.firebasedatabase.app").getReference("Users");
 
-            if (firebaseUser != null) {
-                database.child(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if (task.isSuccessful() && task.getResult() != null) {
-                            DataSnapshot snapshot = task.getResult();
-                            String username = snapshot.child("username").getValue(String.class);
-                            String email = snapshot.child("email").getValue(String.class);
-
-                            if (username != null) {
-                                tvUsername.setText(username);
-                            } else {
-                                tvUsername.setText("Guest");
-                            }
-
-                            if (email != null) {
-                                tvEmail.setText(email);
-                            } else {
-                                tvEmail.setText("No Email Available");
-                            }
-                        } else {
-                            Log.e("Firebase", "Failed to fetch user data", task.getException());
-                            tvUsername.setText("Guest");
-                            tvEmail.setText("No Email Available");
-                        }
-                    }
-                });
-            } else {
-                tvUsername.setText("Guest");
-                tvEmail.setText("No Email Available");
+            if (firebaseUser == null) {
+                setDefaultCredentials();
+                return;
             }
 
-            tvEmail.setOnClickListener(new View.OnClickListener() {
+            database.child(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(getApplicationContext(), SignIn.class));
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        DataSnapshot snapshot = task.getResult();
+                        String username = snapshot.child("username").getValue(String.class);
+                        String email = snapshot.child("email").getValue(String.class);
+
+                        if (username == null || email == null) setDefaultCredentials();
+                        else setCredentials(username, email);
+
+
+                    } else {
+                        setDefaultCredentials();
+                        Log.e("Firebase", "Failed to fetch user data", task.getException());
+                    }
                 }
             });
+
 
         } catch (Exception e) {
             bottomSheet = null;
@@ -248,13 +261,27 @@ ivUserIcon.setOnClickListener(new View.OnClickListener() {
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
-        }
-        catch (Exception e) {
-            Log.e("BottomSheet", "Error initializing bottom sheet", e);
+        } catch (Exception e) {
+            Log.e("BottomSheet", "Error! bottom sheet not initialized", e);
         }
 
 
     }
 
+    public void setDefaultCredentials() {
+        isLoggedIn = false;
+        tvUsername.setText("زائر");
+        tvEmail.setText("لم يتم تسجيل الدخول");
+        onlyForLoggedIn.setVisibility(View.GONE);
+        onlyForLoggedOut.setVisibility(View.VISIBLE);
+    }
+
+    public void setCredentials(String username, String email) {
+        isLoggedIn = true;
+        tvUsername.setText(username);
+        tvEmail.setText(email);
+        onlyForLoggedIn.setVisibility(View.VISIBLE);
+        onlyForLoggedOut.setVisibility(View.GONE);
+    }
 
 }

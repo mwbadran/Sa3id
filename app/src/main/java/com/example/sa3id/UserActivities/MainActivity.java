@@ -24,8 +24,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
 
-    //FirebaseUser firebaseUser;
-    FirebaseAuth mAuth;
+
     SharedPreferences announcementsSP, userDetailsSP;
     SharedPreferences.Editor annoucementsEditor, userDetailsEditor;
 
@@ -40,7 +39,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
+
 
         // Initialize SharedPreferences and editor
         announcementsSP = getSharedPreferences("AnnouncementsSP", MODE_PRIVATE);
@@ -86,14 +85,6 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        Button btnLogout = findViewById(R.id.btnLogout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAuth.signOut();
-                Toast.makeText(MainActivity.this, "Signed out", Toast.LENGTH_SHORT);
-            }
-        });
 
 
     }

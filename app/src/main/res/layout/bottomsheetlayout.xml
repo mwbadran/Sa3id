@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/profiledialogbg"
     android:textDirection="rtl"
+    android:padding="8dp"
     >
 
     <ImageView
@@ -15,14 +16,16 @@
         android:layout_gravity="center|top"
         android:scaleType="centerCrop"/>
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:src="@drawable/profile_pic"
             android:id="@+id/profile_pic"/>
 
@@ -40,7 +43,7 @@
                 android:paddingTop="8dp"
                 android:paddingLeft="8dp"
                 android:textColor="@color/white"
-
+                android:gravity="left"
                 android:fontFamily="@font/rpt_bold"
                 android:textSize="28sp" />
 
@@ -50,13 +53,22 @@
                 android:layout_height="wrap_content"
                 android:text="ShadiJab@gmail.com"
                 android:padding="8dp"
+                android:gravity="left"
                 android:textColor="@color/white"
                 android:fontFamily="@font/rpt_bold"
                 android:textSize="20sp" />
     </LinearLayout>
 
+
+
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/onlyForLoggedIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -81,7 +93,7 @@
             android:padding="2dp"
             android:textColor="@color/white"
             android:fontFamily="@font/rpt_bold"
-            android:textSize="27sp" />
+            android:textSize="22sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -107,7 +119,7 @@
             android:padding="2dp"
             android:textColor="@color/white"
             android:fontFamily="@font/rpt_bold"
-            android:textSize="27sp" />
+            android:textSize="22sp" />
     </LinearLayout>
     <Button
         android:id="@+id/btnLogout"
@@ -118,6 +130,37 @@
         android:text="تسجيل الخروج"
         android:textColor="@color/black" />
 
+</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/onlyForLoggedOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+
+        <Button
+            android:layout_marginHorizontal="4dp"
+            android:id="@+id/btnSignin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/rpt_bold"
+            android:text="تسجيل الدخول"
+            android:textColor="@color/black" />
+
+        <Button
+            android:layout_marginHorizontal="4dp"
+            android:id="@+id/btnSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/rpt_bold"
+            android:text="إنشاء حساب"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
 
 
 

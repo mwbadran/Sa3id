@@ -267,19 +267,27 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void setDefaultCredentials() {
-        isLoggedIn = false;
-        tvUsername.setText("زائر");
-        tvEmail.setText("لم يتم تسجيل الدخول");
-        onlyForLoggedIn.setVisibility(View.GONE);
-        onlyForLoggedOut.setVisibility(View.VISIBLE);
+        try {
+            isLoggedIn = false;
+            tvUsername.setText("زائر");
+            tvEmail.setText("لم يتم تسجيل الدخول");
+            onlyForLoggedIn.setVisibility(View.GONE);
+            onlyForLoggedOut.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            Log.e("BottomSheet", "Error! bottom sheet not initialized", e);
+        }
     }
 
     public void setCredentials(String username, String email) {
-        isLoggedIn = true;
-        tvUsername.setText(username);
-        tvEmail.setText(email);
-        onlyForLoggedIn.setVisibility(View.VISIBLE);
-        onlyForLoggedOut.setVisibility(View.GONE);
+        try {
+            isLoggedIn = true;
+            tvUsername.setText(username);
+            tvEmail.setText(email);
+            onlyForLoggedIn.setVisibility(View.VISIBLE);
+            onlyForLoggedOut.setVisibility(View.GONE);
+        } catch (Exception e) {
+            Log.e("BottomSheet", "Error! bottom sheet not initialized", e);
+        }
     }
 
 }

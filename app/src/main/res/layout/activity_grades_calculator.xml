@@ -16,7 +16,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".UserActivities.MainActivity"
         android:background="@drawable/board_bg"
@@ -26,14 +26,12 @@
         <include layout="@layout/toolbar_layout" />
 
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+
 
             <LinearLayout
                 android:id="@+id/main"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 tools:context=".UserActivities.MainActivity"
                 android:background="@drawable/board_bg"
@@ -57,6 +55,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="32dp"
                     android:hint="الموضوع"
+                    app:fontFamily="@font/rpt_bold"
                     android:layoutDirection="rtl"
                     >
 
@@ -66,11 +65,54 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="none"
-                        tools:text="رياضيات" />
+                        tools:text="رياضيات"
+                        android:fontFamily="@font/rpt_bold"
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <LinearLayout
+                    android:id="@+id/radioButtonsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/dynamicViewsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    />
+
+                <Button
+                    android:id="@+id/calculateButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/rpt_bold"
+
+                    android:padding="12dp"
+                    android:text="حساب العلامة"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+
+                <TextView
+                    android:id="@+id/resultTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="النتيجة هنا"
+                    android:fontFamily="@font/rpt_bold"
+                    />
 
             </LinearLayout>
-        </ScrollView>
+
     </LinearLayout>
+    <include
+        layout="@layout/bottom_sheet_to_include"
+        tools:visibility="gone"
+        />
 </androidx.drawerlayout.widget.DrawerLayout>

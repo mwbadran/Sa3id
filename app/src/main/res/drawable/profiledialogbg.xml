@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    
-
-    <!-- Image with clipping -->
-    <item >
-        <bitmap
-            android:src="@drawable/board_bg"
-            android:gravity="fill" />
-    </item>
-
-    <!-- Dark Overlay -->
-    <item>
-        <shape>
-            <corners
-                android:topLeftRadius="40dp"
-                android:topRightRadius="40dp" />
-            <solid android:color="#80000000" />
-
-        </shape>
-    </item>
-
-</layer-list>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners
+        android:topLeftRadius="40dp"
+        android:topRightRadius="40dp" />
+    <solid android:color="#80000000" />
+</shape>

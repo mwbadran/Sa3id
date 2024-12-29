@@ -26,14 +26,11 @@
         <include layout="@layout/toolbar_layout" />
 
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/main"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 tools:context=".UserActivities.MainActivity"
                 android:background="@drawable/board_bg"
@@ -49,7 +46,17 @@
                     android:fontFamily="@font/rpt_bold"
                     />
 
+                <WebView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/webViewDonate"
+                    />
+
             </LinearLayout>
-        </ScrollView>
+
     </LinearLayout>
+    <include
+        layout="@layout/bottom_sheet_to_include"
+        tools:visibility="gone"
+        />
 </androidx.drawerlayout.widget.DrawerLayout>

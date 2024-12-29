@@ -57,6 +57,6 @@
             </LinearLayout>
 
     </LinearLayout>
-    <include layout="@layout/bottom_sheet_to_include"/>
+    <include layout="@layout/bottom_sheet_to_include" android:visibility="gone"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

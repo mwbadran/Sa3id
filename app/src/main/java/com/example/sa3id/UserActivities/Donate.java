@@ -1,6 +1,7 @@
 package com.example.sa3id.UserActivities;
 
 import android.os.Bundle;
+import android.webkit.WebView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,9 @@ public class Donate extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_donate);
+        WebView myWebView = (WebView) findViewById(R.id.webViewDonate);
+        myWebView.getSettings().setJavaScriptEnabled(true);
+        myWebView.loadUrl("https://www.paypal.com/donate/?hosted_button_id=BVAZMC5Z444AC");
 
     }
 

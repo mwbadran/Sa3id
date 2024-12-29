@@ -109,4 +109,8 @@
 
 
     </LinearLayout>
+    <include
+        layout="@layout/bottom_sheet_to_include"
+        tools:visibility="gone"
+        />
 </androidx.drawerlayout.widget.DrawerLayout>

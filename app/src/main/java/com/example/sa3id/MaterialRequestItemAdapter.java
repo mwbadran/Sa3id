@@ -1,6 +1,9 @@
 package com.example.sa3id;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +11,7 @@ import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,15 +41,17 @@ public class MaterialRequestItemAdapter extends RecyclerView.Adapter<MaterialReq
     public void onBindViewHolder(@NonNull MaterialViewHolder holder, int position) {
         Uri fileUri = materialsList.get(position);
         String fileName = fileUri.getLastPathSegment();
+        ContentResolver cR = context.getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        String type = mime.getExtensionFromMimeType(cR.getType(fileUri));
 
         if (fileName == null) {
             fileName = "ملف";
         }
 
-        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(fileUri.toString()));
-
-        if (mimeType != null) {
-            if (mimeType.contains("pdf") || fileName.endsWith("pdf")) {
+        //Toast.makeText(context, type, Toast.LENGTH_SHORT).show();
+        if (type != null) {
+            if (type.contains("pdf") || fileName.endsWith("pdf")) {
                 holder.ivMaterialIcon.setImageResource(R.drawable.ic_pdf);
             } else if (fileName.endsWith("doc") || fileName.endsWith("docx")) {
                 holder.ivMaterialIcon.setImageResource(R.drawable.ic_word);
@@ -53,16 +59,22 @@ public class MaterialRequestItemAdapter extends RecyclerView.Adapter<MaterialReq
                 holder.ivMaterialIcon.setImageResource(R.drawable.ic_powerpoint);
             } else if (fileName.endsWith("xls") || fileName.endsWith("xlsx")) {
                 holder.ivMaterialIcon.setImageResource(R.drawable.ic_excel);
-            } else if (mimeType.contains("image")) {
-                if (fileName.endsWith(".gif")) {
-                    Glide.with(context)
-                            .asGif()
-                            .load(fileUri)
-                            .into(holder.ivMaterialIcon);
+            } else if (type.contains("image") || type.contains("png") || type.contains("jpg") || type.contains("jpeg") || type.contains("jfif") || type.contains("gif") || fileName.endsWith(".gif")) {
+                if (type.contains("gif") || fileName.endsWith(".gif")) {
+                    Glide.with(context).asGif().load(fileUri).into(holder.ivMaterialIcon);
                 } else {
                     holder.ivMaterialIcon.setImageURI(fileUri);
                 }
                 fileName = "صورة";
+            } else if (type.contains("video") || type.contains("mp4") || type.contains("avi") || type.contains("mov") || type.contains("mkv")) {
+                // Load video thumbnail
+                Bitmap videoThumbnail = getVideoThumbnail(fileUri);
+                if (videoThumbnail != null) {
+                    holder.ivMaterialIcon.setImageBitmap(videoThumbnail);
+                } else {
+                    holder.ivMaterialIcon.setImageResource(R.drawable.ic_generic_file); // Fallback icon
+                }
+                fileName = "فيديو";
             } else {
                 holder.ivMaterialIcon.setImageResource(R.drawable.ic_generic_file);
             }
@@ -91,6 +103,18 @@ public class MaterialRequestItemAdapter extends RecyclerView.Adapter<MaterialReq
             }
         });
     }
+
+    private Bitmap getVideoThumbnail(Uri videoUri) {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        try {
+            retriever.setDataSource(context, videoUri);
+            return retriever.getFrameAtTime(1000000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC); // Get frame at 1 second
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     @Override
     public int getItemCount() {

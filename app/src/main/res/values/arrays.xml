@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="subjects">
+        <item>اللغة العربية</item>
+        <item>اللغة الإنجليزية</item>
+        <item>الرياضيات</item>
+        <item>الفيزياء</item>
+        <item>علم الحاسوب</item>
+        <item>الكيمياء</item>
+        <item>الأحياء</item>
+        <item>التاريخ</item>
+        <item>الجغرافيا</item>
+        <item>المدنيات</item>
+        <item>الدين الإسلامي</item>
+        <item>العلوم الصحية</item>
+        <item>ميكاترونيكا</item>
+        <item>الكترونيكا</item>
+        <item>اللغة العبرية</item>
+    </string-array>
+</resources>

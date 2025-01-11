@@ -1,5 +1,8 @@
 package com.example.sa3id;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +21,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.sa3id.AdminActivities.ControlPanel;
 import com.example.sa3id.R;
 import com.example.sa3id.UserActivities.*;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,7 +42,6 @@ import android.widget.Toast;
 
 import java.util.Objects;
 
-
 public abstract class BaseActivity extends AppCompatActivity {
     private TextView tvEmail, tvUsername;
     private DrawerLayout drawerLayout;
@@ -47,10 +50,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     private ImageView ivUserIcon;
     private FrameLayout bottomSheet;
     private BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
-    private Button btnSignIn, btnSignUp, btnLogout;
+    private Button btnSignIn, btnSignUp, btnLogout, btnAdminPanel;
     private FirebaseAuth mAuth;
-    private LinearLayout onlyForLoggedIn, onlyForLoggedOut;
+    private LinearLayout onlyForLoggedIn, onlyForLoggedOut, onlyForAdmins;
     private boolean isLoggedIn;
+    private boolean isAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +62,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutResourceId());
 
         isLoggedIn = false;
+        isAdmin = false;
         mAuth = FirebaseAuth.getInstance();
-
 
         initBottomSheet();
         initViews();
@@ -78,18 +82,22 @@ public abstract class BaseActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        finishAffinity(); //exit
+                        finishAffinity();
                     }
                 }
             }
         });
-
-
     }
 
-
     protected boolean handleChildBackPress() {
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         return false;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     protected abstract int getLayoutResourceId();
@@ -100,12 +108,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
 
-        // toolbar
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         navigationView.bringToFront();
 
-        // menu button
         ImageView menuButton = findViewById(R.id.menu_button);
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,14 +132,12 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         });
 
-
         ivUserIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 toggleBottomSheet();
             }
         });
-
     }
 
     protected void handleNavigation(int itemId) {
@@ -179,8 +183,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             startActivity(new Intent(context, WhatsappGroups.class));
             finish();
         }
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
-
 
     private void initBottomSheet() {
         try {
@@ -195,6 +199,31 @@ public abstract class BaseActivity extends AppCompatActivity {
             btnLogout = bottomSheet.findViewById(R.id.btnLogout);
             onlyForLoggedIn = bottomSheet.findViewById(R.id.onlyForLoggedIn);
             onlyForLoggedOut = bottomSheet.findViewById(R.id.onlyForLoggedOut);
+            onlyForAdmins = bottomSheet.findViewById(R.id.onlyForAdmins);
+
+            btnAdminPanel = bottomSheet.findViewById(R.id.btnAdminPanel);
+
+            btnAdminPanel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getApplicationContext(), ControlPanel.class));
+                }
+            });
+
+
+            bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+                @Override
+                public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                }
+
+                @Override
+                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                    View overlay = findViewById(R.id.background_overlay);
+                    if (overlay != null) {
+                        overlay.setAlpha(slideOffset * 0.8f);
+                    }
+                }
+            });
 
             btnSignIn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -232,11 +261,23 @@ public abstract class BaseActivity extends AppCompatActivity {
                         DataSnapshot snapshot = task.getResult();
                         String username = snapshot.child("username").getValue(String.class);
                         String email = snapshot.child("email").getValue(String.class);
+                        Boolean admin = (Boolean) snapshot.child("admin").getValue();
+                        //Toast.makeText(BaseActivity.this, admin.toString(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(BaseActivity.this, username, Toast.LENGTH_SHORT).show();
 
-                        if (username == null || email == null) setDefaultCredentials();
-                        else setCredentials(username, email);
-
-
+                        if (username == null || email == null) {
+                            setDefaultCredentials();
+                        } else {
+                            setCredentials(username, email);
+                            if (admin != null && admin) {
+                                Toast.makeText(getApplicationContext(), "Logged in as admin", Toast.LENGTH_SHORT).show();
+                                isAdmin = true;
+                                onlyForAdmins.setVisibility(View.VISIBLE);
+                            } else {
+                                isAdmin = false;
+                                onlyForAdmins.setVisibility(View.GONE);
+                            }
+                        }
                     } else {
                         setDefaultCredentials();
                         Log.e("Firebase", "Failed to fetch user data", task.getException());
@@ -244,35 +285,57 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             });
 
-
         } catch (Exception e) {
             bottomSheet = null;
             Log.e("BottomSheet", "Error initializing bottom sheet", e);
         }
     }
 
-
     public void toggleBottomSheet() {
         try {
+            final View overlay = findViewById(R.id.background_overlay);
+
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                overlay.setVisibility(View.VISIBLE);
+                fadeInOverlay(overlay);
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                fadeOutOverlay(overlay);
             }
         } catch (Exception e) {
             Log.e("BottomSheet", "Error! bottom sheet not initialized", e);
         }
+    }
 
+    private void fadeInOverlay(final View overlay) {
+        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(overlay, "alpha", 0f, 0.8f);
+        fadeIn.setDuration(300);
+        fadeIn.start();
+    }
 
+    private void fadeOutOverlay(final View overlay) {
+        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(overlay, "alpha", 0.8f, 0f);
+        fadeOut.setDuration(300);
+        fadeOut.start();
+
+        fadeOut.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                overlay.setVisibility(View.GONE);
+            }
+        });
     }
 
     public void setDefaultCredentials() {
         try {
             isLoggedIn = false;
+            isAdmin = false;
             tvUsername.setText("زائر");
             tvEmail.setText("لم يتم تسجيل الدخول");
             onlyForLoggedIn.setVisibility(View.GONE);
             onlyForLoggedOut.setVisibility(View.VISIBLE);
+            onlyForAdmins.setVisibility(View.GONE);
         } catch (Exception e) {
             Log.e("BottomSheet", "Error! bottom sheet not initialized", e);
         }
@@ -289,5 +352,4 @@ public abstract class BaseActivity extends AppCompatActivity {
             Log.e("BottomSheet", "Error! bottom sheet not initialized", e);
         }
     }
-
 }

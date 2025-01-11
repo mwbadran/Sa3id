@@ -29,6 +29,10 @@ public class SubjectGradeView extends LinearLayout {
         unitsInput = findViewById(R.id.unitsInput);
     }
 
+    public String getSubjectName() {
+        return subjectNameView.getText().toString();
+    }
+
     public void setSubject(String subject) {
         subjectNameView.setText(subject);
     }

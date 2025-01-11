@@ -3,13 +3,20 @@ package com.example.sa3id.UserActivities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.example.sa3id.Announcement;
 import com.example.sa3id.AnnouncementAdapter;
@@ -34,7 +41,7 @@ public class MainActivity extends BaseActivity {
 
     LinearLayout announcementsButton, calenderButton, uploadMaterialsButton, examsButton, materialsButton, booksButton, contactUsButton, calculatorButton, whatsappButton, donateButton;
     NavigationView navigationView;
-
+    GridLayout gridLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +55,8 @@ public class MainActivity extends BaseActivity {
         userDetailsEditor = userDetailsSP.edit();
 
         initViews();
-        initMenuButtonsListeners();
+        //initMenuButtonsListeners();
+        populateGridLayout();
 
         saveAnnouncementsToSP();
     }
@@ -56,6 +64,7 @@ public class MainActivity extends BaseActivity {
     private void initViews() {
 
         navigationView = findViewById(R.id.nav_view);
+        gridLayout = findViewById(R.id.grid_layout);
 
         announcementsListView = findViewById(R.id.announcementsListView);
         announcementsList = new ArrayList<>();
@@ -71,9 +80,18 @@ public class MainActivity extends BaseActivity {
         announcementsList.add(new Announcement("الطالب عبد الرحمن نمر وتد يحقق إنجازاً غير مسبوق في بجروت الأدب", "حقق الطالب عبد الرحمن نمر وتد إنجازاً استثنائياً في امتحان بجروت الأدب المصيري، حيث أحرز علامة 95، وهي علامة غير مسبوقة على مستوى المنطقة والمدرسة. يعتبر هذا النجاح تقديراً لجهوده الكبيرة في مواجهة تحديات هذا الموضوع الصعب، ويستحق تكريماً خاصاً نظراً للتفوق والتميز الذي أظهره.", abedwImage));
 
 
-        adapter = new AnnouncementAdapter(this, 0, 0, announcementsList);
-        announcementsListView.setAdapter(adapter);
+        //show only latest 2 items
+        ArrayList<Announcement> filteredAnnouncements = new ArrayList<>();
+        int size = announcementsList.size();
+        if (size > 2) {
+            filteredAnnouncements.add(announcementsList.get(size - 2));
+            filteredAnnouncements.add(announcementsList.get(size - 1));
+        } else {
+            filteredAnnouncements.addAll(announcementsList);
+        }
 
+        adapter = new AnnouncementAdapter(this, 0, 0, filteredAnnouncements);
+        announcementsListView.setAdapter(adapter);
 
         announcementsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -86,92 +104,90 @@ public class MainActivity extends BaseActivity {
         });
 
 
-
     }
 
     private void initMenuButtonsListeners() {
-        announcementsButton = findViewById(R.id.arabic_button);
-        calenderButton = findViewById(R.id.english_button);
-        //examsButton = findViewById(R.id.exams_bank_button);
-        materialsButton = findViewById(R.id.materials_page_button);
-        booksButton = findViewById(R.id.our_books_button);
-        uploadMaterialsButton = findViewById(R.id.upload_materials_button);
-        contactUsButton = findViewById(R.id.contact_us_button);
-        calculatorButton = findViewById(R.id.grades_calculator_button);
-        whatsappButton = findViewById(R.id.whatsapp_groups_button);
-        donateButton = findViewById(R.id.donate_button);
+//        announcementsButton = findViewById(R.id.arabic_button);
+//        calenderButton = findViewById(R.id.english_button);
+//        //examsButton = findViewById(R.id.exams_bank_button);
+//        materialsButton = findViewById(R.id.materials_page_button);
+//        booksButton = findViewById(R.id.our_books_button);
+//        uploadMaterialsButton = findViewById(R.id.upload_materials_button);
+//        contactUsButton = findViewById(R.id.contact_us_button);
+//        calculatorButton = findViewById(R.id.grades_calculator_button);
+//        whatsappButton = findViewById(R.id.whatsapp_groups_button);
+//        donateButton = findViewById(R.id.donate_button);
 
-        announcementsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigationView.getMenu().performIdentifierAction(R.id.nav_annoucements, 0);
-            }
-        });
-
-        calculatorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navigationView.getMenu().performIdentifierAction(R.id.nav_calender, 0);
-            }
-        });
-
-        uploadMaterialsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigationView.getMenu().performIdentifierAction(R.id.nav_upload_materials, 0);
-            }
-        });
-
-//        examsButton.setOnClickListener(new View.OnClickListener() {
+//        announcementsButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                navigationView.getMenu().performIdentifierAction(R.id.nav_exams_bank, 0);
+//                navigationView.getMenu().performIdentifierAction(R.id.nav_annoucements, 0);
 //            }
 //        });
-
-        materialsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigationView.getMenu().performIdentifierAction(R.id.nav_materials, 0);
-
-            }
-        });
-
-        booksButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigationView.getMenu().performIdentifierAction(R.id.nav_our_books, 0);
-            }
-        });
-
-        contactUsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigationView.getMenu().performIdentifierAction(R.id.nav_contact_us, 0);
-            }
-        });
-
-        calculatorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigationView.getMenu().performIdentifierAction(R.id.nav_grades_calculator, 0);
-            }
-        });
-
-        whatsappButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigationView.getMenu().performIdentifierAction(R.id.nav_whatsapp_groups, 0);
-            }
-        });
-
-        donateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigationView.getMenu().performIdentifierAction(R.id.nav_donate, 0);
-            }
-        });
-
+//
+//        calculatorButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                navigationView.getMenu().performIdentifierAction(R.id.nav_calender, 0);
+//            }
+//        });
+//
+//        uploadMaterialsButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                navigationView.getMenu().performIdentifierAction(R.id.nav_upload_materials, 0);
+//            }
+//        });
+//
+////        examsButton.setOnClickListener(new View.OnClickListener() {
+////            @Override
+////            public void onClick(View v) {
+////                navigationView.getMenu().performIdentifierAction(R.id.nav_exams_bank, 0);
+////            }
+////        });
+//
+//        materialsButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                navigationView.getMenu().performIdentifierAction(R.id.nav_materials, 0);
+//
+//            }
+//        });
+//
+//        booksButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                navigationView.getMenu().performIdentifierAction(R.id.nav_our_books, 0);
+//            }
+//        });
+//
+//        contactUsButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                navigationView.getMenu().performIdentifierAction(R.id.nav_contact_us, 0);
+//            }
+//        });
+//
+//        calculatorButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                navigationView.getMenu().performIdentifierAction(R.id.nav_grades_calculator, 0);
+//            }
+//        });
+//
+//        whatsappButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                navigationView.getMenu().performIdentifierAction(R.id.nav_whatsapp_groups, 0);
+//            }
+//        });
+//
+//        donateButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                navigationView.getMenu().performIdentifierAction(R.id.nav_donate, 0);
+//            }
+//        });
 
 
     }
@@ -212,9 +228,99 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    private void populateGridLayout() {
+        int columnCount = 3; // Number of columns in the grid
+
+        // Convert 20dp to pixels
+        int paddingInPixels = (int) (20 * getResources().getDisplayMetrics().density);
+
+        // Calculate available width after padding
+        int screenWidth = getResources().getDisplayMetrics().widthPixels - (2 * paddingInPixels);
+        int screenHeight = getResources().getDisplayMetrics().heightPixels;
+
+        // Calculate grid item size based on available width
+        int gridItemSize = (screenWidth / columnCount) - 32; // Adjust for padding/margins
+
+        // Calculate icon size dynamically (40% of grid item size)
+        int iconSize = (int) (gridItemSize * 0.5);
+
+        ArrayList<GridItem> items = new ArrayList<>();
+        items.add(new GridItem(R.drawable.announcements, getString(R.string.announcements), R.id.nav_annoucements));
+        items.add(new GridItem(R.drawable.upcoming_exams, getString(R.string.upcoming_exams), R.id.nav_exams_bank));
+        items.add(new GridItem(R.drawable.materials, getString(R.string.materials_page), R.id.nav_materials));
+        items.add(new GridItem(R.drawable.our_books, getString(R.string.our_books), R.id.nav_our_books));
+        items.add(new GridItem(R.drawable.calc, getString(R.string.grades_calculator), R.id.nav_grades_calculator));
+        items.add(new GridItem(R.drawable.upload_materials, getString(R.string.upload_materials), R.id.nav_upload_materials));
+        items.add(new GridItem(R.drawable.whatsapp_logo, getString(R.string.whatsapp_groups), R.id.nav_whatsapp_groups));
+        items.add(new GridItem(R.drawable.contact_us, getString(R.string.contact_us), R.id.nav_contact_us));
+        items.add(new GridItem(R.drawable.parrot, getString(R.string.donate), R.id.nav_donate));
+
+        gridLayout.setColumnCount(columnCount);
+        gridLayout.removeAllViews();
+
+        // Calculate text size based on screen density
+        float scaledDensity = getResources().getDisplayMetrics().scaledDensity;
+        float textSizeInSp = 14f * (screenWidth/976f); //got this constant from experimenting
+
+
+
+        for (GridItem item : items) {
+            LinearLayout layout = new LinearLayout(this);
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            params.width = gridItemSize;
+            params.height = gridItemSize;
+            params.setMargins(16, 16, 16, 16);
+            layout.setLayoutParams(params);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            layout.setGravity(Gravity.CENTER);
+            layout.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_square));
+            layout.setPadding(10, 10, 10, 10);
+            layout.setElevation(6f);
+
+            // ImageView with dynamic size
+            ImageView imageView = new ImageView(this);
+            LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(iconSize, iconSize);
+            imageParams.setMargins(0, 0, 0, 8); // Add bottom margin
+            imageView.setLayoutParams(imageParams);
+            imageView.setImageResource(item.imageResId);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+            // TextView with dynamic size
+            TextView textView = new TextView(this);
+            LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            textView.setLayoutParams(textParams);
+            textView.setText(item.label);
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextSize(textSizeInSp);
+            textView.setTypeface(ResourcesCompat.getFont(this, R.font.rpt_bold));
+            textView.setTextColor(ContextCompat.getColor(this, R.color.black));
+            textView.setMaxLines(2);
+            textView.setEllipsize(TextUtils.TruncateAt.END);
+
+            layout.addView(imageView);
+            layout.addView(textView);
+
+            layout.setOnClickListener(view -> navigationView.getMenu().performIdentifierAction(item.navId, 0));
+
+            gridLayout.addView(layout);
+        }
+    }
+
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_main;
     }
 
+    private static class GridItem {
+        int imageResId;
+        String label;
+        int navId;
+
+        GridItem(int imageResId, String label, int navId) {
+            this.imageResId = imageResId;
+            this.label = label;
+            this.navId = navId;
+        }
+    }
 }

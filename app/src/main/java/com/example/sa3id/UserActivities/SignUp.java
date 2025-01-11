@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -62,6 +63,14 @@ public class SignUp extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance(FIREBASE_REALTIME_LINK).getReference("Users");
 
         initViews();
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                startActivity(new Intent(SignUp.this, MainActivity.class));
+                finish();
+            }
+        });
 
     }
 

@@ -20,6 +20,12 @@
 
         <include layout="@layout/toolbar_layout" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:animateLayoutChanges="true"
+            >
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
@@ -29,6 +35,7 @@
             app:tabSelectedTextColor="@color/white"
             app:tabIndicatorColor="@color/white"
             android:layoutDirection="rtl"
+            app:tabTextAppearance="@style/tab_text_rpt_bold"
             >
 
             <com.google.android.material.tabs.TabItem
@@ -40,7 +47,7 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="حاسبة العلامات"/>
+                android:text="حساب علامة موضوع"/>
 
         </com.google.android.material.tabs.TabLayout>
 
@@ -49,6 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+        </LinearLayout>
     </LinearLayout>
 
     <include

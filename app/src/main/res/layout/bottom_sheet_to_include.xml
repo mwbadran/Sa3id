@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layoutDirection="ltr"
-    >
+    android:layoutDirection="ltr">
+
+    <View
+        android:id="@+id/background_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone" />
 
     <FrameLayout
         android:id="@+id/bottomSheetProfile"
         android:layout_width="match_parent"
         android:layout_height="450dp"
-        app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_hideable="true"
+        app:layout_behavior="@string/bottom_sheet_behavior"
 
         >
+
         <include layout="@layout/bottomsheetlayout" />
     </FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

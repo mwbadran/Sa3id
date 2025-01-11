@@ -58,6 +58,8 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.firebase.storage)
     implementation(libs.firebase.inappmessaging.display)
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
+
     implementation("com.squareup.picasso:picasso:2.8")
     implementation("com.google.android.material:material:1.12.0")
 

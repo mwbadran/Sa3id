@@ -1,6 +1,7 @@
 package com.example.sa3id.UserActivities;
 
 import static com.example.sa3id.Constants.FIREBASE_REALTIME_LINK;
+import static com.example.sa3id.UploadRequest.getCurrentTimestamp;
 
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -23,6 +24,8 @@ import com.example.sa3id.MaterialRequestItemAdapter;
 import com.example.sa3id.R;
 import com.example.sa3id.UploadRequest;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -33,9 +36,12 @@ import java.util.ArrayList;
 
 public class UploadMaterials extends BaseActivity {
 
+    private FirebaseAuth mAuth;
+    private FirebaseUser firebaseUser;
     private FirebaseDatabase firebaseDatabase;
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
+    private String requestTimeStamp;
 
     private EditText etDescription;
     private Button btnSendRequest;
@@ -55,6 +61,17 @@ public class UploadMaterials extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+        firebaseUser = mAuth.getCurrentUser();
+
+        if (firebaseUser == null) {
+            //AlertDialog
+            Toast.makeText(this, "No user logged In!!!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, SignIn.class));
+            finish();
+            return;
+        }
 
         initViews();
     }
@@ -133,6 +150,13 @@ public class UploadMaterials extends BaseActivity {
     }
 
     private void sendUploadRequest() {
+        String senderEmail = firebaseUser.getEmail();
+        requestTimeStamp = getCurrentTimestamp();
+        if (senderEmail == null) {
+            //AlertDialog
+            Toast.makeText(this, "userEmail null", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (!selectedFilesList.isEmpty()) {
             String description = etDescription.getText().toString().trim();
             if (description.isEmpty()) {
@@ -143,7 +167,7 @@ public class UploadMaterials extends BaseActivity {
             ArrayList<String> fileUrls = new ArrayList<>();
             for (Uri fileUri : selectedFilesList) {
                 String fileName = System.currentTimeMillis() + "." + getFileExtension(fileUri);
-                StorageReference fileReference = storageReference.child(fileName);
+                StorageReference fileReference = storageReference.child(senderEmail + " " + requestTimeStamp).child(fileName);
                 fileReference.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -165,9 +189,7 @@ public class UploadMaterials extends BaseActivity {
     }
 
     private void saveRequestToDatabase(String description, ArrayList<String> fileUrls) {
-        UploadRequest uploadRequest = new UploadRequest();
-        uploadRequest.setDescription(description);
-        uploadRequest.setMaterialsList(fileUrls);
+        UploadRequest uploadRequest = new UploadRequest(description, fileUrls, firebaseUser.getEmail(), requestTimeStamp);
 
         DatabaseReference newRequestRef = databaseReference.push();
         newRequestRef.setValue(uploadRequest);

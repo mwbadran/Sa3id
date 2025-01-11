@@ -6,4 +6,8 @@
         <item name="android:textSize">15sp</item>
 
     </style>
+
+    <style name="tab_text_rpt_bold" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:fontFamily">@font/rpt_bold</item>
+    </style>
 </resources>

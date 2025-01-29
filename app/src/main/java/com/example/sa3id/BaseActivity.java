@@ -6,7 +6,11 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +38,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -200,7 +205,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             onlyForLoggedIn = bottomSheet.findViewById(R.id.onlyForLoggedIn);
             onlyForLoggedOut = bottomSheet.findViewById(R.id.onlyForLoggedOut);
             onlyForAdmins = bottomSheet.findViewById(R.id.onlyForAdmins);
-
             btnAdminPanel = bottomSheet.findViewById(R.id.btnAdminPanel);
 
             btnAdminPanel.setOnClickListener(new View.OnClickListener() {
@@ -247,43 +251,13 @@ public abstract class BaseActivity extends AppCompatActivity {
             });
 
             FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-            DatabaseReference database = FirebaseDatabase.getInstance("https://sa3idsite-default-rtdb.europe-west1.firebasedatabase.app").getReference("Users");
 
             if (firebaseUser == null) {
                 setDefaultCredentials();
                 return;
             }
 
-            database.child(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        DataSnapshot snapshot = task.getResult();
-                        String username = snapshot.child("username").getValue(String.class);
-                        String email = snapshot.child("email").getValue(String.class);
-                        Boolean admin = (Boolean) snapshot.child("admin").getValue();
-                        //Toast.makeText(BaseActivity.this, admin.toString(), Toast.LENGTH_SHORT).show();
-                        //Toast.makeText(BaseActivity.this, username, Toast.LENGTH_SHORT).show();
-
-                        if (username == null || email == null) {
-                            setDefaultCredentials();
-                        } else {
-                            setCredentials(username, email);
-                            if (admin != null && admin) {
-                                Toast.makeText(getApplicationContext(), "Logged in as admin", Toast.LENGTH_SHORT).show();
-                                isAdmin = true;
-                                onlyForAdmins.setVisibility(View.VISIBLE);
-                            } else {
-                                isAdmin = false;
-                                onlyForAdmins.setVisibility(View.GONE);
-                            }
-                        }
-                    } else {
-                        setDefaultCredentials();
-                        Log.e("Firebase", "Failed to fetch user data", task.getException());
-                    }
-                }
-            });
+            fetchUserDetails(firebaseUser.getUid());
 
         } catch (Exception e) {
             bottomSheet = null;
@@ -352,4 +326,38 @@ public abstract class BaseActivity extends AppCompatActivity {
             Log.e("BottomSheet", "Error! bottom sheet not initialized", e);
         }
     }
+
+    private void fetchUserDetails(String userId) {
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("Users").document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        User user = new User(
+                                documentSnapshot.getString("username"),
+                                documentSnapshot.getString("email"));
+
+                        //Toast.makeText(this, user.getUsername(), Toast.LENGTH_SHORT).show();
+                        setCredentials(user.getUsername(), user.getEmail());
+
+                        if (Boolean.TRUE.equals(documentSnapshot.getBoolean("admin"))) {
+                            Toast.makeText(getApplicationContext(), "Logged in as admin", Toast.LENGTH_SHORT).show();
+                            isAdmin = true;
+                            onlyForAdmins.setVisibility(View.VISIBLE);
+                        } else {
+                            isAdmin = false;
+                            onlyForAdmins.setVisibility(View.GONE);
+                        }
+                    } else {
+                        //Toast.makeText(this, "User data not found", Toast.LENGTH_SHORT).show();
+                        setDefaultCredentials();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    setDefaultCredentials();
+                    Log.e("Firestore", "Failed to fetch user data", e);
+                });
+    }
+
+
 }

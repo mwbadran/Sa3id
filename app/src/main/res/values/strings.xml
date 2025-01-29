@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">ساعد</string>
+    <string name="client_id">1054315745727-hjeetandri8qupdenriuvf84071vbde0.apps.googleusercontent.com</string>
+    <string name="sign_in_with_google">تسجيل الدخول باستخدام جوجل</string>
+    <string name="sign_up_with_google">التسجيل باستخدام جوجل</string>
+    <string name="username_required">يرجى إدخال اسم المستخدم</string>
     <string name="app_version">1.0.0</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

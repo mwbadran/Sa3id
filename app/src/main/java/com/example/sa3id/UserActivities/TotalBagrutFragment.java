@@ -38,14 +38,14 @@ public class TotalBagrutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_total_bagrut, container, false);
 
-        initializeViews(view);
+        initViews(view);
         setupListeners();
         setupInitialState();
 
         return view;
     }
 
-    private void initializeViews(View view) {
+    private void initViews(View view) {
         mandatoryContainer = view.findViewById(R.id.mandatoryContainer);
         optionalContainer = view.findViewById(R.id.optionalContainer);
         optionalSubjectsLayout = view.findViewById(R.id.optionalSubjectsLayout);

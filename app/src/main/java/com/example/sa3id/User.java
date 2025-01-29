@@ -11,6 +11,10 @@ public class User {
         this.isAdmin = false;
     }
 
+    public User() {
+        this.isAdmin = false;
+    }
+
     public boolean isAdmin() {
         return isAdmin;
     }

@@ -9,16 +9,14 @@
     android:fitsSystemWindows="true"
     android:layoutDirection="rtl"
     tools:context=".UserActivities.SignIn"
-    android:background="@drawable/board_bg"
-    >
+    android:background="@drawable/board_bg">
+
     <View
         android:id="@+id/overlay_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#6F000000"
-        android:alpha="0.85"
-        />
-
+        android:alpha="0.85" />
 
     <ImageView
         android:layout_width="match_parent"
@@ -44,7 +42,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -61,7 +58,7 @@
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/rpt_bold"
                 android:hint="البريد الالكتروني"
-                android:inputType="text"
+                android:inputType="textEmailAddress"
                 android:textColor="#cccccc"
                 android:padding="10dp"
                 android:textColorHint="#cccccc" />
@@ -90,19 +87,32 @@
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGoogleSignIn"
+                android:layout_width="match_parent"
+                android:layoutDirection="rtl"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/white"
+                app:icon="@drawable/ic_google"
+                app:iconSize="8dp"
+                app:iconGravity="end"
+                app:iconPadding="8dp"
+                android:fontFamily="@font/rpt_bold"
+                android:text="@string/sign_in_with_google"
+                android:textColor="@color/black"
+                android:textSize="16sp"/>
+
             <TextView
                 android:id="@+id/tvDontHaveAnAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/rpt_bold"
                 android:text="ليس لديك حساب؟ انقر هُنا"
                 android:textColor="#cccccc"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-

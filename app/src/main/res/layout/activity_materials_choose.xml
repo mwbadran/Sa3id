@@ -71,15 +71,16 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/english_button"
                         app:layout_constraintWidth_percent="0.46"
-                        android:layout_marginTop="8dp"                        app:layout_constraintDimensionRatio="1:1"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintDimensionRatio="1:1"
                         app:layout_constraintHorizontal_chainStyle="spread">
 
                         <ImageView
-                            android:layout_width="150dp"
+                            android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="80"
                             android:padding="10dp"
-                            android:scaleType="centerCrop"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/sub_arabic" />
 
                         <TextView
@@ -113,11 +114,11 @@
                         app:layout_constraintHorizontal_chainStyle="spread">
 
                         <ImageView
-                            android:layout_width="150dp"
+                            android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="80"
                             android:padding="10dp"
-                            android:scaleType="centerCrop"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/sub_english" />
 
                         <TextView
@@ -154,11 +155,11 @@
                         app:layout_constraintHorizontal_chainStyle="spread">
 
                         <ImageView
-                            android:layout_width="150dp"
+                            android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="80"
                             android:padding="10dp"
-                            android:scaleType="centerCrop"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/sub_raif" />
 
                         <TextView
@@ -192,11 +193,11 @@
                         app:layout_constraintHorizontal_chainStyle="spread">
 
                         <ImageView
-                            android:layout_width="150dp"
+                            android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="80"
                             android:padding="10dp"
-                            android:scaleType="centerCrop"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/sub_mech" />
 
                         <TextView
@@ -230,11 +231,11 @@
                         app:layout_constraintHorizontal_chainStyle="spread">
 
                         <ImageView
-                            android:layout_width="150dp"
+                            android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="80"
                             android:padding="10dp"
-                            android:scaleType="centerCrop"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/sub_kahraba" />
 
                         <TextView
@@ -268,11 +269,11 @@
                         app:layout_constraintHorizontal_chainStyle="spread">
 
                         <ImageView
-                            android:layout_width="150dp"
+                            android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="80"
                             android:padding="10dp"
-                            android:scaleType="centerCrop"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/sub_math" />
 
                         <TextView
@@ -307,11 +308,11 @@
                         app:layout_constraintHorizontal_chainStyle="spread">
 
                         <ImageView
-                            android:layout_width="150dp"
+                            android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="80"
                             android:padding="10dp"
-                            android:scaleType="centerCrop"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/sub_hebrew" />
 
                         <TextView
@@ -345,11 +346,11 @@
                         app:layout_constraintHorizontal_chainStyle="spread">
 
                         <ImageView
-                            android:layout_width="150dp"
+                            android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="80"
                             android:padding="10dp"
-                            android:scaleType="centerCrop"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/sub_history" />
 
                         <TextView
@@ -383,11 +384,11 @@
                         app:layout_constraintHorizontal_chainStyle="spread">
 
                         <ImageView
-                            android:layout_width="150dp"
+                            android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="80"
                             android:padding="10dp"
-                            android:scaleType="centerCrop"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/sub_nizae" />
 
                         <TextView
@@ -421,11 +422,11 @@
                         app:layout_constraintHorizontal_chainStyle="spread">
 
                         <ImageView
-                            android:layout_width="150dp"
+                            android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="80"
                             android:padding="10dp"
-                            android:scaleType="centerCrop"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/sub_islam" />
 
                         <TextView
@@ -459,11 +460,11 @@
                         app:layout_constraintHorizontal_chainStyle="spread">
 
                         <ImageView
-                            android:layout_width="150dp"
+                            android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="80"
                             android:padding="10dp"
-                            android:scaleType="centerCrop"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/sub_biology" />
 
                         <TextView
@@ -497,11 +498,11 @@
                         app:layout_constraintHorizontal_chainStyle="spread">
 
                         <ImageView
-                            android:layout_width="150dp"
+                            android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="80"
                             android:padding="10dp"
-                            android:scaleType="centerCrop"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/sub_health_sci" />
 
                         <TextView

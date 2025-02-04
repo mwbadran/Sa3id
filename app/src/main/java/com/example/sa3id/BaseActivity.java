@@ -131,9 +131,15 @@ public abstract class BaseActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
-                drawerLayout.closeDrawer(navigationView);
-                handleNavigation(itemId);
-                return true;
+
+                if (itemId == R.id.nav_easter_egg) {
+                    handleEasterEggClick();
+                    return true; // Don't close drawer
+                } else {
+                    drawerLayout.closeDrawer(navigationView);
+                    handleNavigation(itemId);
+                    return true;
+                }
             }
         });
 
@@ -145,8 +151,61 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
     }
 
+    private void handleEasterEggClick() {
+        SharedPreferences prefs = getSharedPreferences("easter_egg", MODE_PRIVATE);
+        long lastClickTime = prefs.getLong("last_click_time", 0);
+        int clickCount = prefs.getInt("click_count", 0);
+        long currentTime = System.currentTimeMillis();
+
+        if (currentTime - lastClickTime > 3000) clickCount = 0;
+
+        clickCount++;
+        prefs.edit()
+                .putLong("last_click_time", currentTime)
+                .putInt("click_count", clickCount)
+                .apply();
+
+        if (clickCount >= 3 && clickCount < 10) {
+            int remaining = 10 - clickCount;
+            Toast.makeText(this, "باقي " + remaining + " نقرات للهدية!", Toast.LENGTH_SHORT).show();
+        } else if (clickCount >= 10) {
+            prefs.edit().putInt("click_count", 0).apply();
+
+            startActivity(new Intent(this, EasterEggActivity.class));
+
+
+        }
+    }
+
     protected void handleNavigation(int itemId) {
         Context context = BaseActivity.this;
+        SharedPreferences prefs = getSharedPreferences("easter_egg", MODE_PRIVATE);
+
+        if (itemId == R.id.nav_easter_egg) {
+            long lastClickTime = prefs.getLong("last_click_time", 0);
+            int clickCount = prefs.getInt("click_count", 0);
+            long currentTime = System.currentTimeMillis();
+
+            if (currentTime - lastClickTime > 3000) {
+                clickCount = 0;
+            }
+
+            clickCount++;
+            prefs.edit()
+                    .putLong("last_click_time", currentTime)
+                    .putInt("click_count", clickCount)
+                    .apply();
+
+            if (clickCount >= 3 && clickCount < 10) {
+                int remaining = 10 - clickCount;
+                Toast.makeText(this, "باقي " + remaining + " نقرات للهدية!", Toast.LENGTH_SHORT).show();
+            } else if (clickCount >= 10) {
+                Toast.makeText(this, "مبروك! لقد وجدت القطة الخفية كابا علي 😼", Toast.LENGTH_LONG).show();
+                prefs.edit().putInt("click_count", 0).apply();
+                startActivity(new Intent(this, EasterEggActivity.class));
+            }
+            return;
+        }
 
         if (itemId == R.id.nav_annoucements && !(this instanceof Announcements)) {
             startActivity(new Intent(context, Announcements.class));
@@ -191,6 +250,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
+
+
     private void initBottomSheet() {
         try {
             bottomSheet = findViewById(R.id.bottomSheetProfile);
@@ -233,12 +294,14 @@ public abstract class BaseActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     startActivity(new Intent(getApplicationContext(), SignIn.class));
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 }
             });
             btnSignUp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     startActivity(new Intent(getApplicationContext(), SignUp.class));
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 }
             });
             btnLogout.setOnClickListener(new View.OnClickListener() {

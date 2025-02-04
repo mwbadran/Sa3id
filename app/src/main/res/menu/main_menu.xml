@@ -67,5 +67,9 @@
             android:id="@+id/nav_about_us"
             android:title="عن التطبيق"
             />
+        <item
+            android:id="@+id/nav_easter_egg"
+            android:title=""
+            />
     </group>
 </menu>

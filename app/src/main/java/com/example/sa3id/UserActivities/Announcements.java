@@ -1,8 +1,12 @@
 package com.example.sa3id.UserActivities;
 
+import static com.example.sa3id.AnnouncementAdapter.openAnnouncementAsActivity;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,9 +36,16 @@ public class Announcements extends BaseActivity {
         announcementsListView = findViewById(R.id.announcementsListView);
         AnnouncementAdapter adapter = new AnnouncementAdapter(this, 0, 0, announcementsList);
         announcementsListView.setAdapter(adapter);
-
+        announcementsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                openAnnouncementAsActivity(Announcements.this, announcementsList.get(i).getTitle(),announcementsList.get(i).getDescription(),announcementsList.get(i).getImageResource());
+            }
+        });
 
     }
+
+
 
     private ArrayList<Announcement> getAnnouncementsFromSP() {
         sharedPreferences = getSharedPreferences("AnnouncementsSP", MODE_PRIVATE);

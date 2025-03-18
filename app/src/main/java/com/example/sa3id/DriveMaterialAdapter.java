@@ -117,7 +117,7 @@ public class DriveMaterialAdapter extends RecyclerView.Adapter<DriveMaterialAdap
         String fileId = item.getId();
         String pdfUrl = "https://drive.google.com/uc?id=" + fileId;
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(pdfUrl));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // Optional
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 

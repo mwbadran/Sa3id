@@ -4,6 +4,7 @@
         <!-- Customize your light theme here. -->
 
         <item name="colorPrimary">#FFFFFF</item> <!-- White background -->
+<!--        <color name="chip_text_color">#000000</color>-->
         <item name="android:statusBarColor">@android:color/transparent</item> <!-- White status bar -->
         <item name="android:windowLightStatusBar">true</item> <!-- Light text -->
     </style>

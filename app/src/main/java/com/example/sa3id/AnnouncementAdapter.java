@@ -2,6 +2,7 @@ package com.example.sa3id;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.sa3id.UserActivities.AnnouncementViewActivity;
 
 import java.util.List;
 
@@ -34,10 +37,21 @@ public class AnnouncementAdapter extends ArrayAdapter<Announcement> {
         return view;
     }
 
+
+
     public AnnouncementAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<Announcement> objects) {
         super(context, resource, textViewResourceId, objects);
         this.context = context;
         this.objects = objects;
 
     }
+
+    public static void openAnnouncementAsActivity(Context context, String title, String description, int imageResource) {
+        Intent intent = new Intent(context, AnnouncementViewActivity.class);
+        intent.putExtra("title", title);
+        intent.putExtra("description", description);
+        intent.putExtra("imageResource", String.valueOf(imageResource));
+        context.startActivity(intent);
+    }
+
 }

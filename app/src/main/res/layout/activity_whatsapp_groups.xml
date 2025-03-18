@@ -9,50 +9,176 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="end"
     android:layoutDirection="rtl"
-    tools:context=".UserActivities.WhatsappGroups"
-    >
+    tools:context=".UserActivities.WhatsappGroups">
 
     <include layout="@layout/navigation_layout"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".UserActivities.MainActivity"
-        android:background="@drawable/board_bg"
-        >
-
+        android:background="@drawable/board_bg">
 
         <include layout="@layout/toolbar_layout" />
 
-
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:id="@+id/main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                tools:context=".UserActivities.MainActivity"
-                android:background="@drawable/board_bg"
+                android:padding="16dp"
+                android:background="#2BFFFFFF"
                 >
 
                 <TextView
-                    android:layout_marginStart="10dp"
+
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:text="@string/whatsapp_groups"
-                    android:textSize="22sp"
-                    android:textColor="@color/white"
+                    android:textSize="28sp"
+                    android:textColor="#1d1c1c"
                     android:fontFamily="@font/rpt_bold"
-                    />
+                    android:layout_marginBottom="16dp"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="#128C7E"
+                    android:layout_marginBottom="24dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_marginTop="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="160dp"
+                            android:src="@drawable/sa3id_logo"
+                            android:scaleType="fitCenter"
+                            android:alpha="0.3"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="مجتمع الواتساب المنصة ساعد"
+                                android:textSize="24sp"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rpt_bold"
+                                android:layout_marginBottom="8dp"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="انضم إلى مجتمع واتساب الرئيسي للوصول إلى جميع مجموعات المواد الدراسية المتاحة"
+                                android:textSize="16sp"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rpt_bold"
+                                android:layout_marginBottom="16dp"/>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnMainCommunity"
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:text="انضم الآن"
+                                android:textSize="18sp"
+                                android:fontFamily="@font/rpt_bold"
+                                app:cornerRadius="12dp"
+                                android:backgroundTint="#25D366"
+                                android:textColor="#000000"
+                                app:icon="@drawable/baseline_add_circle_24"
+                                app:iconGravity="textStart"
+                                app:iconTint="#000000"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
 
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#1d1c1c"
+                    android:layout_marginBottom="16dp">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="معلومات المجتمع"
+                            android:textSize="20sp"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rpt_bold"
+                            android:layout_marginBottom="8dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="• الوصول إلى مجموعات واتساب لجميع المواد الدراسية\n• مشاركة الملفات والمواد التعليمية\n• التواصل مع الطلاب والمعلمين\n• الحصول على تنبيهات مهمة وإعلانات"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rpt_bold"
+                            android:lineSpacingExtra="8dp"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#1d1c1c">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="كيفية الانضمام"
+                            android:textSize="20sp"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rpt_bold"
+                            android:layout_marginBottom="8dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="1. انقر على زر 'انضم الآن' أعلاه\n2. سيتم فتح تطبيق واتساب تلقائيًا\n3. اضغط على 'انضمام إلى المجتمع'\n4. استعرض جميع المجموعات المتاحة وانضم إلى ما يناسب احتياجاتك"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rpt_bold"
+                            android:lineSpacingExtra="8dp"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+
+    <include
+        layout="@layout/bottom_sheet_to_include"
+        tools:visibility="gone" />
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -126,8 +126,6 @@ public class MaterialsPage extends BaseActivity {
     }
 
 
-
-
     public void listFilesInFolder(String folderId) {
 
             folderStack.push(folderId);
@@ -207,9 +205,6 @@ public class MaterialsPage extends BaseActivity {
             }
         }).start();
     }
-
-
-
 
     @Override
     protected int getLayoutResourceId() {

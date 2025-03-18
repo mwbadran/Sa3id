@@ -1,6 +1,7 @@
 package com.example.sa3id.UserActivities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -127,15 +128,17 @@ public class SignUp extends AppCompatActivity {
 
     private void saveGoogleUserToFirestore(FirebaseUser firebaseUser) {
         String userId = firebaseUser.getUid();
-
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        Uri profilePicUri = account.getPhotoUrl();
+        String profilePicUrl = profilePicUri != null ? profilePicUri.toString() : null;
         firestore.collection("Users").document(userId).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (!documentSnapshot.exists()) {
-                        // New user - require username
                         Intent intent = new Intent(this, GoogleSignUpActivity.class);
                         intent.putExtra("userId", userId);
                         intent.putExtra("email", firebaseUser.getEmail());
                         intent.putExtra("displayName", firebaseUser.getDisplayName());
+                        intent.putExtra("profilePicUrl", profilePicUrl);
                         startActivity(intent);
                         finish();
                     } else {
@@ -193,8 +196,7 @@ public class SignUp extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            startActivity(new Intent(SignUp.this, MainActivity.class));
-            finish();
+            mAuth.signOut();
         }
     }
 }

@@ -10,4 +10,10 @@
     <style name="tab_text_rpt_bold" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:fontFamily">@font/rpt_bold</item>
     </style>
+
+    <style name="ChipTextStyle" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:fontFamily">@font/rpt_bold</item>
+    </style>
+
 </resources>

@@ -310,19 +310,19 @@ public class SingleGradeFragment extends Fragment {
                 addBagrutView("نموذج A", 0.7, 0.3);  // Example with 70% Bagrut and 30% Magen
                 addBagrutView("نموذج B (علامة داخلية log)", 0.0, 1.0); // Example with internal grade only
                 addBagrutView("نموذج C", 0.7, 0.3);
-                addBagrutView("الشفوي", 0.2, 0.0); // Oral grade only (20%)
+                addBagrutView("الشفوي", 0.7, 0.3); // Oral grade only (20%)
             } else if (checkedId == rb4.getId()) {
                 // 4 Units English setup
                 addBagrutView("نموذج C", 0.7, 0.3);
                 addBagrutView("نموذج D (log علامة داخلية)", 0.0, 1.0); // Internal grade only
                 addBagrutView("نموذج E", 0.7, 0.3);
-                addBagrutView("الشفوي", 0.2, 0.0); // Oral grade only (20%)
+                addBagrutView("الشفوي", 0.7, 0.3); // Oral grade only (20%)
             } else if (checkedId == rb5.getId()) {
                 // 5 Units English setup
                 addBagrutView("نموذج E", 0.7, 0.3);
                 addBagrutView("نموذج F (LOG, علامة داخلية)", 0.0, 1.0); // Internal grade only
                 addBagrutView("نموذج G", 0.7, 0.3);
-                addBagrutView("الشفوي", 0.2, 0.0); // Oral grade only (20%)
+                addBagrutView("الشفوي", 0.7, 0.3); // Oral grade only (20%)
             }
         });
     }

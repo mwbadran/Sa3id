@@ -1,5 +1,7 @@
 package com.example.sa3id.UserActivities;
 
+import static com.example.sa3id.AnnouncementAdapter.openAnnouncementAsActivity;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -68,15 +70,21 @@ public class MainActivity extends BaseActivity {
 
         announcementsListView = findViewById(R.id.announcementsListView);
         announcementsList = new ArrayList<>();
+        announcementsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                openAnnouncementAsActivity(MainActivity.this, announcementsList.get(i).getTitle(),announcementsList.get(i).getDescription(),announcementsList.get(i).getImageResource());
+            }
+        });
 
         int abedwRevenge = R.drawable.abedw_revenge;
         int nizarImage = R.drawable.nizar;
         int abedwImage = R.drawable.abedw_skillz;
         int abedwomarImage = R.drawable.abedwomar;
 
-        announcementsList.add(new Announcement("أطمستم هويتي بعد ظلمي!", "هذا ما قاله الشاعر والزمار الكبير عبد الرحمن بعد ما برز شخص ينفخ في اليرغول في اليوم التراثي في مدرسة جت الثانوية، وضح الشاعر والزمار الكبير عبد الرحمن من خلال حديثه ان بعد ظلمه من ناحية التطوع ومن ناحية المهمة التطبيقية وضح ان تم طمس هويته من خلال ظهور الزمار في اليوم تراث، غرد الزمار والشاعر الكبير عبد الرحمن خارج السرب", abedwRevenge));
+        //announcementsList.add(new Announcement("أطمستم هويتي بعد ظلمي!", "هذا ما قاله الشاعر والزمار الكبير عبد الرحمن بعد ما برز شخص ينفخ في اليرغول في اليوم التراثي في مدرسة جت الثانوية، وضح الشاعر والزمار الكبير عبد الرحمن من خلال حديثه ان بعد ظلمه من ناحية التطوع ومن ناحية المهمة التطبيقية وضح ان تم طمس هويته من خلال ظهور الزمار في اليوم تراث، غرد الزمار والشاعر الكبير عبد الرحمن خارج السرب", abedwRevenge));
         announcementsList.add(new Announcement("ظلم في تصليح بجروت علم الحاسوب: طلاب يعانون من إجراءات غير عادلة", "واجه الطالب عمر محمد وتد ظلماً واضحاً في تصليح امتحان بجروت علم الحاسوب، حيث شعر أن درجاته لم تعكس جهوده وأدائه الفعلي في الامتحان. امتحان بجروت علم الحاسوب (رقم 899271) للصف الثاني عشر،  هذه الحالات تسلط الضوء على التحديات التي يواجهها الطلاب في النظام التعليمي وتأثيرها على مستقبلهم الأكاديمي.", abedwomarImage));
-        announcementsList.add(new Announcement("عبد الرحمن نمر وتد وظُلمه في المهمة التطبيقية لبجروت المدنيات", "عبد الرحمن نمر وتد، طالب مجتهد تعرض لظلم واضح في المهمة التطبيقية لبجروت المدنيات الداخلي، والتي كان من المفترض أن تكون أسهل من الامتحان الخارجي. تحت إشراف الأستاذ نزار غرة، حصل عبد الرحمن على علامة 85، وهي أقل بكثير من زملائه في المجموعة الذين حصلوا على 95، دون أي مبرر واضح لهذا الفارق. لم يكن عبد الرحمن الوحيد الذي شعر بالظلم، إذ يعاني العديد من الطلاب الآخرين من التمييز في العلامات، في ما يبدو أنه تفريق على أساس المحاباة والانحياز الشخصي.", nizarImage));
+        //announcementsList.add(new Announcement("عبد الرحمن نمر وتد وظُلمه في المهمة التطبيقية لبجروت المدنيات", "عبد الرحمن نمر وتد، طالب مجتهد تعرض لظلم واضح في المهمة التطبيقية لبجروت المدنيات الداخلي، والتي كان من المفترض أن تكون أسهل من الامتحان الخارجي. تحت إشراف الأستاذ نزار غرة، حصل عبد الرحمن على علامة 85، وهي أقل بكثير من زملائه في المجموعة الذين حصلوا على 95، دون أي مبرر واضح لهذا الفارق. لم يكن عبد الرحمن الوحيد الذي شعر بالظلم، إذ يعاني العديد من الطلاب الآخرين من التمييز في العلامات، في ما يبدو أنه تفريق على أساس المحاباة والانحياز الشخصي.", nizarImage));
         announcementsList.add(new Announcement("الطالب عبد الرحمن نمر وتد يحقق إنجازاً غير مسبوق في بجروت الأدب", "حقق الطالب عبد الرحمن نمر وتد إنجازاً استثنائياً في امتحان بجروت الأدب المصيري، حيث أحرز علامة 95، وهي علامة غير مسبوقة على مستوى المنطقة والمدرسة. يعتبر هذا النجاح تقديراً لجهوده الكبيرة في مواجهة تحديات هذا الموضوع الصعب، ويستحق تكريماً خاصاً نظراً للتفوق والتميز الذي أظهره.", abedwImage));
 
 
@@ -192,7 +200,6 @@ public class MainActivity extends BaseActivity {
 
     }
 
-
     private void saveAnnouncementsToSP() {
         // Store the number of announcements
         annoucementsEditor.putInt("announcementCount", announcementsList.size());
@@ -207,7 +214,6 @@ public class MainActivity extends BaseActivity {
 
         annoucementsEditor.apply();
     }
-
 
     @Override
     protected void onResume() {

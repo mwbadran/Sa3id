@@ -8,7 +8,6 @@ import com.example.sa3id.R;
 import com.google.android.material.tabs.TabLayout;
 
 public class GradesCalculator extends BaseActivity {
-
     private TabLayout tabLayout;
     private Fragment totalBagrutFragment;
     private Fragment singleGradeFragment;

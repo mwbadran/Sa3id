@@ -72,6 +72,8 @@ dependencies {
     }
     implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
     implementation("com.google.android.gms:play-services-auth:20.5.0")
+    implementation(libs.firebase.ui.database)
+
 
     implementation(libs.glide)
     annotationProcessor(libs.compiler)

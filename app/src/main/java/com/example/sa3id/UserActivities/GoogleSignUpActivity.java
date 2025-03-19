@@ -175,7 +175,6 @@ public class GoogleSignUpActivity extends AppCompatActivity {
     }
 
     private void uploadImageAndSaveUser(String username, AlertDialog loadingDialog) {
-        // Create a unique filename for the image
         String filename = "profile_images/" + userId + "_" + UUID.randomUUID().toString();
         StorageReference imageRef = storageRef.child(filename);
 

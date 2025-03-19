@@ -4,12 +4,9 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +18,6 @@ import com.example.sa3id.R;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class chooseBagrutsActivity extends AppCompatActivity {
+public class ChooseBagrutsActivity extends AppCompatActivity {
 
     private RadioGroup rgMathUnits, rgArabicUnits, rgHebrewUnits, rgEnglishUnits;
     private ChipGroup chipGroupMajors;
@@ -409,10 +405,7 @@ public class chooseBagrutsActivity extends AppCompatActivity {
     }
 
     private void generateExamsFromSelections() {
-        // This would be replaced with your actual exam generation logic
-        // based on the units and majors selected
 
-        // For now, we'll simulate some basic mapping
         selectedExams = new HashMap<>();
 
         // Math exams based on selected units

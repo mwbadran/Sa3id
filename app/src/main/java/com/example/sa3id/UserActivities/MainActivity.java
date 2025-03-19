@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity {
         userDetailsEditor = userDetailsSP.edit();
 
         initViews();
-        //initMenuButtonsListeners();
+
         populateGridLayout();
 
         saveAnnouncementsToSP();
@@ -230,7 +230,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //tvEmail.setText(userDetailsSP.getString("userEmail", "Guest"));
 
     }
 
@@ -258,8 +257,8 @@ public class MainActivity extends BaseActivity {
         items.add(new GridItem(R.drawable.calc, getString(R.string.grades_calculator), R.id.nav_grades_calculator));
         items.add(new GridItem(R.drawable.upload_materials, getString(R.string.upload_materials), R.id.nav_upload_materials));
         items.add(new GridItem(R.drawable.whatsapp_logo, getString(R.string.whatsapp_groups), R.id.nav_whatsapp_groups));
-        items.add(new GridItem(R.drawable.contact_us, getString(R.string.contact_us), R.id.nav_contact_us));
-        items.add(new GridItem(R.drawable.parrot, getString(R.string.donate), R.id.nav_donate));
+        items.add(new GridItem(R.drawable.baseline_feedback_24, getString(R.string.feedback), R.id.nav_contact_us));
+        items.add(new GridItem(R.drawable.baseline_donate_24, getString(R.string.donate), R.id.nav_donate));
 
         gridLayout.setColumnCount(columnCount);
         gridLayout.removeAllViews();

@@ -2,71 +2,65 @@ package com.example.sa3id;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-
 import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import com.bumptech.glide.Glide;
 import com.example.sa3id.AdminActivities.ControlPanel;
-import com.example.sa3id.R;
+import com.example.sa3id.AdminActivities.FeedbackRespondActivity;
 import com.example.sa3id.UserActivities.*;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Objects;
-
 public abstract class BaseActivity extends AppCompatActivity {
-    private TextView tvEmail, tvUsername ;
+    private TextView tvEmail, tvUsername;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
     private ImageView ivUserIcon, ivbottomSheetUserIcon;
-    private FirebaseUser firebaseUser;
+    protected FirebaseUser firebaseUser;
     private FrameLayout bottomSheet;
     private BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
     private Button btnSignIn, btnSignUp, btnLogout, btnAdminPanel;
     private FirebaseAuth mAuth;
     private LinearLayout onlyForLoggedIn, onlyForLoggedOut, onlyForAdmins;
-    private boolean isLoggedIn;
-    private boolean isAdmin;
+    private LinearLayout llEditBagrutExams, llUserSettings;
+    protected boolean isAdmin, isBottomSheetInitialized;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResourceId());
-
-        isLoggedIn = false;
+        isBottomSheetInitialized = false;
+        context = BaseActivity.this;
         isAdmin = false;
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
 
+
         initBottomSheet();
         initViews();
+
+        if (firebaseUser != null) fetchUserDetails(firebaseUser.getUid());
+        showOnlyFor(firebaseUser != null);
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -102,14 +96,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
         navigationView.bringToFront();
 
         ImageView menuButton = findViewById(R.id.menu_button);
         menuButton.setOnClickListener(view -> {
-            if (drawerLayout.isDrawerOpen(navigationView))
-                drawerLayout.closeDrawer(navigationView);
+            if (drawerLayout.isDrawerOpen(navigationView)) drawerLayout.closeDrawer(navigationView);
             else drawerLayout.openDrawer(navigationView);
         });
 
@@ -120,19 +112,22 @@ public abstract class BaseActivity extends AppCompatActivity {
             return true;
         });
 
-        ivUserIcon.setOnClickListener(view -> toggleBottomSheet());
+        ivUserIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleBottomSheet();
+            }
+        });
     }
 
     protected void handleNavigation(int itemId) {
-        Context context = BaseActivity.this;
-
         if (itemId == R.id.nav_annoucements && !(this instanceof Announcements)) {
             startActivity(new Intent(context, Announcements.class));
             finish();
         } else if (itemId == R.id.nav_home && !(this instanceof MainActivity)) {
             startActivity(new Intent(context, MainActivity.class));
             finish();
-        } else if (itemId == R.id.nav_upload_materials && !(this instanceof UploadMaterials) && isAdmin) {
+        } else if (itemId == R.id.nav_upload_materials && !(this instanceof UploadMaterials)) {
             startActivity(new Intent(context, UploadMaterials.class));
             finish();
         } else if (itemId == R.id.nav_our_books && !(this instanceof OurBooks)) {
@@ -150,8 +145,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         } else if (itemId == R.id.nav_settings && !(this instanceof UserSettings)) {
             startActivity(new Intent(context, UserSettings.class));
             finish();
-        } else if (itemId == R.id.nav_contact_us && !(this instanceof ContactUs)) {
-            startActivity(new Intent(context, ContactUs.class));
+        } else if (itemId == R.id.nav_contact_us && !(this instanceof FeedbackActivity)) {
+            startActivity(new Intent(context, FeedbackActivity.class));
             finish();
         } else if (itemId == R.id.nav_about_us && !(this instanceof AboutPage)) {
             startActivity(new Intent(context, AboutPage.class));
@@ -170,6 +165,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void initBottomSheet() {
         try {
+            isBottomSheetInitialized = true;
             bottomSheet = findViewById(R.id.bottomSheetProfile);
             bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -184,33 +180,19 @@ public abstract class BaseActivity extends AppCompatActivity {
             onlyForLoggedIn = bottomSheet.findViewById(R.id.onlyForLoggedIn);
             onlyForLoggedOut = bottomSheet.findViewById(R.id.onlyForLoggedOut);
             onlyForAdmins = bottomSheet.findViewById(R.id.onlyForAdmins);
+            // Bottom Sheet Menu Elements:
+            llEditBagrutExams = bottomSheet.findViewById(R.id.llEditBagrutExams);
+            llUserSettings = bottomSheet.findViewById(R.id.llUserSettings);
 
-            btnSignIn.setOnClickListener(view -> {
-                startActivity(new Intent(getApplicationContext(), SignIn.class));
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            });
 
-            btnSignUp.setOnClickListener(view -> {
-                startActivity(new Intent(getApplicationContext(), SignUp.class));
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            });
+            setupBottomSheetListeners();
 
-            btnLogout.setOnClickListener(view -> {
-                mAuth.signOut();
-                setDefaultCredentials();
-                Toast.makeText(getApplicationContext(), "Signed out", Toast.LENGTH_SHORT).show();
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            });
-
-            btnAdminPanel.setOnClickListener(view ->
-                    startActivity(new Intent(getApplicationContext(), ControlPanel.class))
-            );
 
             firebaseUser = mAuth.getCurrentUser();
             if (firebaseUser != null) {
                 // Always fetch and update credentials
                 fetchUserDetails(firebaseUser.getUid());
-                checkAdminStatus(firebaseUser.getUid());
+                //checkAdminStatus(firebaseUser.getUid());
             } else {
                 setDefaultCredentials();
             }
@@ -218,61 +200,90 @@ public abstract class BaseActivity extends AppCompatActivity {
             fetchUserDetails(firebaseUser.getUid());
 
         } catch (Exception e) {
+            isBottomSheetInitialized = false;
             bottomSheet = null;
             Log.e("BottomSheet", "Error initializing bottom sheet", e);
         }
     }
 
-    private void fetchUserDetails(String userId) {
+    protected boolean fetchUserDetails(String userId) {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        firestore.collection("Users").document(userId)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        User user = new User(
-                                documentSnapshot.getString("username"),
-                                documentSnapshot.getString("email"),
-                                documentSnapshot.getString("profilePic"));
+        firestore.collection("Users").document(userId).get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                User user = new User(documentSnapshot.getString("username"), documentSnapshot.getString("email"), documentSnapshot.getString("profilePic"));
 
 
-                        //Toast.makeText(this, user.getUsername(), Toast.LENGTH_SHORT).show();
-                        setCredentials(user.getUsername(), user.getEmail(), user.getProfilePic());
+                //Toast.makeText(this, user.getUsername(), Toast.LENGTH_SHORT).show();
+                setCredentials(user.getUsername(), user.getEmail(), user.getProfilePic());
 
-                        if (Boolean.TRUE.equals(documentSnapshot.getBoolean("admin"))) {
-                            Toast.makeText(getApplicationContext(), "Logged in as admin", Toast.LENGTH_SHORT).show();
-                            isAdmin = true;
-                            onlyForAdmins.setVisibility(View.VISIBLE);
-                        } else {
-                            isAdmin = false;
-                            onlyForAdmins.setVisibility(View.GONE);
-                        }
-                    } else {
-                        //Toast.makeText(this, "User data not found", Toast.LENGTH_SHORT).show();
-                        setDefaultCredentials();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    setDefaultCredentials();
-                    Log.e("Firestore", "Failed to fetch user data", e);
-                });
+                if (Boolean.TRUE.equals(documentSnapshot.getBoolean("admin"))) {
+                    //Toast.makeText(getApplicationContext(), "Logged in as admin", Toast.LENGTH_SHORT).show();
+                    isAdmin = true;
+                    onlyForAdmins.setVisibility(View.VISIBLE);
+                } else {
+                    isAdmin = false;
+                    onlyForAdmins.setVisibility(View.GONE);
+                }
+            } else {
+                setDefaultCredentials();
+            }
+        }).addOnFailureListener(e -> {
+            setDefaultCredentials();
+            Log.e("Firestore", "Failed to fetch user data", e);
+        });
+        return isAdmin;
+        //Toast.makeText(context, ""+isAdmin, Toast.LENGTH_SHORT).show();
     }
 
+    private void setupBottomSheetListeners() {
+        //Buttonsw
+        btnSignIn.setOnClickListener(view -> {
+            startActivity(new Intent(getApplicationContext(), SignIn.class));
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        });
 
-    private void checkAdminStatus(String userId) {
-        DatabaseReference dbRef = FirebaseDatabase.getInstance()
-                .getReference("Users")
-                .child(userId)
-                .child("admin");
+        btnSignUp.setOnClickListener(view -> {
+            startActivity(new Intent(getApplicationContext(), SignUp.class));
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        });
 
-        dbRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Boolean adminStatus = task.getResult().getValue(Boolean.class);
-                isAdmin = adminStatus != null && adminStatus;
-                onlyForAdmins.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
-                btnAdminPanel.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
+        btnLogout.setOnClickListener(view -> {
+            mAuth.signOut();
+            setDefaultCredentials();
+            Toast.makeText(getApplicationContext(), "Signed out", Toast.LENGTH_SHORT).show();
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        });
+
+        btnAdminPanel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), ControlPanel.class));
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
         });
+
+        // Menu Elements (They are LinearLayouts...)
+
+        llEditBagrutExams.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context, ChooseBagrutsActivity.class));
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
+        });
+
+        llUserSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context, UserSettings.class));
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
+        });
+
+
     }
+
+
 
     public void toggleBottomSheet() {
         try {
@@ -288,7 +299,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void setDefaultCredentials() {
         try {
-            isLoggedIn = false;
             isAdmin = false;
             tvUsername.setText("زائر");
             tvEmail.setText("لم يتم تسجيل الدخول");
@@ -306,24 +316,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void setCredentials(String username, String email, String profilePicUrl) {
         try {
-            isLoggedIn = true;
             tvUsername.setText(username != null ? username : "User");
             tvEmail.setText(email != null ? email : "No email");
 
-            Glide.with(BaseActivity.this)
-                    .load(Uri.parse(profilePicUrl))
-                    .placeholder(R.drawable.profile_pic)
-                    .error(R.drawable.profile_pic)
-                    .into(ivUserIcon);
+            Glide.with(BaseActivity.this).load(Uri.parse(profilePicUrl)).placeholder(R.drawable.profile_pic).error(R.drawable.profile_pic).into(ivUserIcon);
 
-            Glide.with(BaseActivity.this)
-                    .load(Uri.parse(profilePicUrl))
-                    .placeholder(R.drawable.profile_pic)
-                    .error(R.drawable.profile_pic)
-                    .into(ivbottomSheetUserIcon);
+            Glide.with(BaseActivity.this).load(Uri.parse(profilePicUrl)).placeholder(R.drawable.profile_pic).error(R.drawable.profile_pic).into(ivbottomSheetUserIcon);
 
             onlyForLoggedIn.setVisibility(View.VISIBLE);
             onlyForLoggedOut.setVisibility(View.GONE);
+            onlyForAdmins.setVisibility(View.GONE);
+
         } catch (Exception e) {
             Log.e("BottomSheet", "Error! bottom sheet not initialized", e);
         }
@@ -332,8 +335,25 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-    }
+        firebaseUser = mAuth.getCurrentUser();
 
+        if (firebaseUser != null) fetchUserDetails(firebaseUser.getUid());
+        showOnlyFor(firebaseUser != null);
+
+    }
+    
+    private void showOnlyFor(boolean isLoggedIn) {
+        if (!isBottomSheetInitialized) return;
+        onlyForAdmins.setVisibility(View.GONE);
+        if (isLoggedIn) {
+            onlyForLoggedIn.setVisibility(View.VISIBLE);
+            onlyForLoggedOut.setVisibility(View.GONE);
+        } else {
+            onlyForLoggedIn.setVisibility(View.GONE);
+            onlyForLoggedOut.setVisibility(View.VISIBLE);
+        }
+    }
+    
     @Override
     protected void onStop() {
         super.onStop();

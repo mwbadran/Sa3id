@@ -10,9 +10,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -42,7 +42,7 @@ public class UploadMaterials extends BaseActivity {
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
     private String requestTimeStamp;
-
+    private CheckBox approveCheckbox;
     private EditText etDescription;
     private Button btnSendRequest;
     private ImageView btnChooseFiles, btnClearMaterialsList;
@@ -81,8 +81,9 @@ public class UploadMaterials extends BaseActivity {
         btnChooseFiles = findViewById(R.id.btnChooseFiles);
         btnClearMaterialsList = findViewById(R.id.btnClearMaterialsList);
         btnSendRequest = findViewById(R.id.btnSendRequest);
+        approveCheckbox = findViewById(R.id.approveCheckbox);
         rvMaterialsList = findViewById(R.id.rvMaterialsList);
-        rvMaterialsList.setLayoutManager(new GridLayoutManager(this, 3)); // 3 columns
+        rvMaterialsList.setLayoutManager(new GridLayoutManager(this, 3));
         selectedFilesList = new ArrayList<>();
         materialAdapter = new MaterialRequestItemAdapter(this, selectedFilesList);
         rvMaterialsList.setAdapter(materialAdapter);
@@ -106,7 +107,12 @@ public class UploadMaterials extends BaseActivity {
         btnSendRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendUploadRequest();
+                if (approveCheckbox.isChecked())
+                    sendUploadRequest();
+                else {
+                    CustomAlertDialog dialog = new CustomAlertDialog(UploadMaterials.this);
+                    dialog.show("الرجاء التصريح بامتلاك الصلاحة لنشر المواد", R.drawable.nizar);
+                }
             }
         });
 

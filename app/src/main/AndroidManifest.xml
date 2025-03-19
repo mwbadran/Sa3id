@@ -22,7 +22,7 @@
         android:theme="@style/Theme.Sa3id"
         tools:targetApi="31">
         <activity
-            android:name=".UserActivities.chooseBagrutsActivity"
+            android:name=".UserActivities.ChooseBagrutsActivity"
             android:exported="true" />
         <activity
             android:name=".UserActivities.AnnouncementViewActivity"
@@ -53,10 +53,10 @@
             android:name=".AdminActivities.ControlPanel"
             android:exported="false" />
         <activity
-            android:name=".AdminActivities.ContactUsRespond"
-            android:exported="false" />
+            android:name=".AdminActivities.FeedbackRespondActivity"
+            android:exported="true" />
         <activity
-            android:name=".AdminActivities.MaterialsCheck"
+            android:name=".AdminActivities.MaterialsCheckActivity"
             android:exported="false" />
         <activity
             android:name=".UserActivities.SignUp"
@@ -75,13 +75,13 @@
             android:exported="false" />
         <activity
             android:name=".UserActivities.UploadMaterials"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".UserActivities.MaterialsPage"
             android:exported="false" />
         <activity
-            android:name=".UserActivities.ContactUs"
-            android:exported="false" />
+            android:name=".UserActivities.FeedbackActivity"
+            android:exported="true" />
         <activity
             android:name=".UserActivities.ExamsBank"
             android:exported="false" />

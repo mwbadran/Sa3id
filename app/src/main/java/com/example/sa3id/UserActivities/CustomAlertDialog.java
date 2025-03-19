@@ -2,7 +2,6 @@ package com.example.sa3id.UserActivities;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -12,24 +11,20 @@ import android.widget.TextView;
 import androidx.annotation.DrawableRes;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.example.sa3id.R;
 
-public class BagrutValidationDialog extends Dialog {
+public class CustomAlertDialog extends Dialog {
     private ImageView errorImageView;
     private TextView messageTextView;
     private Button closeButton;
 
-    public BagrutValidationDialog(Context context) {
+    public CustomAlertDialog(Context context) {
         super(context);
         init(context);
     }
 
     private void init(Context context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_bagrut_validation, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_custom, null);
         setContentView(view);
 
         // Initialize views

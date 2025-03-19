@@ -191,7 +191,7 @@ public class TotalBagrutFragment extends Fragment {
     }
 
     private void showValidationError(String message, @DrawableRes int imageResId) {
-        BagrutValidationDialog dialog = new BagrutValidationDialog(requireContext());
+        CustomAlertDialog dialog = new CustomAlertDialog(requireContext());
         dialog.show(message, imageResId);
     }
 

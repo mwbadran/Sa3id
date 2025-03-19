@@ -8,12 +8,12 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="materials_page">المواد التعليمية</string>
-    <string name="contact_us">اتصل بنا</string>
+    <string name="feedback">تواصل معنا</string>
     <string name="announcements">الإعلانات</string>
     <string name="about_page">عن التطبيق</string>
     <string name="user_settings">الإعدادات</string>
     <string name="grades_calculator">حاسبة العلامات</string>
-    <string name="whatsapp_groups">المجموعات التعليمية</string>
+    <string name="whatsapp_groups">المجموعات</string>
     <string name="exams_bank">مجمّع الامتحانات</string>
     <string name="our_books">كتب المتوكل</string>
     <string name="donate">دعم المشروع</string>

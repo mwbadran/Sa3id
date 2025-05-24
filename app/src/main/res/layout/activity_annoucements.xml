@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="end"
     android:layoutDirection="rtl"
-    tools:context=".UserActivities.Announcements"
+    tools:context=".userActivities.Announcements"
     >
 
     <include layout="@layout/navigation_layout"/>
@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:context=".UserActivities.MainActivity"
+        tools:context=".userActivities.MainActivity"
         android:background="@drawable/board_bg"
         >
 
@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                tools:context=".UserActivities.MainActivity"
+                tools:context=".userActivities.MainActivity"
                 android:background="@drawable/board_bg"
                 >
 

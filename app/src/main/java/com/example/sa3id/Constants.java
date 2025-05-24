@@ -5,6 +5,7 @@ public class Constants {
     public final static String userSP = "UserDetailsSP";
     public final static String announcementsSP = "AnnouncementsSP";
 
+    // Drive links:
     public final static String driveArabic = "1J_nsjcvdXzkAIVjnvNwjNhcbxev7vTNn";
     public final static String driveElectronics = "1-_lEBkc1vxaMJ0FjsP_yIz97dDO9qENH";
     public final static String driveMadanyat = "1-nSExPLX_-eEKSNty35mEvXLHtKqcrNa";

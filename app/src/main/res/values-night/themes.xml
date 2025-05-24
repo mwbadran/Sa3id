@@ -6,5 +6,8 @@
 <!--        <color name="chip_text_color">#FFFFFF</color>-->
         <item name="android:statusBarColor">@android:color/transparent</item> <!-- White status bar -->
         <item name="android:windowLightStatusBar">true</item> <!-- Light text -->
+        <item name="colorDynamic">@color/dark_background</item>
+        <item name="colorDynamicAlpha">@color/dark_background_alpha</item>
+
     </style>
 </resources>

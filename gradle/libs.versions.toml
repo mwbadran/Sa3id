@@ -7,6 +7,7 @@ firebaseFirestore = "25.1.1"
 firebaseUiDatabase = "8.0.1"
 googleHttpClientGson = "1.26.0"
 googlePlayServicesAuth = "21.2.0"
+googlePlayServicesAuthVersion = "20.5.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -24,6 +25,7 @@ materialVersion = "1.9.0"
 playServicesAuth = "20.5.0"
 playServicesAuthVersion = "20.4.1"
 firebaseMessaging = "24.1.0"
+poi = "5.2.2"
 
 [libraries]
 android-pdf-viewer = { module = "com.github.barteksc:android-pdf-viewer", version.ref = "androidPdfViewer" }
@@ -51,6 +53,9 @@ material-v190 = { module = "com.google.android.material:material", version.ref =
 play-services-auth = { module = "com.google.gms:play-services-auth", version.ref = "playServicesAuth" }
 play-services-auth-v2041 = { module = "com.google.gms:play-services-auth", version.ref = "playServicesAuthVersion" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+play-services-auth-v2050 = { module = "com.google.android.gms:play-services-auth", version.ref = "googlePlayServicesAuthVersion" }
+poi = { module = "org.apache.poi:poi", version.ref = "poi" }
+poi-ooxml = { module = "org.apache.poi:poi-ooxml", version.ref = "poi" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

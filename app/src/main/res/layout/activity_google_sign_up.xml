@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/board_bg"
     android:layoutDirection="rtl"
-    tools:context=".UserActivities.GoogleSignUpActivity">
+    tools:context=".userActivities.GoogleSignUpActivity">
 
     <View
         android:id="@+id/overlay_image"

@@ -9,39 +9,363 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="end"
     android:layoutDirection="rtl"
-    tools:context=".UserActivities.AboutPage"
-    >
+    tools:context=".adminActivities.ControlPanel">
 
     <include layout="@layout/navigation_layout"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".UserActivities.MainActivity"
-        android:background="@drawable/board_bg"
-        >
-
+        android:background="@drawable/board_bg">
 
         <include layout="@layout/toolbar_layout" />
 
-
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:id="@+id/main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                tools:context=".UserActivities.MainActivity"
-                android:background="@drawable/board_bg"
-                >
+                android:padding="16dp"
+                android:background="#6F000000">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="لوحة التحكم"
+                    android:textSize="28sp"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/rpt_bold"
+                    android:layout_marginBottom="16dp"/>
+
+
+                <!-- Cards for admin features -->
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="1"
+                    android:rowCount="4"
+                    android:alignmentMode="alignMargins"
+                    android:columnOrderPreserved="false">
+
+                    <!-- Feedback Respond Card -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_feedback_respond"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#1d1c1c"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:src="@drawable/baseline_send_24"
+                                android:padding="8dp"
+                                android:backgroundTint="#25D366"
+                                app:tint="@color/white" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginStart="16dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="الرد على التعليقات"
+                                    android:textSize="20sp"
+                                    android:textColor="@color/white"
+                                    android:fontFamily="@font/rpt_bold" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="الرد على استفسارات وتعليقات المستخدمين"
+                                    android:textSize="14sp"
+                                    android:textColor="#CCCCCC"
+                                    android:fontFamily="@font/rpt_bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Materials Check Card -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_materials_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#1d1c1c"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:src="@drawable/upload_materials"
+                                android:padding="8dp"
+                                android:backgroundTint="#3498DB"
+                                app:tint="@color/white" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginStart="16dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="فحص المواد"
+                                    android:textSize="20sp"
+                                    android:textColor="@color/white"
+                                    android:fontFamily="@font/rpt_bold" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="الموافقة على طلبات تحميل المواد التعليمية"
+                                    android:textSize="14sp"
+                                    android:textColor="#CCCCCC"
+                                    android:fontFamily="@font/rpt_bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Manage Users Card -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_manage_users"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#1d1c1c"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:src="@drawable/baseline_people_24"
+                                android:padding="8dp"
+                                android:backgroundTint="#9B59B6"
+                                app:tint="@color/white" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginStart="16dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="إدارة المستخدمين"
+                                    android:textSize="20sp"
+                                    android:textColor="@color/white"
+                                    android:fontFamily="@font/rpt_bold" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="عرض وتعديل وإدارة حسابات المستخدمين"
+                                    android:textSize="14sp"
+                                    android:textColor="#CCCCCC"
+                                    android:fontFamily="@font/rpt_bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Make Announcements Card -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_make_announcements"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#1d1c1c"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:src="@android:drawable/ic_dialog_alert"
+                                android:padding="8dp"
+                                android:backgroundTint="#E74C3C"
+                                app:tint="@color/white" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginStart="16dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="نشر الإعلانات"
+                                    android:textSize="20sp"
+                                    android:textColor="@color/white"
+                                    android:fontFamily="@font/rpt_bold" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="إنشاء ونشر إعلانات للمستخدمين"
+                                    android:textSize="14sp"
+                                    android:textColor="#CCCCCC"
+                                    android:fontFamily="@font/rpt_bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </GridLayout>
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="1"
+                    android:rowCount="5"
+                    android:alignmentMode="alignMargins"
+                    android:columnOrderPreserved="false">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_manage_bagrut_exams"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#1d1c1c"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:src="@drawable/baseline_people_24"
+                                android:padding="8dp"
+                                android:backgroundTint="#F39C12"
+                                app:tint="@color/white" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginStart="16dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="إدارة امتحانات البجروت"
+                                    android:textSize="20sp"
+                                    android:textColor="@color/white"
+                                    android:fontFamily="@font/rpt_bold" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="عرض وتنظيم امتحانات البجروت"
+                                    android:textSize="14sp"
+                                    android:textColor="#CCCCCC"
+                                    android:fontFamily="@font/rpt_bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Calendar Events Management Card -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_manage_calendar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#1d1c1c"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:src="@android:drawable/ic_menu_my_calendar"
+                                android:padding="8dp"
+                                android:backgroundTint="#2ECC71"
+                                app:tint="@color/white" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginStart="16dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="إدارة التقويم والمناسبات"
+                                    android:textSize="20sp"
+                                    android:textColor="@color/white"
+                                    android:fontFamily="@font/rpt_bold" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="إضافة وتعديل المناسبات والعطل في التقويم"
+                                    android:textSize="14sp"
+                                    android:textColor="#CCCCCC"
+                                    android:fontFamily="@font/rpt_bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </GridLayout>
 
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-    <include layout="@layout/bottom_sheet_to_include"
-        android:visibility="gone"/>
+
+    <include
+        layout="@layout/bottom_sheet_to_include"
+        tools:visibility="gone" />
 </androidx.drawerlayout.widget.DrawerLayout>

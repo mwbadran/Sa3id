@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="end"
     android:layoutDirection="rtl"
-    tools:context=".UserActivities.FeedbackActivity">
+    tools:context=".userActivities.FeedbackActivity">
 
     <include layout="@layout/navigation_layout"/>
 
@@ -32,14 +32,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp"
-                android:background="#2BFFFFFF">
+                >
+                <!-- android:background="#6F000000" -->
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="تواصل معنا"
                     android:textSize="28sp"
-                    android:textColor="#1d1c1c"
+                    android:textColor="#000000"
                     android:fontFamily="@font/rpt_bold"
                     android:layout_marginBottom="16dp"/>
 
@@ -87,7 +88,7 @@
                                 android:textSize="16sp"
                                 android:textColor="@color/white"
                                 android:fontFamily="@font/rpt_bold"
-                                android:layout_marginBottom="16dp"/>
+                                android:layout_marginBottom="8dp"/>
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>

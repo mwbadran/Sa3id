@@ -24,13 +24,8 @@
             />
 
         <item
-            android:id="@+id/nav_exams_bank"
-            android:title="مجمّع امتحانات البجروت"
-            />
-
-        <item
-            android:id="@+id/nav_calender"
-            android:title="الامتحانات والمناسبات القادمة"
+            android:id="@+id/nav_exams_calendar"
+            android:title="@string/upcoming_exams"
             />
 
         <item

@@ -2,6 +2,7 @@ package com.example.sa3id;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,15 +15,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.bumptech.glide.Glide;
-import com.example.sa3id.AdminActivities.ControlPanel;
-import com.example.sa3id.AdminActivities.FeedbackRespondActivity;
-import com.example.sa3id.UserActivities.*;
+import com.example.sa3id.adminActivities.ControlPanel;
+import com.example.sa3id.models.User;
+import com.example.sa3id.userActivities.*;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -44,6 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private LinearLayout llEditBagrutExams, llUserSettings;
     protected boolean isAdmin, isBottomSheetInitialized;
     Context context;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,9 +107,15 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         navigationView.setNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            drawerLayout.closeDrawer(navigationView);
-            handleNavigation(itemId);
-            return true;
+
+            if (itemId == R.id.nav_easter_egg) {
+                handleEasterEggClick();
+                return true; // Don't close drawer
+            } else {
+                drawerLayout.closeDrawer(navigationView);
+                handleNavigation(itemId);
+                return true;
+            }
         });
 
         ivUserIcon.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +127,37 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void handleNavigation(int itemId) {
+        Context context = BaseActivity.this;
+        SharedPreferences prefs = getSharedPreferences("easter_egg", MODE_PRIVATE);
+
+        if (itemId == R.id.nav_easter_egg) {
+            long lastClickTime = prefs.getLong("last_click_time", 0);
+            int clickCount = prefs.getInt("click_count", 0);
+            long currentTime = System.currentTimeMillis();
+
+            if (currentTime - lastClickTime > 3000) {
+                clickCount = 0;
+            }
+
+            clickCount++;
+            prefs.edit()
+                    .putLong("last_click_time", currentTime)
+                    .putInt("click_count", clickCount)
+                    .apply();
+
+            if (clickCount >= 3 && clickCount < 10) {
+                int remaining = 10 - clickCount;
+                if (toast != null) toast.cancel();
+                Toast.makeText(this, "باقي " + remaining + " نقرات للهدية!", Toast.LENGTH_SHORT).show();
+            } else if (clickCount >= 10) {
+                Toast.makeText(this, "مبروك! لقد وجدت القطة الخفية كابا علي 😼", Toast.LENGTH_LONG).show();
+                prefs.edit().putInt("click_count", 0).apply();
+                startActivity(new Intent(this, EasterEggActivity.class));
+            }
+            return;
+        }
+
+
         if (itemId == R.id.nav_annoucements && !(this instanceof Announcements)) {
             startActivity(new Intent(context, Announcements.class));
             finish();
@@ -136,11 +173,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         } else if (itemId == R.id.nav_materials && !(this instanceof MaterialsChooseActivity)) {
             startActivity(new Intent(context, MaterialsChooseActivity.class));
             finish();
-        } else if (itemId == R.id.nav_exams_bank && !(this instanceof ExamsBank)) {
-            startActivity(new Intent(context, ExamsBank.class));
-            finish();
-        } else if (itemId == R.id.nav_calender && !(this instanceof Calender)) {
-            startActivity(new Intent(context, Calender.class));
+        } else if (itemId == R.id.nav_exams_calendar && !(this instanceof ExamsCalendar)) {
+            startActivity(new Intent(context, ExamsCalendar.class));
             finish();
         } else if (itemId == R.id.nav_settings && !(this instanceof UserSettings)) {
             startActivity(new Intent(context, UserSettings.class));
@@ -197,8 +231,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                 setDefaultCredentials();
             }
 
-            fetchUserDetails(firebaseUser.getUid());
-
         } catch (Exception e) {
             isBottomSheetInitialized = false;
             bottomSheet = null;
@@ -206,7 +238,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected boolean fetchUserDetails(String userId) {
+    protected void fetchUserDetails(String userId) {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         firestore.collection("Users").document(userId).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -219,10 +251,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                 if (Boolean.TRUE.equals(documentSnapshot.getBoolean("admin"))) {
                     //Toast.makeText(getApplicationContext(), "Logged in as admin", Toast.LENGTH_SHORT).show();
                     isAdmin = true;
-                    onlyForAdmins.setVisibility(View.VISIBLE);
+                    if (isBottomSheetInitialized) onlyForAdmins.setVisibility(View.VISIBLE);
                 } else {
                     isAdmin = false;
-                    onlyForAdmins.setVisibility(View.GONE);
+                    if (isBottomSheetInitialized) onlyForAdmins.setVisibility(View.GONE);
                 }
             } else {
                 setDefaultCredentials();
@@ -231,7 +263,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             setDefaultCredentials();
             Log.e("Firestore", "Failed to fetch user data", e);
         });
-        return isAdmin;
         //Toast.makeText(context, ""+isAdmin, Toast.LENGTH_SHORT).show();
     }
 
@@ -283,8 +314,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-
-
     public void toggleBottomSheet() {
         try {
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
@@ -319,10 +348,23 @@ public abstract class BaseActivity extends AppCompatActivity {
             tvUsername.setText(username != null ? username : "User");
             tvEmail.setText(email != null ? email : "No email");
 
-            Glide.with(BaseActivity.this).load(Uri.parse(profilePicUrl)).placeholder(R.drawable.profile_pic).error(R.drawable.profile_pic).into(ivUserIcon);
-
-            Glide.with(BaseActivity.this).load(Uri.parse(profilePicUrl)).placeholder(R.drawable.profile_pic).error(R.drawable.profile_pic).into(ivbottomSheetUserIcon);
-
+            if (profilePicUrl != null && !profilePicUrl.isEmpty()) {
+                Uri uri = Uri.parse(profilePicUrl);
+                Glide.with(this)
+                        .load(uri)
+                        .placeholder(R.drawable.profile_pic)
+                        .error(R.drawable.profile_pic)
+                        .into(ivUserIcon);
+                Glide.with(this)
+                        .load(uri)
+                        .placeholder(R.drawable.profile_pic)
+                        .error(R.drawable.profile_pic)
+                        .into(ivbottomSheetUserIcon);
+            } else {
+                // fallback: just set the placeholder directly
+                ivUserIcon           .setImageResource(R.drawable.profile_pic);
+                ivbottomSheetUserIcon.setImageResource(R.drawable.profile_pic);
+            }
             onlyForLoggedIn.setVisibility(View.VISIBLE);
             onlyForLoggedOut.setVisibility(View.GONE);
             onlyForAdmins.setVisibility(View.GONE);
@@ -353,7 +395,33 @@ public abstract class BaseActivity extends AppCompatActivity {
             onlyForLoggedOut.setVisibility(View.VISIBLE);
         }
     }
-    
+
+    private void handleEasterEggClick() {
+        SharedPreferences prefs = getSharedPreferences("easter_egg", MODE_PRIVATE);
+        long lastClickTime = prefs.getLong("last_click_time", 0);
+        int clickCount = prefs.getInt("click_count", 0);
+        long currentTime = System.currentTimeMillis();
+
+        if (currentTime - lastClickTime > 3000) clickCount = 0;
+
+        clickCount++;
+        prefs.edit()
+                .putLong("last_click_time", currentTime)
+                .putInt("click_count", clickCount)
+                .apply();
+
+        if (clickCount >= 3 && clickCount < 10) {
+            int remaining = 10 - clickCount;
+            Toast.makeText(this, "باقي " + remaining + " نقرات للهدية!", Toast.LENGTH_SHORT).show();
+        } else if (clickCount >= 10) {
+            prefs.edit().putInt("click_count", 0).apply();
+
+            startActivity(new Intent(this, EasterEggActivity.class));
+
+
+        }
+    }
+
     @Override
     protected void onStop() {
         super.onStop();

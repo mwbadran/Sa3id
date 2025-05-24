@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:layoutDirection="rtl"
+    tools:openDrawer="end">
+
+    <include layout="@layout/navigation_layout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/board_bg"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar_layout" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="إدارة التقويم"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp"
+                    android:gravity="center"
+                    android:fontFamily="@font/rpt_bold"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Add Event Section -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="#30FFFFFF"
+                    android:layout_marginBottom="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="إضافة مناسبة جديدة"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/rpt_bold"
+                            android:layout_marginBottom="8dp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@android:color/white"
+                            android:layout_marginBottom="8dp">
+
+                            <EditText
+                                android:id="@+id/editTextEventTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="عنوان المناسبة"
+                                android:textColor="@android:color/white"
+                                android:background="@android:drawable/edit_text"
+                                android:padding="12dp"
+                                android:fontFamily="@font/rpt_bold" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@android:color/white"
+                            android:layout_marginBottom="8dp">
+
+                            <EditText
+                                android:id="@+id/editTextEventDescription"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="وصف المناسبة (اختياري)"
+                                android:textColor="@android:color/white"
+                                android:background="@android:drawable/edit_text"
+                                android:padding="12dp"
+                                android:minLines="2"
+                                android:fontFamily="@font/rpt_bold" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp">
+
+                            <Button
+                                android:id="@+id/buttonSelectDate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="اختر التاريخ"
+                                android:textColor="@android:color/white"
+                                android:backgroundTint="@color/black"
+                                android:fontFamily="@font/rpt_bold" />
+
+                            <TextView
+                                android:id="@+id/textViewSelectedDate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="التاريخ: --/--/----"
+                                android:textColor="@android:color/white"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="8dp"
+                                android:textSize="16sp"
+                                android:fontFamily="@font/rpt_bold" />
+                        </LinearLayout>
+
+                        <RadioGroup
+                            android:id="@+id/radioGroupEventType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="16dp">
+
+                            <RadioButton
+                                android:id="@+id/radioButtonEvent"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="مناسبة"
+                                android:textColor="@android:color/white"
+                                android:fontFamily="@font/rpt_bold"
+                                android:checked="true" />
+
+                            <RadioButton
+                                android:id="@+id/radioButtonHoliday"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="عطلة"
+                                android:textColor="@android:color/white"
+                                android:fontFamily="@font/rpt_bold" />
+                        </RadioGroup>
+
+                        <Button
+                            android:id="@+id/buttonAddEvent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="إضافة المناسبة"
+                            android:textColor="@android:color/white"
+                            android:backgroundTint="#4CAF50"
+                            android:fontFamily="@font/rpt_bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Event Filter Section -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="#30FFFFFF"
+                    android:layout_marginBottom="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="تصفية المناسبات"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/rpt_bold"
+                            android:layout_marginBottom="8dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp">
+
+                            <Button
+                                android:id="@+id/buttonFilterStartDate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="من"
+                                android:textColor="@android:color/white"
+                                android:backgroundTint="@color/black"
+                                android:fontFamily="@font/rpt_bold" />
+
+                            <Button
+                                android:id="@+id/buttonFilterEndDate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="إلى"
+                                android:layout_marginStart="8dp"
+                                android:textColor="@android:color/white"
+                                android:backgroundTint="@color/black"
+                                android:fontFamily="@font/rpt_bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp">
+
+                            <CheckBox
+                                android:id="@+id/checkBoxEvents"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="مناسبات"
+                                android:checked="true"
+                                android:textColor="@android:color/white"
+                                android:fontFamily="@font/rpt_bold" />
+
+                            <CheckBox
+                                android:id="@+id/checkBoxHolidays"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="عطل"
+                                android:checked="true"
+                                android:textColor="@android:color/white"
+                                android:fontFamily="@font/rpt_bold" />
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/buttonApplyFilter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="تطبيق التصفية"
+                            android:textColor="@android:color/white"
+                            android:backgroundTint="#2196F3"
+                            android:fontFamily="@font/rpt_bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Events List -->
+                <TextView
+                    android:id="@+id/textViewEventsHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="المناسبات"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/rpt_bold"
+                    android:layout_marginBottom="8dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewEvents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="200dp"
+                    android:background="#20FFFFFF"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_marginTop="16dp" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout> 

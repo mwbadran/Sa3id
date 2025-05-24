@@ -18,7 +18,7 @@
     <string name="our_books">كتب المتوكل</string>
     <string name="donate">دعم المشروع</string>
     <string name="calender">تقويم</string>
-    <string name="upcoming_exams">مواقيت الامتحانات</string>"
+    <string name="upcoming_exams">مواقيت الامتحانات</string>
     <string name="sign_in">تسجيل الدخول</string>
     <string name="sign_up">انشاء حساب</string>
     <string name="upload_materials">اضافة مواد</string>
@@ -26,6 +26,19 @@
     <string name="contact_us_respond">الرد على المستخدمين</string>
     <string name="materials_check">طلبات اضافة المواد</string>
     <string name="hello_blank_fragment">أووووووووووووووول برودكتس</string>
-
-
+    <!-- Settings Strings -->
+    <string name="notification_settings">إعدادات الإشعارات</string>
+    <string name="enable_exam_notifications">تفعيل إشعارات الامتحانات</string>
+    <string name="notification_time">وقت الإشعار</string>
+    <string name="notify_days_before">تنبيه قبل %d يوم من الامتحان</string>
+    <string name="appearance">المظهر</string>
+    <string name="light_theme">الوضع الفاتح</string>
+    <string name="dark_theme">الوضع الداكن</string>
+    <string name="system_default">إعدادات النظام</string>
+    <string name="extra_time_settings">إعدادات الوقت الإضافي</string>
+    <string name="no_extra_time">بدون وقت إضافي</string>
+    <string name="extra_time_25">25% وقت إضافي</string>
+    <string name="extra_time_33">33% وقت إضافي</string>
+    <string name="extra_time_50">50% وقت إضافي</string>
+    <string name="settings_saved">تم حفظ الإعدادات</string>
 </resources>

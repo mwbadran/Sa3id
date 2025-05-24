@@ -5,11 +5,15 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -21,81 +25,85 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sa3id"
         tools:targetApi="31">
+
         <activity
-            android:name=".UserActivities.ChooseBagrutsActivity"
+            android:name=".userActivities.ChooseBagrutsActivity"
             android:exported="true" />
         <activity
-            android:name=".UserActivities.AnnouncementViewActivity"
+            android:name=".userActivities.AnnouncementViewActivity"
             android:exported="false" />
         <activity
-            android:name=".UserActivities.EasterEggActivity"
+            android:name=".userActivities.EasterEggActivity"
             android:exported="false" />
         <activity
-            android:name=".UserActivities.GoogleSignUpActivity"
+            android:name=".userActivities.GoogleSignUpActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".UserActivities.MaterialsChooseActivity"
+            android:name=".userActivities.MaterialsChooseActivity"
             android:exported="false" />
         <activity
-            android:name=".UserActivities.UserSettings"
+            android:name=".userActivities.UserSettings"
             android:exported="false" />
+        <activity
+            android:name=".userActivities.ExamsActivity"
+            android:exported="true" />
         <activity
             android:name=".BaseActivity"
             android:exported="false" />
         <activity
-            android:name=".UserActivities.Announcements"
+            android:name=".userActivities.Announcements"
             android:exported="true" />
         <activity
-            android:name=".UserActivities.OurBooks"
+            android:name=".userActivities.OurBooks"
             android:exported="false" />
         <activity
-            android:name=".AdminActivities.ControlPanel"
+            android:name=".adminActivities.ControlPanel"
             android:exported="false" />
         <activity
-            android:name=".AdminActivities.FeedbackRespondActivity"
+            android:name=".adminActivities.FeedbackRespondActivity"
             android:exported="true" />
         <activity
-            android:name=".AdminActivities.MaterialsCheckActivity"
-            android:exported="false" />
-        <activity
-            android:name=".UserActivities.SignUp"
-            android:exported="false" />
-        <activity
-            android:name=".UserActivities.SignIn"
-            android:exported="false" />
-        <activity
-            android:name=".UserActivities.Calender"
-            android:exported="false" />
-        <activity
-            android:name=".UserActivities.ProfileEdit"
-            android:exported="false" />
-        <activity
-            android:name=".UserActivities.Donate"
-            android:exported="false" />
-        <activity
-            android:name=".UserActivities.UploadMaterials"
+            android:name=".adminActivities.MaterialsCheckActivity"
             android:exported="true" />
         <activity
-            android:name=".UserActivities.MaterialsPage"
+            android:name=".userActivities.SignUp"
             android:exported="false" />
         <activity
-            android:name=".UserActivities.FeedbackActivity"
+            android:name=".userActivities.SignIn"
+            android:exported="false" />
+        <activity
+            android:name=".userActivities.ExamsCalendar"
+            android:exported="false" />
+        <activity
+            android:name=".userActivities.AdminCalendarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".userActivities.ProfileEdit"
+            android:exported="false" />
+        <activity
+            android:name=".userActivities.Donate"
+            android:exported="false" />
+        <activity
+            android:name=".userActivities.UploadMaterials"
             android:exported="true" />
         <activity
-            android:name=".UserActivities.ExamsBank"
+            android:name=".userActivities.MaterialsPage"
             android:exported="false" />
         <activity
-            android:name=".UserActivities.WhatsappGroups"
+            android:name=".userActivities.FeedbackActivity"
+            android:exported="true" />
+        <activity
+            android:name=".userActivities.WhatsappGroups"
             android:exported="false" />
         <activity
-            android:name=".UserActivities.AboutPage"
+            android:name=".userActivities.AboutPage"
             android:exported="false" />
         <activity
-            android:name=".UserActivities.GradesCalculator"
+            android:name=".userActivities.GradesCalculator"
             android:exported="false" />
         <activity
-            android:name=".UserActivities.MainActivity"
+            android:name=".userActivities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -110,6 +118,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="" />
+
+        <receiver android:name=".receivers.ExamNotificationReceiver" />
+
     </application>
 
 </manifest>

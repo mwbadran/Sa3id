@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="اختيار القطاع والمنهاج"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="اختر القطاع:"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <RadioGroup
+        android:id="@+id/rgDialogSector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <RadioButton
+            android:id="@+id/rbDialogArab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="عربي"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/rbDialogDruze"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="درزي"/>
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="اختر المنهاج لمواضيع المدنيات والتاريخ والدين:"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <RadioGroup
+        android:id="@+id/rgDialogCurriculum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <RadioButton
+            android:id="@+id/rbDialogNewCurriculum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="منهاج جديد"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/rbDialogOldCurriculum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="منهاج قديم"/>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnConfirmSelection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="تأكيد"
+        android:layout_marginTop="8dp"/>
+
+</LinearLayout> 

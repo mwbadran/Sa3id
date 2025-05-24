@@ -40,8 +40,10 @@
             android:layout_height="wrap_content"
             android:text="عنوان"
             android:fontFamily="@font/rpt_bold"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:id="@+id/tvTitle"
+            android:maxLines="2"
+            android:ellipsize="end"
             />
 
         <TextView
@@ -49,8 +51,10 @@
             android:layout_height="wrap_content"
             android:text="شرح"
             android:fontFamily="@font/rpt_bold"
-            android:textSize="8sp"
+            android:textSize="13sp"
             android:id="@+id/tvDescription"
+            android:maxLines="2"
+            android:ellipsize="end"
             />
 
     </LinearLayout>

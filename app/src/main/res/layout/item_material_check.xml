@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="#2DFFFFFF"
+    android:layout_marginBottom="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvMaterialTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="عنوان المادة"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/rpt_bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvMaterialDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="وصف المادة التعليمية وتفاصيلها"
+            android:textSize="16sp"
+            android:textColor="#E0E0E0"
+            android:fontFamily="@font/rpt_bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvMaterialSubject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="المادة الدراسية"
+            android:textSize="16sp"
+            android:textColor="#E0E0E0"
+            android:fontFamily="@font/rpt_bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvMaterialSubmittedBy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="تم الإرسال بواسطة: اسم المستخدم"
+            android:textSize="14sp"
+            android:textColor="#BDBDBD"
+            android:fontFamily="@font/rpt_bold"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/tvMaterialSubmissionDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="تاريخ الإرسال: 19/03/2025"
+            android:textSize="14sp"
+            android:textColor="#BDBDBD"
+            android:fontFamily="@font/rpt_bold"
+            android:layout_marginBottom="16dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#4DFFFFFF"
+            android:layout_marginBottom="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnViewFile"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="عرض الملفات"
+                android:textSize="14sp"
+                android:fontFamily="@font/rpt_bold"
+                app:cornerRadius="8dp"
+                android:backgroundTint="#2196F3"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="4dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnApproveMaterial"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="موافقة"
+                android:textSize="14sp"
+                android:fontFamily="@font/rpt_bold"
+                app:cornerRadius="8dp"
+                android:backgroundTint="#25D366"
+                android:textColor="#000000"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRejectMaterial"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="رفض"
+                android:textSize="14sp"
+                android:fontFamily="@font/rpt_bold"
+                app:cornerRadius="8dp"
+                android:backgroundTint="#FF5252"
+                android:textColor="#000000"
+                android:layout_marginStart="4dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

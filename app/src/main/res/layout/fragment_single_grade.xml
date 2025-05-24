@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    android:background="@drawable/board_bg">
+    >
 
     <TextView
         android:layout_marginStart="10dp"
@@ -34,8 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="none"
-            tools:text="رياضيات"
             android:fontFamily="@font/rpt_bold"
+            android:textSize="18sp"
             android:layoutDirection="rtl"/>
     </com.google.android.material.textfield.TextInputLayout>
 

@@ -43,6 +43,9 @@
             android:name=".userActivities.MaterialsChooseActivity"
             android:exported="false" />
         <activity
+            android:name=".adminActivities.MakeAnnouncementsActivity"
+            android:exported="false" />
+        <activity
             android:name=".userActivities.UserSettings"
             android:exported="false" />
         <activity

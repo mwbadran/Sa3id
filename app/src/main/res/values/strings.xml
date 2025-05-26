@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ساعد</string>
     <string name="client_id">1054315745727-hjeetandri8qupdenriuvf84071vbde0.apps.googleusercontent.com</string>
-    <string name="sign_in_with_google">تسجيل الدخول باستخدام جوجل</string>
+    <string name="sign_in_with_google">دخول بواسطة Google</string>
     <string name="sign_up_with_google">التسجيل باستخدام جوجل</string>
     <string name="username_required">يرجى إدخال اسم المستخدم</string>
     <string name="app_version">1.0.0</string>
@@ -41,4 +41,5 @@
     <string name="extra_time_33">33% وقت إضافي</string>
     <string name="extra_time_50">50% وقت إضافي</string>
     <string name="settings_saved">تم حفظ الإعدادات</string>
+    <string name="forgot_password">نسيت كلمة المرور</string>
 </resources>

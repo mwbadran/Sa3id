@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:text="تواصل معنا"
                     android:textSize="28sp"
-                    android:textColor="#000000"
+                    android:textColor="?attr/colorDynamic"
                     android:fontFamily="@font/rpt_bold"
                     android:layout_marginBottom="16dp"/>
 
@@ -144,6 +144,7 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etEmail"
+                                android:enabled="false"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="البريد الإلكتروني"

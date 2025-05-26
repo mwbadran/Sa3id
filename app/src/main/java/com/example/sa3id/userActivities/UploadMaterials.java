@@ -114,7 +114,7 @@ public class UploadMaterials extends BaseActivity {
                     sendUploadRequest();
                 else {
                     CustomAlertDialog dialog = new CustomAlertDialog(UploadMaterials.this);
-                    dialog.show("الرجاء التصريح بامتلاك الصلاحة لنشر المواد", R.drawable.nizar);
+                    dialog.show("الرجاء التصريح بامتلاك الصلاحة لنشر المواد", R.drawable.baseline_error_24);
                 }
             }
         });

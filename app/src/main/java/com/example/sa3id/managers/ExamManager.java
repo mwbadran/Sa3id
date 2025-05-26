@@ -1,5 +1,7 @@
 package com.example.sa3id.managers;
 
+import static com.example.sa3id.Constants.FIREBASE_REALTIME_LINK;
+
 import androidx.annotation.NonNull;
 import android.util.Log;
 import com.example.sa3id.models.Exam;
@@ -23,8 +25,7 @@ public class ExamManager {
     }
 
     public ExamManager() {
-        // Use the specific Firebase URL from Constants
-        this.databaseReference = FirebaseDatabase.getInstance("https://sa3idsite-default-rtdb.europe-west1.firebasedatabase.app").getReference();
+        this.databaseReference = FirebaseDatabase.getInstance(FIREBASE_REALTIME_LINK).getReference();
         Log.d(TAG, "Initialized with database reference: " + databaseReference.toString());
     }
 
@@ -120,70 +121,67 @@ public class ExamManager {
         });
     }
 
-    public void getExamsForUserSubjects(Set<String> userSubjects, final ExamCallback callback) {
-        if (userSubjects == null || userSubjects.isEmpty()) {
-            Log.w(TAG, "No user subjects provided, cannot load exams");
+    public void getExamsForUserSubjects(Set<String> subjects, final ExamCallback callback) {
+        if (subjects == null || subjects.isEmpty()) {
             callback.onExamsLoaded(new ArrayList<>());
             return;
         }
-        
+
         DatabaseReference examsRef = databaseReference.child(EXAMS_REF);
-        Log.d(TAG, "Querying exams for user subjects: " + userSubjects + " at path: " + examsRef.toString());
-        
+        Log.d(TAG, "Fetching exams for subjects: " + subjects);
+
         examsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Exam> userExams = new ArrayList<>();
-                
-                Log.d(TAG, "Data exists: " + dataSnapshot.exists() + 
-                      ", has " + dataSnapshot.getChildrenCount() + " subject entries");
-                
-                int subjectsFound = 0;
-                int subjectsWithoutData = 0;
-                
+                List<Exam> allExams = new ArrayList<>();
+
                 for (DataSnapshot subjectSnapshot : dataSnapshot.getChildren()) {
                     String subject = subjectSnapshot.getKey();
-                    Log.d(TAG, "Found subject in Firebase: " + subject + ", is in user subjects: " + 
-                          userSubjects.contains(subject));
-                    
-                    if (userSubjects.contains(subject)) {
-                        subjectsFound++;
-                        if (subjectSnapshot.getChildrenCount() == 0) {
-                            subjectsWithoutData++;
-                            Log.d(TAG, "No exams found for subject: " + subject);
-                            continue;
-                        }
-                        
+                    if (subjects.contains(subject)) {
+                        // Iterate through dates
                         for (DataSnapshot dateSnapshot : subjectSnapshot.getChildren()) {
                             String date = dateSnapshot.getKey();
-                            Log.d(TAG, "  Processing date: " + date + " with " + 
-                                  dateSnapshot.getChildrenCount() + " exams");
                             
+                            // Iterate through exams for this date
                             for (DataSnapshot examSnapshot : dateSnapshot.getChildren()) {
                                 String examId = examSnapshot.getKey();
-                                Exam exam = examSnapshot.getValue(Exam.class);
-                                if (exam != null) {
+                                
+                                String examName = examSnapshot.child("examName").getValue(String.class);
+                                String startHour = examSnapshot.child("startHour").getValue(String.class);
+                                String endHour = examSnapshot.child("endHour").getValue(String.class);
+                                String duration = examSnapshot.child("duration").getValue(String.class);
+                                String endHour25 = examSnapshot.child("endHour25").getValue(String.class);
+                                String endHour33 = examSnapshot.child("endHour33").getValue(String.class);
+                                String endHour50 = examSnapshot.child("endHour50").getValue(String.class);
+
+                                if (examName != null && startHour != null && endHour != null) {
+                                    Exam exam = new Exam();
                                     exam.setExamId(examId);
-                                    exam.setDate(date);
                                     exam.setSubject(subject);
-                                    userExams.add(exam);
-                                    Log.d(TAG, "  Added exam: " + exam.getExamName() + " (ID: " + examId + ")");
-                                } else {
-                                    Log.w(TAG, "  Failed to parse exam with ID: " + examId);
+                                    exam.setExamName(examName);
+                                    exam.setDate(date);
+                                    exam.setStartHour(startHour);
+                                    exam.setEndHour(endHour);
+                                    exam.setDuration(duration);
+                                    exam.setEndHour25(endHour25);
+                                    exam.setEndHour33(endHour33);
+                                    exam.setEndHour50(endHour50);
+                                    
+                                    allExams.add(exam);
+                                    Log.d(TAG, "Added exam: " + examName + " for subject: " + subject + " on date: " + date);
                                 }
                             }
                         }
                     }
                 }
-                
-                Log.d(TAG, String.format("Loaded %d exams for %d/%d subjects (%d had no data)", 
-                        userExams.size(), subjectsFound, userSubjects.size(), subjectsWithoutData));
-                callback.onExamsLoaded(userExams);
+
+                Log.d(TAG, "Total exams loaded: " + allExams.size());
+                callback.onExamsLoaded(allExams);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "Error loading exams for user subjects: " + databaseError.getMessage());
+                Log.e(TAG, "Error loading exams: " + databaseError.getMessage());
                 callback.onError(databaseError.getMessage());
             }
         });

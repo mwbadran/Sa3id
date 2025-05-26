@@ -51,73 +51,115 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <EditText
-                android:id="@+id/username"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:fontFamily="@font/rpt_bold"
-                android:hint="اسم المستخدم"
-                android:inputType="text"
-                android:textColor="#cccccc"
-                android:padding="10dp"
-                android:textColorHint="#cccccc" />
+                app:boxBackgroundColor="#2DFFFFFF"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                android:textColorHint="@color/white"
+                app:hintTextColor="@color/white">
 
-            <EditText
-                android:id="@+id/etEmail"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="اسم المستخدم"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/rpt_bold"
+                    android:inputType="text"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:fontFamily="@font/rpt_bold"
-                android:hint="البريد الالكتروني"
-                android:inputType="textEmailAddress"
-                android:textColor="#cccccc"
-                android:padding="10dp"
-                android:textColorHint="#cccccc" />
+                app:boxBackgroundColor="#2DFFFFFF"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                android:textColorHint="@color/white"
+                app:hintTextColor="@color/white">
 
-            <EditText
-                android:id="@+id/password"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="البريد الالكتروني"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/rpt_bold"
+                    android:inputType="textEmailAddress"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:fontFamily="@font/rpt_bold"
-                android:hint="كلمة المرور"
-                android:inputType="textPassword"
-                android:padding="10dp"
-                android:textColor="#cccccc"
-                android:textColorHint="#cccccc"
-                android:textDirection="rtl" />
+                android:layout_marginBottom="16dp"
+                app:boxBackgroundColor="#2DFFFFFF"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                android:textColorHint="@color/white"
+                app:hintTextColor="@color/white">
 
-            <Button
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="كلمة المرور"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/rpt_bold"
+                    android:inputType="textPassword"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/signup_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/rpt_bold"
-                android:padding="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
                 android:text="تسجيل"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:fontFamily="@font/rpt_bold"
+                app:cornerRadius="12dp"
+                android:backgroundTint="@color/sa3id_green"
+                android:textColor="@color/white"
+                app:iconGravity="textStart"
+                app:iconTint="#000000"
+                android:elevation="4dp"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGoogleSignIn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:layoutDirection="rtl"
                 android:backgroundTint="@color/white"
-                android:drawableStart="@drawable/ic_google"
-                android:drawablePadding="8dp"
+                app:icon="@drawable/ic_google"
+                app:iconTint="@android:color/transparent"
+                app:iconTintMode="src_over"
+                app:iconSize="20dp"
+                app:iconGravity="end"
+                app:iconPadding="8dp"
+                app:cornerRadius="12dp"
+                android:padding="12dp"
                 android:fontFamily="@font/rpt_bold"
                 android:text="@string/sign_up_with_google"
                 android:textColor="@color/black"
-                android:textSize="16sp"/>
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/tvAlreadyHaveAnAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:fontFamily="@font/rpt_bold"
                 android:text="لديك حساب؟ انقر هُنا"
                 android:textColor="#cccccc"

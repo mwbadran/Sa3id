@@ -39,8 +39,7 @@ public class MainActivity extends BaseActivity {
     LinearLayout announcementsButton, calenderButton, uploadMaterialsButton, examsButton, materialsButton, booksButton, contactUsButton, calculatorButton, whatsappButton, donateButton;
     NavigationView navigationView;
     GridLayout gridLayout;
-    TextView announcementsHeader;
-    TextView applicationsHeader;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +57,13 @@ public class MainActivity extends BaseActivity {
         populateGridLayout();
 
         saveAnnouncementsToSP();
-        updateHeaderColors();
     }
 
     private void initViews() {
 
         navigationView = findViewById(R.id.nav_view);
         gridLayout = findViewById(R.id.grid_layout);
-        announcementsHeader = findViewById(R.id.announcementsHeader);
-        applicationsHeader = findViewById(R.id.applicationsHeader);
+
 
         announcementsListView = findViewById(R.id.announcementsListView);
         announcementsList = new ArrayList<>();
@@ -316,21 +313,13 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void updateHeaderColors() {
-        boolean isDarkTheme = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) 
-                == Configuration.UI_MODE_NIGHT_YES;
-        int textColor = ContextCompat.getColor(this, isDarkTheme ? android.R.color.white : R.color.black);
-        
-        announcementsHeader.setTextColor(textColor);
-        applicationsHeader.setTextColor(textColor);
-    }
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         // Recreate the grid with updated theme colors
         populateGridLayout();
-        updateHeaderColors();
     }
 
     @Override

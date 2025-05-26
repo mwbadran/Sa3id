@@ -4,42 +4,55 @@
 
         <item
             android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu"
             android:title="صفحة البيت"
             />
 
         <item
             android:id="@+id/nav_annoucements"
+            android:icon="@drawable/announcements"
             android:title="الإعلانات"
-
             />
 
         <item
             android:id="@+id/nav_our_books"
+            android:icon="@drawable/our_books"
             android:title="سلسلة كتب المتوكل"
             />
 
         <item
             android:id="@+id/nav_materials"
+            android:icon="@drawable/materials"
             android:title="مواد تعليمية"
             />
 
         <item
             android:id="@+id/nav_exams_calendar"
+            android:icon="@drawable/baseline_calendar_24"
             android:title="@string/upcoming_exams"
             />
 
         <item
+            android:id="@+id/nav_exams"
+            android:icon="@drawable/baseline_checklist_rtl_24"
+            android:title="الامتحانات"
+            />
+
+        <item
             android:id="@+id/nav_grades_calculator"
+            android:icon="@drawable/calc"
             android:title="حاسبة العلامات"
             />
 
         <item
             android:id="@+id/nav_whatsapp_groups"
+            android:icon="@drawable/whatsapp_logo"
             android:title="المجتمع على واتساب"
             />
 
         <item
             android:id="@+id/nav_upload_materials"
+            android:icon="@drawable/upload_materials"
             android:title="@string/upload_materials"
             />
 
@@ -48,18 +61,22 @@
     <group android:checkableBehavior="single" >
         <item
             android:id="@+id/nav_settings"
+            android:icon="@drawable/baseline_settings_24"
             android:title="الإعدادات"
             />
         <item
             android:id="@+id/nav_contact_us"
+            android:icon="@drawable/baseline_feedback_24"
             android:title="اتصل بنا"
             />
         <item
             android:id="@+id/nav_donate"
+            android:icon="@drawable/baseline_donate_24"
             android:title="ادعم المشروع"
             />
         <item
             android:id="@+id/nav_about_us"
+            android:icon="@drawable/baseline_info_24"
             android:title="عن التطبيق"
             />
         <item

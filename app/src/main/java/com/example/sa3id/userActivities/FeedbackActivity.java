@@ -5,7 +5,6 @@ import static com.example.sa3id.Constants.FIREBASE_REALTIME_LINK;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.sa3id.BaseActivity;
 import com.example.sa3id.models.FeedbackMsg;
@@ -29,6 +28,7 @@ public class FeedbackActivity extends BaseActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private FirebaseFirestore mFirestore;
+    private CustomAlertDialog customAlertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +37,9 @@ public class FeedbackActivity extends BaseActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance(FIREBASE_REALTIME_LINK).getReference();
         mFirestore = FirebaseFirestore.getInstance();
+        customAlertDialog = new CustomAlertDialog(this);
 
         initViews();
-
         prefillUserInfo();
     }
 
@@ -56,9 +56,7 @@ public class FeedbackActivity extends BaseActivity {
                 submitFeedback();
             }
         });
-
     }
-
 
     private void prefillUserInfo() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -109,8 +107,6 @@ public class FeedbackActivity extends BaseActivity {
             return;
         }
 
-        //showProgressDialog("جاري إرسال الرسالة...");
-
         // Create feedback object
         String feedbackId = UUID.randomUUID().toString();
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
@@ -122,15 +118,14 @@ public class FeedbackActivity extends BaseActivity {
         mDatabase.child("feedback").child(feedbackId)
                 .setValue(feedback)
                 .addOnCompleteListener(task -> {
-                    //hideProgressDialog();
                     if (task.isSuccessful()) {
                         // Clear form
                         etSubject.setText("");
                         etMessage.setText("");
 
-                        Toast.makeText(FeedbackActivity.this, "تم إرسال رسالتك بنجاح", Toast.LENGTH_LONG).show();
+                        customAlertDialog.show("تم إرسال رسالتك بنجاح", R.drawable.baseline_check_circle_24);
                     } else {
-                        Toast.makeText(FeedbackActivity.this, "حدث خطأ أثناء إرسال الرسالة، الرجاء المحاولة مرة أخرى", Toast.LENGTH_LONG).show();
+                        customAlertDialog.show("حدث خطأ أثناء إرسال الرسالة، الرجاء المحاولة مرة أخرى", R.drawable.baseline_error_24);
                     }
                 });
     }
@@ -139,6 +134,4 @@ public class FeedbackActivity extends BaseActivity {
     protected int getLayoutResourceId() {
         return R.layout.activity_feedback;
     }
-
-
 }

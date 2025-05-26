@@ -3,7 +3,7 @@
     <declare-styleable name="AppTheme">
         <attr name="colorDynamic" format="color" />
         <attr name="colorDynamicAlpha" format="color" />
-
+        <attr name="colorDynamicFlipped" format="color" />
     </declare-styleable>
 
 </resources> 

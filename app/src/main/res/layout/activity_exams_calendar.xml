@@ -24,7 +24,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/board_bg"
+
             tools:context=".userActivities.ExamsCalendar">
 
             <TextView
@@ -34,7 +34,7 @@
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/rpt_bold"
                 android:text="جدول الامتحانات"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/colorDynamic"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -54,14 +54,14 @@
 
             <TextView
                 android:id="@+id/textViewExamsHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="392dp"
+                android:layout_height="37dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/rpt_bold"
                 android:text="الامتحانات"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/colorDynamic"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +75,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:background="#20FFFFFF"
+                android:background="?attr/colorDynamicAlpha"
                 app:layout_constraintBottom_toTopOf="@+id/adminControlsLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +89,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:background="#30FFFFFF"
+                android:background="?attr/colorDynamicAlpha"
                 android:orientation="vertical"
                 android:padding="12dp"
                 android:visibility="gone"
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/rpt_bold"
                     android:text="إدارة المناسبات والعطل"
-                    android:textColor="@android:color/white"
+                    android:textColor="?attr/colorDynamicFlipped"
                     android:textSize="16sp" />
 
                 <EditText
@@ -110,11 +110,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:background="@android:color/white"
+                    android:background="?attr/colorDynamicFlipped"
                     android:hint="عنوان المناسبة"
                     android:inputType="text"
                     android:padding="8dp"
-                    android:textColor="@android:color/black" />
+                    android:textColor="?attr/colorDynamic" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -128,10 +128,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
                         android:layout_weight="1"
-                        android:backgroundTint="@color/black"
+                        android:backgroundTint="?attr/colorDynamicFlipped"
                         android:fontFamily="@font/rpt_bold"
                         android:text="إضافة مناسبة"
-                        android:textColor="@android:color/white" />
+                        android:textColor="?attr/colorDynamic" />
 
                     <Button
                         android:id="@+id/buttonAddHoliday"
@@ -139,10 +139,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_weight="1"
-                        android:backgroundTint="@color/black"
+                        android:backgroundTint="?attr/colorDynamicFlipped"
                         android:fontFamily="@font/rpt_bold"
                         android:text="إضافة عطلة"
-                        android:textColor="@android:color/white" />
+                        android:textColor="?attr/colorDynamic" />
                 </LinearLayout>
             </LinearLayout>
 

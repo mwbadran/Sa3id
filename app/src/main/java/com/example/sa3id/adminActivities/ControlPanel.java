@@ -58,7 +58,7 @@ public class ControlPanel extends BaseActivity {
         cardMakeAnnouncements.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(ControlPanel.this, MakeAnnouncementsActivity.class));
+                startActivity(new Intent(ControlPanel.this, MakeAnnouncementsActivity.class));
             }
         });
 

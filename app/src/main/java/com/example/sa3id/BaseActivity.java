@@ -43,7 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private LinearLayout llEditBagrutExams, llUserSettings;
     protected boolean isAdmin, isBottomSheetInitialized;
     Context context;
-    private Toast toast;
+    private Toast easterEggToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
 
+        easterEggToast = Toast.makeText(this, "test", Toast.LENGTH_SHORT);
 
         initBottomSheet();
         initViews();
@@ -107,15 +108,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         navigationView.setNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
-
-            if (itemId == R.id.nav_easter_egg) {
-                handleEasterEggClick();
-                return true; // Don't close drawer
-            } else {
+            if (itemId != R.id.nav_easter_egg)
                 drawerLayout.closeDrawer(navigationView);
-                handleNavigation(itemId);
-                return true;
-            }
+            handleNavigation(itemId);
+            return true; // Don't close drawer
         });
 
         ivUserIcon.setOnClickListener(new View.OnClickListener() {
@@ -128,35 +124,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void handleNavigation(int itemId) {
         Context context = BaseActivity.this;
-        SharedPreferences prefs = getSharedPreferences("easter_egg", MODE_PRIVATE);
 
         if (itemId == R.id.nav_easter_egg) {
-            long lastClickTime = prefs.getLong("last_click_time", 0);
-            int clickCount = prefs.getInt("click_count", 0);
-            long currentTime = System.currentTimeMillis();
-
-            if (currentTime - lastClickTime > 3000) {
-                clickCount = 0;
-            }
-
-            clickCount++;
-            prefs.edit()
-                    .putLong("last_click_time", currentTime)
-                    .putInt("click_count", clickCount)
-                    .apply();
-
-            if (clickCount >= 3 && clickCount < 10) {
-                int remaining = 10 - clickCount;
-                if (toast != null) toast.cancel();
-                Toast.makeText(this, "باقي " + remaining + " نقرات للهدية!", Toast.LENGTH_SHORT).show();
-            } else if (clickCount >= 10) {
-                Toast.makeText(this, "مبروك! لقد وجدت القطة الخفية كابا علي 😼", Toast.LENGTH_LONG).show();
-                prefs.edit().putInt("click_count", 0).apply();
-                startActivity(new Intent(this, EasterEggActivity.class));
-            }
+            handleEasterEggClick();
             return;
         }
-
 
         if (itemId == R.id.nav_annoucements && !(this instanceof Announcements)) {
             startActivity(new Intent(context, Announcements.class));
@@ -175,6 +147,9 @@ public abstract class BaseActivity extends AppCompatActivity {
             finish();
         } else if (itemId == R.id.nav_exams_calendar && !(this instanceof ExamsCalendar)) {
             startActivity(new Intent(context, ExamsCalendar.class));
+            finish();
+        } else if (itemId == R.id.nav_exams && !(this instanceof ExamsActivity)) {
+            startActivity(new Intent(context, ExamsActivity.class));
             finish();
         } else if (itemId == R.id.nav_settings && !(this instanceof UserSettings)) {
             startActivity(new Intent(context, UserSettings.class));
@@ -281,7 +256,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(view -> {
             mAuth.signOut();
             setDefaultCredentials();
-            Toast.makeText(getApplicationContext(), "Signed out", Toast.LENGTH_SHORT).show();
+            CustomAlertDialog dialog = new CustomAlertDialog(this);
+            dialog.show("تم تسجيل الخروج بنجاح", R.drawable.baseline_check_circle_24);
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         });
 
@@ -311,7 +287,20 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         });
 
-
+        // Add click listener for edit profile button
+        View editProfileButton = bottomSheet.findViewById(R.id.edit_profile_pic);
+        if (editProfileButton != null) {
+            editProfileButton.setOnClickListener(v -> {
+                if (firebaseUser == null) {
+                    CustomAlertDialog dialog = new CustomAlertDialog(this);
+                    dialog.show("يرجى تسجيل الدخول أولاً", R.drawable.baseline_error_24);
+                    return;
+                }
+                Intent intent = new Intent(this, ProfileEdit.class);
+                startActivity(intent);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            });
+        }
     }
 
     public void toggleBottomSheet() {
@@ -402,7 +391,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         int clickCount = prefs.getInt("click_count", 0);
         long currentTime = System.currentTimeMillis();
 
-        if (currentTime - lastClickTime > 3000) clickCount = 0;
+        if (currentTime - lastClickTime > 3000) {
+            clickCount = 0;
+        }
 
         clickCount++;
         prefs.edit()
@@ -412,13 +403,16 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         if (clickCount >= 3 && clickCount < 10) {
             int remaining = 10 - clickCount;
-            Toast.makeText(this, "باقي " + remaining + " نقرات للهدية!", Toast.LENGTH_SHORT).show();
+            if (easterEggToast != null) {
+                easterEggToast.cancel(); // should hide previous one
+                easterEggToast = Toast.makeText(this, "باقي " + remaining + " نقرات للهدية!",Toast.LENGTH_SHORT);
+                easterEggToast.show();
+            }
         } else if (clickCount >= 10) {
+            if (easterEggToast != null) easterEggToast.cancel();
+            Toast.makeText(this, "مبروك! لقد وجدت القطة الخفية كابا علي 😼", Toast.LENGTH_LONG).show();
             prefs.edit().putInt("click_count", 0).apply();
-
             startActivity(new Intent(this, EasterEggActivity.class));
-
-
         }
     }
 

@@ -9,6 +9,7 @@
         <item name="android:windowLightStatusBar">true</item> <!-- Light text -->
         <item name="colorDynamic">@color/light_background</item>
         <item name="colorDynamicAlpha">@color/light_background_alpha</item>
+        <item name="colorDynamicFlipped">@color/dark_background</item>
     </style>
 
     <style name="Theme.Sa3id" parent="Base.Theme.Sa3id" />

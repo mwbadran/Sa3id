@@ -181,6 +181,9 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
         final AlertDialog dialog = builder.create();
         dialog.setCancelable(false);
         
+        // Set dialog window attributes
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        
         btnConfirm.setOnClickListener(v -> {
             // Get sector selection
             int sectorId = rgDialogSector.getCheckedRadioButtonId();
@@ -486,7 +489,7 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
                 }
                 break;
 
-            case "אזרחות":
+            case "אזرחות":
                 if (isNewCurriculum) {
                     defaultExams.add("34211"); // 17% المهمة الأولى
                     defaultExams.add("34212"); // 18% المهمة الثانية
@@ -552,14 +555,11 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
         cardViewAdvanced.setVisibility(View.GONE);
 
         switchAdvancedMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            cardViewAdvanced.setVisibility(isChecked ? View.VISIBLE : View.GONE);
             if (isChecked) {
-                cardViewAdvanced.setVisibility(View.VISIBLE);
                 setupExamsList();
-            } else {
-                cardViewAdvanced.setVisibility(View.GONE);
             }
         });
-
     }
 
     private void setupExamsList() {
@@ -740,14 +740,12 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
         userBagruts.put("sector", selectedSector);
         userBagruts.put("units", selectedUnits);
         userBagruts.put("majors", selectedMajors);
-        userBagruts.put("exams", selectedExams);
-        userBagruts.put("advancedMode", switchAdvancedMode.isChecked());
 
         // Save to Firestore
         firestore.collection("Users").document(userId)
                 .update("bagruts", userBagruts)
                 .addOnSuccessListener(aVoid -> {
-                    // Also save to Realtime Database for exam-specific data
+                    // Save to Realtime Database for exam-specific data
                     DatabaseReference userRef = FirebaseDatabase.getInstance(FIREBASE_REALTIME_LINK)
                             .getReference()
                             .child("users")
@@ -755,6 +753,7 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
 
                     Map<String, Object> examData = new HashMap<>();
                     examData.put("selectedExams", selectedExams);
+                    examData.put("selectedSubjects", new ArrayList<>(selectedExams.keySet()));
                     examData.put("lastUpdated", ServerValue.TIMESTAMP);
 
                     userRef.updateChildren(examData)
@@ -788,18 +787,10 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
                                 selectedSector = sector;
                                 if (sector.equals("arab")) {
                                     rgSector.check(R.id.rbArab);
-
-                                    // Load religion selection
-                                    Map<String, List<String>> exams = (Map<String, List<String>>) bagrutsData.get("exams");
-                                    if (exams != null) {
-                                        if (exams.containsKey("דת האסלאם")) {
-                                            rgReligion.check(R.id.rbIslam);
-                                        } else if (exams.containsKey("דת נוצרית")) {
-                                            rgReligion.check(R.id.rbChristian);
-                                        }
-                                    }
+                                    religionSection.setVisibility(View.VISIBLE);
                                 } else if (sector.equals("druze")) {
                                     rgSector.check(R.id.rbDruze);
+                                    religionSection.setVisibility(View.GONE);
                                 }
                             }
 
@@ -813,17 +804,11 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
                                 }
                             }
 
-                            // Load majors and exams
+                            // Load majors
                             List<String> majors = (List<String>) bagrutsData.get("majors");
                             if (majors != null) {
                                 selectedMajors.addAll(majors);
                                 updateMajorSelections();
-                            }
-
-                            // Load advanced mode setting
-                            Boolean advancedMode = (Boolean) bagrutsData.get("advancedMode");
-                            if (advancedMode != null) {
-                                switchAdvancedMode.setChecked(advancedMode);
                             }
 
                             // Load exams from Realtime Database
@@ -849,6 +834,16 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     selectedExams = (Map<String, List<String>>) snapshot.getValue();
+                    
+                    // Update religion selection based on exams
+                    if (selectedSector.equals("arab")) {
+                        if (selectedExams.containsKey("דת האסלאם")) {
+                            rgReligion.check(R.id.rbIslam);
+                        } else if (selectedExams.containsKey("דת נוצרית")) {
+                            rgReligion.check(R.id.rbChristian);
+                        }
+                    }
+                    
                     if (switchAdvancedMode.isChecked()) {
                         setupExamsList();
                     }
@@ -904,20 +899,20 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
             return;
         }
 
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
+        DatabaseReference userRef = FirebaseDatabase.getInstance(FIREBASE_REALTIME_LINK)
+                .getReference()
                 .child("users")
-                .child(currentUser.getUid())
-                .child("selectedSubjects");
+                .child(currentUser.getUid());
 
         // Convert selected exams to subjects list
-        Set<String> selectedSubjects = new HashSet<>();
-        for (Map.Entry<String, List<String>> entry : selectedExams.entrySet()) {
-            if (!entry.getValue().isEmpty()) {
-                selectedSubjects.add(entry.getKey());
-            }
-        }
+        Set<String> selectedSubjects = new HashSet<>(selectedExams.keySet());
 
-        userRef.setValue(new ArrayList<>(selectedSubjects))
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("selectedSubjects", new ArrayList<>(selectedSubjects));
+        updates.put("selectedExams", selectedExams);
+        updates.put("lastUpdated", ServerValue.TIMESTAMP);
+
+        userRef.updateChildren(updates)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Subjects saved successfully", Toast.LENGTH_SHORT).show();
                     // Start ExamsActivity to show the selected exams

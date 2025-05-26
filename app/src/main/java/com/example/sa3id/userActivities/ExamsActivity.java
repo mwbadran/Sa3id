@@ -3,6 +3,7 @@ package com.example.sa3id.userActivities;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -20,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.sa3id.BaseActivity;
 import com.example.sa3id.R;
 import com.example.sa3id.adapters.ExamAdapter;
 import com.example.sa3id.fragments.SettingsFragment;
@@ -35,8 +37,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import static com.example.sa3id.Constants.FIREBASE_REALTIME_LINK;
 
-public class ExamsActivity extends AppCompatActivity {
+public class ExamsActivity extends BaseActivity {
     private static final String TAG = "ExamsActivity";
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -50,7 +53,6 @@ public class ExamsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exams);
 
         // Initialize views
         recyclerView = findViewById(R.id.recyclerViewExams);
@@ -85,8 +87,16 @@ public class ExamsActivity extends AppCompatActivity {
         if (currentUser != null) {
             loadUserSettings(currentUser.getUid());
         } else {
-            Toast.makeText(this, "Please sign in to view your exams", Toast.LENGTH_LONG).show();
-            finish();
+            CustomAlertDialog dialog= new CustomAlertDialog(this);
+            dialog.show("يرجى تسجيل الدخول لعرض الامتحانات", R.drawable.baseline_error_24);
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    finish();
+                    startActivity(new Intent(ExamsActivity.this, MainActivity.class));
+                }
+            });
+
         }
         
         // Setup broadcast receiver for settings changes
@@ -95,7 +105,8 @@ public class ExamsActivity extends AppCompatActivity {
 
     private void loadUserSettings(String userId) {
         progressBar.setVisibility(View.VISIBLE);
-        FirebaseDatabase.getInstance().getReference()
+        FirebaseDatabase.getInstance(FIREBASE_REALTIME_LINK)
+            .getReference()
             .child("users")
             .child(userId)
             .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -122,16 +133,17 @@ public class ExamsActivity extends AppCompatActivity {
                         loadExams();
                     } else {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(ExamsActivity.this, "User settings not found", Toast.LENGTH_SHORT).show();
+                        new CustomAlertDialog(ExamsActivity.this)
+                            .show("لم يتم العثور على إعدادات المستخدم", R.drawable.baseline_error_24);
                     }
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(ExamsActivity.this, 
-                        "Error loading user settings: " + databaseError.getMessage(), 
-                        Toast.LENGTH_SHORT).show();
+                    new CustomAlertDialog(ExamsActivity.this)
+                        .show("خطأ في تحميل إعدادات المستخدم: " + databaseError.getMessage(), 
+                            R.drawable.baseline_error_24);
                 }
             });
     }
@@ -139,7 +151,10 @@ public class ExamsActivity extends AppCompatActivity {
     private void loadExams() {
         if (userSubjects.isEmpty()) {
             progressBar.setVisibility(View.GONE);
-            Toast.makeText(this, "Please select your subjects first", Toast.LENGTH_LONG).show();
+            new CustomAlertDialog(this)
+                .show("يرجى اختيار المواضيع أولاً", R.drawable.baseline_error_24);
+            startActivity(new Intent(this, ChooseBagrutsActivity.class));
+            finish();
             return;
         }
 
@@ -161,9 +176,8 @@ public class ExamsActivity extends AppCompatActivity {
             @Override
             public void onError(String error) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(ExamsActivity.this, 
-                    "Error loading exams: " + error, 
-                    Toast.LENGTH_SHORT).show();
+                new CustomAlertDialog(ExamsActivity.this)
+                    .show("خطأ في تحميل الامتحانات: " + error, R.drawable.baseline_error_24);
             }
         });
     }
@@ -215,7 +229,6 @@ public class ExamsActivity extends AppCompatActivity {
 
     private static final int NOTIFICATION_PERMISSION_CODE = 123;
     
-    // Add this method to request notification permission on Android 13+
     private void requestNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) 
@@ -232,10 +245,17 @@ public class ExamsActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == NOTIFICATION_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Notification permission granted", Toast.LENGTH_SHORT).show();
+                new CustomAlertDialog(this)
+                    .show("تم منح إذن الإشعارات", R.drawable.baseline_check_circle_24);
             } else {
-                Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show();
+                new CustomAlertDialog(this)
+                    .show("تم رفض إذن الإشعارات", R.drawable.baseline_error_24);
             }
         }
+    }
+
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.activity_exams;
     }
 } 

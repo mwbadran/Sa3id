@@ -3,10 +3,10 @@ package com.example.sa3id.userActivities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +30,7 @@ public class SignUp extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore firestore;
     private GoogleSignInClient mGoogleSignInClient;
+    private CustomAlertDialog customAlertDialog;
 
     private EditText etUsername, etEmail, etPassword;
     private TextView tvAlreadyHaveAnAccount;
@@ -43,6 +44,7 @@ public class SignUp extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
+        customAlertDialog = new CustomAlertDialog(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.client_id))
@@ -50,7 +52,6 @@ public class SignUp extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mGoogleSignInClient.signOut();
-
 
         initViews();
         setupBackNavigation();
@@ -102,8 +103,10 @@ public class SignUp extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
-                Toast.makeText(SignUp.this, "Google sign in failed: " + e.getMessage(),
-                        Toast.LENGTH_SHORT).show();
+                customAlertDialog.show(
+                    "فشل تسجيل الدخول عبر Google: " + e.getMessage(),
+                    R.drawable.baseline_error_24
+                );
             }
         }
     }
@@ -118,12 +121,13 @@ public class SignUp extends AppCompatActivity {
                             saveGoogleUserToFirestore(user);
                         }
                     } else {
-                        Toast.makeText(SignUp.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
+                        customAlertDialog.show(
+                            "فشل المصادقة",
+                            R.drawable.baseline_error_24
+                        );
                     }
                 });
     }
-
 
     private void saveGoogleUserToFirestore(FirebaseUser firebaseUser) {
         String userId = firebaseUser.getUid();
@@ -141,15 +145,18 @@ public class SignUp extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        // Existing user - direct login
                         startActivity(new Intent(this, MainActivity.class));
                         finish();
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "فشل في التحقق من الحساب", Toast.LENGTH_SHORT).show();
+                    customAlertDialog.show(
+                        "فشل في التحقق من الحساب",
+                        R.drawable.baseline_error_24
+                    );
                 });
     }
+
     private void navigateToSignIn() {
         Intent intent = new Intent(SignUp.this, SignIn.class);
         intent.putExtra("userEmail", etEmail.getText().toString().trim());
@@ -163,6 +170,34 @@ public class SignUp extends AppCompatActivity {
         String password = etPassword.getText().toString().trim();
         String username = etUsername.getText().toString().trim();
 
+        // Validate username
+        if (username.isEmpty()) {
+            customAlertDialog.show("الرجاء إدخال اسم المستخدم", R.drawable.baseline_error_24);
+            return;
+        }
+
+        // Validate email
+        if (email.isEmpty()) {
+            customAlertDialog.show("الرجاء إدخال البريد الإلكتروني", R.drawable.baseline_error_24);
+            return;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            customAlertDialog.show("الرجاء إدخال بريد إلكتروني صالح", R.drawable.baseline_error_24);
+            return;
+        }
+
+        // Validate password
+        if (password.isEmpty()) {
+            customAlertDialog.show("الرجاء إدخال كلمة المرور", R.drawable.baseline_error_24);
+            return;
+        }
+
+        if (password.length() < 6) {
+            customAlertDialog.show("كلمة المرور يجب أن تكون 6 أحرف على الأقل", R.drawable.baseline_error_24);
+            return;
+        }
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -171,7 +206,10 @@ public class SignUp extends AppCompatActivity {
                             saveUserToFirestore(firebaseUser.getUid(), username, email);
                         }
                     } else {
-                        Toast.makeText(SignUp.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        customAlertDialog.show(
+                            "فشل إنشاء الحساب. " + task.getException().getMessage(),
+                            R.drawable.baseline_error_24
+                        );
                     }
                 });
     }
@@ -190,7 +228,10 @@ public class SignUp extends AppCompatActivity {
                     finish();
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(SignUp.this, "Failed to save user details", Toast.LENGTH_SHORT).show()
+                    customAlertDialog.show(
+                        "فشل في حفظ بيانات المستخدم",
+                        R.drawable.baseline_error_24
+                    )
                 );
     }
 

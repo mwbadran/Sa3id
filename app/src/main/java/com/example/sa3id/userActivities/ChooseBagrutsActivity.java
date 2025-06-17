@@ -41,7 +41,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class ChooseBagrutsActivity extends AppCompatActivity {
-
     private RadioGroup rgMathUnits, rgArabicUnits, rgHebrewUnits, rgEnglishUnits, rgSector, rgReligion;
     private LinearLayout religionSection;
     private ChipGroup chipGroupMajors;
@@ -82,10 +81,8 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
         initViews();
         hideAllContentUntilSectorSelected();
 
-        // Show combined sector and curriculum dialog
         showSectorAndCurriculumDialog();
 
-        // Initialize default religion selection (Islam)
         List<String> defaultReligionExams = new ArrayList<>();
         defaultReligionExams.add("47111"); // 20% داخلي مراقب
         defaultReligionExams.add("47183"); // 30% تقييم بديل
@@ -365,7 +362,9 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
             chip.setTypeface(getResources().getFont(R.font.rpt_bold));
 
             int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-            if (currentNightMode != Configuration.UI_MODE_NIGHT_YES) {
+            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+                chip.setTextColor(getResources().getColorStateList(R.color.white, null));
+            } else {
                 chip.setTextColor(getResources().getColorStateList(R.color.black, null));
             }
 
@@ -421,7 +420,6 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
             case "אנגלית":
                 if (selectedUnits.get("english") == 3) {
                     defaultExams.add("16381"); // 27% A
-                    //defaultExams.add("16383"); // 26% תלקיט
                     defaultExams.add("16382"); // 27% C
                     defaultExams.add("16385"); // 20% شفهي
                 } else if (selectedUnits.get("english") == 4) {

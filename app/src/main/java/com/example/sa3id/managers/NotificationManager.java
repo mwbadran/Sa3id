@@ -79,23 +79,19 @@ public class NotificationManager {
         }
     }
 
-    /**
-     * Checks if the app can schedule exact alarms and prompts user if necessary
-     */
+
     public boolean canScheduleExactAlarms() {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            // For Android 12+
+            // Android 12+
             return alarmManager != null && alarmManager.canScheduleExactAlarms();
         }
-        // For Android 11 and below
+        // Android 11 and below
         return true;
     }
 
-    /**
-     * Show a dialog to direct user to the settings for exact alarm permission
-     */
+
     public void showExactAlarmPermissionDialog() {
         if (context instanceof FragmentActivity && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             new MaterialAlertDialogBuilder(context).setTitle("Permission Required").setMessage("To receive exam reminders, this app needs permission to schedule exact alarms. Please enable this in the settings.").setPositiveButton("Go to Settings", (dialog, which) -> {
@@ -107,9 +103,7 @@ public class NotificationManager {
         }
     }
 
-    /**
-     * Schedule a notification for an exam using user's preferences
-     */
+
     public void scheduleExamNotification(Exam exam, String extraTimeType) {
         // Check if notifications are enabled
         boolean notificationsEnabled = prefs.getBoolean(PREF_NOTIFICATIONS_ENABLED, true);
@@ -184,9 +178,7 @@ public class NotificationManager {
         }
     }
 
-    /**
-     * Reschedule all notifications for a list of exams (used when settings change)
-     */
+
     public void rescheduleAllNotifications(List<Exam> exams, String extraTimeType) {
         if (exams == null || exams.isEmpty()) {
             return;
@@ -210,49 +202,7 @@ public class NotificationManager {
         }
     }
 
-    /**
-     * Send a test notification immediately to check if notifications are working
-     */
-    public void sendTestNotification() {
 
-        // Create test exam data
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-
-        // Add 1 day to current date
-        calendar.add(Calendar.DAY_OF_YEAR, 1);
-
-        String examDate = dateFormat.format(calendar.getTime());
-        String startTime = timeFormat.format(calendar.getTime());
-
-        // Add 1 hour to get end time
-        calendar.add(Calendar.HOUR_OF_DAY, 1);
-        String endTime = timeFormat.format(calendar.getTime());
-
-        // For testing permission issues
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(context, "Notification permission not granted", Toast.LENGTH_LONG).show();
-            }
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Check if notification channel exists
-            android.app.NotificationManager notifManager = (android.app.NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-            if (notifManager != null) {
-                NotificationChannel channel = notifManager.getNotificationChannel(CHANNEL_ID);
-                if (channel == null) {
-                    createNotificationChannel();
-                }
-            }
-        }
-
-        // Show the notification immediately
-        showExamNotification("Test Notification - " + timeFormat.format(new Date()), examDate, startTime, endTime);
-        Toast.makeText(context, "Test notification sent!", Toast.LENGTH_SHORT).show();
-    }
 
     public void showExamNotification(String examName, String date, String startTime, String endTime) {
 

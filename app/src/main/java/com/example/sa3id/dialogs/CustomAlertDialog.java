@@ -27,7 +27,6 @@ public class CustomAlertDialog extends Dialog {
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_custom, null);
         setContentView(view);
 
-        // Initialize views
         errorImageView = view.findViewById(R.id.errorImageView);
         messageTextView = view.findViewById(R.id.messageTextView);
         closeButton = view.findViewById(R.id.closeButton);
@@ -35,7 +34,6 @@ public class CustomAlertDialog extends Dialog {
         // Set close button listener
         closeButton.setOnClickListener(v -> dismiss());
 
-        // Set dialog window attributes
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
 

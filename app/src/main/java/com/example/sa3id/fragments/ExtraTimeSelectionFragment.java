@@ -40,21 +40,17 @@ public class ExtraTimeSelectionFragment extends Fragment {
         extraTime33Check = view.findViewById(R.id.extraTime33Check);
         extraTime50Check = view.findViewById(R.id.extraTime50Check);
 
-        // Set up click listeners
         view.findViewById(R.id.noExtraTimeOption).setOnClickListener(v -> selectExtraTime("0"));
         view.findViewById(R.id.extraTime25Option).setOnClickListener(v -> selectExtraTime("25"));
         view.findViewById(R.id.extraTime33Option).setOnClickListener(v -> selectExtraTime("33"));
         view.findViewById(R.id.extraTime50Option).setOnClickListener(v -> selectExtraTime("50"));
 
-        // Update UI to show current selection
         updateExtraTimeSelection(prefs.getString(PREF_EXTRA_TIME, "0"));
     }
 
     private void selectExtraTime(String extraTime) {
-        // Save preference
         prefs.edit().putString(PREF_EXTRA_TIME, extraTime).apply();
 
-        // Update UI
         updateExtraTimeSelection(extraTime);
 
         // Notify activity

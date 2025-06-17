@@ -19,13 +19,11 @@ public class GradesCalculatorActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         tabLayout = findViewById(R.id.tabLayout);
-        //fragmentContainer = findViewById(R.id.fragmentContainer);
 
         // Initialize fragments
         totalBagrutFragment = new TotalBagrutFragment();
         singleGradeFragment = new SingleGradeFragment();
 
-        // Add fragments initially but hide singleGradeFragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.fragmentContainer, totalBagrutFragment);
         transaction.add(R.id.fragmentContainer, singleGradeFragment);

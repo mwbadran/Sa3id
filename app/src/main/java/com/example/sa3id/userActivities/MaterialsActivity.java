@@ -54,7 +54,6 @@ public class MaterialsActivity extends BaseActivity {
 
     @Override
     protected boolean handleChildBackPress() {
-        //Toast.makeText(this, String.valueOf(folderStack.size()), Toast.LENGTH_SHORT).show();
         if (!folderStack.isEmpty()) {
             folderStack.pop();
 
@@ -78,7 +77,6 @@ public class MaterialsActivity extends BaseActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         materialItemList = new ArrayList<>();
-        //populateMaterials();
 
         adapter = new DriveMaterialAdapter(materialItemList);
         recyclerView.setAdapter(adapter);

@@ -64,20 +64,7 @@ public class ExamsActivity extends BaseActivity {
         examManager = new ExamManager();
         notificationManager = new NotificationManager(this);
 
-        /*// Setup test notification button
-        findViewById(R.id.btnTestNotification).setOnClickListener(v -> {
-            // Request notification permission for Android 13+
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                requestNotificationPermission();
-            }
 
-            // Check for exact alarm permission first
-            if (!notificationManager.canScheduleExactAlarms()) {
-                notificationManager.showExactAlarmPermissionDialog();
-            } else {
-                notificationManager.sendTestNotification();
-            }
-        });*/
 
         // Setup RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

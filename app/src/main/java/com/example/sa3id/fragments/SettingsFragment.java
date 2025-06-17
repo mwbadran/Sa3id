@@ -58,7 +58,6 @@ public class SettingsFragment extends Fragment {
     private static final String PREF_NOTIFICATION_MINUTE = "notification_minute";
     private static final String PREF_DAYS_BEFORE = "days_before";
 
-    // Broadcast action for settings changes
     public static final String ACTION_NOTIFICATION_SETTINGS_CHANGED = "com.example.sa3id.ACTION_NOTIFICATION_SETTINGS_CHANGED";
 
     @Nullable
@@ -75,11 +74,9 @@ public class SettingsFragment extends Fragment {
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance("https://sa3idsite-default-rtdb.europe-west1.firebasedatabase.app").getReference().child("users").child(userId);
 
-        // Initialize SharedPreferences and NotificationManager
         prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         notificationManager = new NotificationManager(requireContext());
 
-        // Load user subjects and extra time settings
         loadUserSettings();
 
         initializeViews(view);

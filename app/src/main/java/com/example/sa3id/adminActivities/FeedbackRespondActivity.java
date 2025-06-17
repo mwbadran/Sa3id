@@ -21,9 +21,9 @@ import com.example.sa3id.BaseActivity;
 import com.example.sa3id.models.FeedbackMsg;
 import com.example.sa3id.R;
 import com.example.sa3id.models.User;
-import com.example.sa3id.userActivities.CustomAlertDialog;
+import com.example.sa3id.dialogs.CustomAlertDialog;
 import com.example.sa3id.userActivities.MainActivity;
-import com.example.sa3id.userActivities.SignIn;
+import com.example.sa3id.userActivities.SignInActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.button.MaterialButton;
@@ -137,7 +137,7 @@ public class FeedbackRespondActivity extends BaseActivity {
         if (firebaseUser == null) {
             CustomAlertDialog dialog = new CustomAlertDialog(this);
             dialog.show("يرجى تسجيل الدخول أولاً", R.drawable.baseline_error_24);
-            startActivity(new Intent(this, SignIn.class));
+            startActivity(new Intent(this, SignInActivity.class));
             finish();
             return;
         }

@@ -25,7 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sa3id"
         tools:targetApi="31">
-
+        <activity
+            android:name=".adminActivities.ManageUsersActivity"
+            android:exported="false" />
         <activity
             android:name=".userActivities.ChooseBagrutsActivity"
             android:exported="true" />
@@ -46,7 +48,7 @@
             android:name=".adminActivities.MakeAnnouncementsActivity"
             android:exported="false" />
         <activity
-            android:name=".userActivities.UserSettings"
+            android:name=".userActivities.UserSettingsActivity"
             android:exported="false" />
         <activity
             android:name=".userActivities.ExamsActivity"
@@ -55,10 +57,13 @@
             android:name=".BaseActivity"
             android:exported="false" />
         <activity
-            android:name=".userActivities.Announcements"
+            android:name=".userActivities.AnnouncementsActivity"
             android:exported="true" />
         <activity
-            android:name=".userActivities.OurBooks"
+            android:name=".userActivities.MyFeedbackActivity"
+            android:exported="true" />
+        <activity
+            android:name=".userActivities.OurBooksActivity"
             android:exported="false" />
         <activity
             android:name=".adminActivities.ControlPanel"
@@ -70,40 +75,40 @@
             android:name=".adminActivities.MaterialsCheckActivity"
             android:exported="true" />
         <activity
-            android:name=".userActivities.SignUp"
+            android:name=".userActivities.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".userActivities.SignIn"
+            android:name=".userActivities.SignInActivity"
             android:exported="false" />
         <activity
-            android:name=".userActivities.ExamsCalendar"
+            android:name=".userActivities.CalendarActivity"
             android:exported="false" />
         <activity
-            android:name=".userActivities.AdminCalendarActivity"
+            android:name=".adminActivities.AdminCalendarActivity"
             android:exported="false" />
         <activity
-            android:name=".userActivities.ProfileEdit"
+            android:name=".userActivities.ProfileEditActivity"
             android:exported="false" />
         <activity
-            android:name=".userActivities.Donate"
+            android:name=".userActivities.DonateActivity"
             android:exported="false" />
         <activity
-            android:name=".userActivities.UploadMaterials"
+            android:name=".userActivities.UploadMaterialsActivity"
             android:exported="true" />
         <activity
-            android:name=".userActivities.MaterialsPage"
+            android:name=".userActivities.MaterialsActivity"
             android:exported="false" />
         <activity
             android:name=".userActivities.FeedbackActivity"
             android:exported="true" />
         <activity
-            android:name=".userActivities.WhatsappGroups"
+            android:name=".userActivities.WhatsappGroupsActivity"
             android:exported="false" />
         <activity
-            android:name=".userActivities.AboutPage"
+            android:name=".userActivities.AboutActivity"
             android:exported="false" />
         <activity
-            android:name=".userActivities.GradesCalculator"
+            android:name=".userActivities.GradesCalculatorActivity"
             android:exported="false" />
         <activity
             android:name=".userActivities.MainActivity"
@@ -123,7 +128,6 @@
             android:value="" />
 
         <receiver android:name=".receivers.ExamNotificationReceiver" />
-
     </application>
 
 </manifest>

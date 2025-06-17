@@ -7,7 +7,7 @@ import com.example.sa3id.BaseActivity;
 import com.example.sa3id.R;
 import com.example.sa3id.fragments.SettingsFragment;
 
-public class UserSettings extends BaseActivity {
+public class UserSettingsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

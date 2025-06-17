@@ -16,12 +16,13 @@ import androidx.annotation.Nullable;
 import com.example.sa3id.R;
 import com.example.sa3id.models.Announcement;
 import com.example.sa3id.userActivities.AnnouncementViewActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class AnnouncementAdapter extends ArrayAdapter<Announcement> {
-    Context context;
-    List<Announcement> objects;
+    private Context context;
+    private List<Announcement> objects;
 
     @NonNull
     @Override
@@ -32,20 +33,28 @@ public class AnnouncementAdapter extends ArrayAdapter<Announcement> {
         TextView tvDescription = view.findViewById(R.id.tvDescription);
         ImageView announcementImage = view.findViewById(R.id.announcementImage);
         Announcement announcement = objects.get(position);
+        
         tvTitle.setText(announcement.getTitle());
         tvDescription.setText(announcement.getDescription());
-        announcementImage.setImageResource(announcement.getImageResource());
+        
+        if (announcement.isLocal()) {
+            announcementImage.setImageResource(announcement.getImageResource());
+        } else {
+            // Load image from Firebase Storage using Picasso
+            Picasso.get()
+                .load(announcement.getImageUrl())
+                .placeholder(R.drawable.ic_image)
+                .error(R.drawable.ic_image)
+                .into(announcementImage);
+        }
 
         return view;
     }
-
-
 
     public AnnouncementAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<Announcement> objects) {
         super(context, resource, textViewResourceId, objects);
         this.context = context;
         this.objects = objects;
-
     }
 
     public static void openAnnouncementAsActivity(Context context, String title, String description, int imageResource) {
@@ -56,4 +65,11 @@ public class AnnouncementAdapter extends ArrayAdapter<Announcement> {
         context.startActivity(intent);
     }
 
+    public static void openAnnouncementAsActivity(Context context, String title, String description, String imageUrl) {
+        Intent intent = new Intent(context, AnnouncementViewActivity.class);
+        intent.putExtra("title", title);
+        intent.putExtra("description", description);
+        intent.putExtra("imageUrl", imageUrl);
+        context.startActivity(intent);
+    }
 }

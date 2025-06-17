@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sa3id.R;
 import com.example.sa3id.models.DriveMaterial;
-import com.example.sa3id.userActivities.MaterialsPage;
+import com.example.sa3id.userActivities.MaterialsActivity;
 import com.google.api.services.drive.model.File;
 
 import java.util.List;
@@ -28,6 +28,7 @@ public class DriveMaterialAdapter extends RecyclerView.Adapter<DriveMaterialAdap
 
     private List<DriveMaterial> materialItems;
     Context context;
+
     public DriveMaterialAdapter(List<DriveMaterial> materialItems) {
         this.materialItems = materialItems;
     }
@@ -67,23 +68,6 @@ public class DriveMaterialAdapter extends RecyclerView.Adapter<DriveMaterialAdap
         });
 
 
-
-//        // Add hover effect on each item
-//        holder.itemView.setOnHoverListener(new View.OnHoverListener() {
-//            @Override
-//            public boolean onHover(View view, MotionEvent motionEvent) {
-//                Log.d("MaterialAdapter", "onHover called");
-//                if (motionEvent.getAction() == MotionEvent.ACTION_HOVER_ENTER) {
-//                    view.setBackgroundColor(Color.parseColor("#000000"));
-//                    view.animate().alpha(0.7f).setDuration(300); // Fade-in effect
-//                } else if (motionEvent.getAction() == MotionEvent.ACTION_HOVER_EXIT) {
-//                    view.setBackgroundColor(Color.parseColor("#2b2a2a"));
-//                    view.animate().alpha(1f).setDuration(300); // Fade-out effect
-//                }
-//                return false;
-//            }
-//        });
-
     }
 
     private void openFolderShortCut(DriveMaterial item) {
@@ -91,7 +75,7 @@ public class DriveMaterialAdapter extends RecyclerView.Adapter<DriveMaterialAdap
 
         new Thread(() -> {
             try {
-                File file = ((MaterialsPage) context).getGoogleDriveService().files()
+                File file = ((MaterialsActivity) context).getGoogleDriveService().files()
                         .get(shortcutId)
                         .setFields("id,shortcutDetails(targetId)") // Request shortcut details
                         .execute();
@@ -100,12 +84,12 @@ public class DriveMaterialAdapter extends RecyclerView.Adapter<DriveMaterialAdap
 
                 Log.d("MaterialAdapter", "Resolved folder shortcut: " + actualFolderId);
 
-                ((MaterialsPage) context).runOnUiThread(() ->
-                        ((MaterialsPage) context).listFilesInFolder(actualFolderId)
+                ((MaterialsActivity) context).runOnUiThread(() ->
+                        ((MaterialsActivity) context).listFilesInFolder(actualFolderId)
                 );
             } catch (Exception e) {
                 Log.e("MaterialAdapter", "Error resolving shortcut", e);
-                ((MaterialsPage) context).runOnUiThread(() ->
+                ((MaterialsActivity) context).runOnUiThread(() ->
                         Toast.makeText(context, "Failed to open folder shortcut", Toast.LENGTH_SHORT).show()
                 );
             }
@@ -134,7 +118,7 @@ public class DriveMaterialAdapter extends RecyclerView.Adapter<DriveMaterialAdap
 
     private void openFolder(DriveMaterial item) {
         String folderId = item.getId();
-        MaterialsPage activity = (MaterialsPage) context;
+        MaterialsActivity activity = (MaterialsActivity) context;
         activity.listFilesInFolder(folderId);
     }
 
@@ -144,7 +128,7 @@ public class DriveMaterialAdapter extends RecyclerView.Adapter<DriveMaterialAdap
         return materialItems.size();
     }
 
-    static class DriveMaterialViewHolder extends RecyclerView.ViewHolder {
+    public static class DriveMaterialViewHolder extends RecyclerView.ViewHolder {
         TextView title, type;
         ImageView icon;
 

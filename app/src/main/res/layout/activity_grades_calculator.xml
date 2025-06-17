@@ -13,6 +13,7 @@
     <include layout="@layout/navigation_layout"/>
 
     <LinearLayout
+        android:id="@+id/root_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -32,7 +33,7 @@
                 android:layout_height="match_parent"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#1d1c1c"
+                app:cardBackgroundColor="?attr/colorDynamic"
                 android:layout_marginBottom="16dp">
 
                 <LinearLayout
@@ -46,9 +47,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        app:tabTextColor="#CCCCCC"
-                        app:tabSelectedTextColor="@color/white"
-                        app:tabIndicatorColor="#25D366"
+                        app:tabTextColor="?attr/colorDynamicFlipped"
+                        app:tabSelectedTextColor="@color/sa3id_green"
+                        app:tabIndicatorColor="@color/sa3id_green"
                         android:layoutDirection="rtl"
                         app:tabTextAppearance="@style/tab_text_rpt_bold">
 

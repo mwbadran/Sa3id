@@ -18,7 +18,7 @@ import com.example.sa3id.models.BagrutSubject;
 import com.example.sa3id.BagrutSubjectCategory;
 import com.example.sa3id.managers.BagrutSubjectsManager;
 import com.example.sa3id.R;
-import com.example.sa3id.userActivities.CustomAlertDialog;
+import com.example.sa3id.dialogs.CustomAlertDialog;
 import com.example.sa3id.userActivities.SubjectGradeView;
 
 import java.util.ArrayList;
@@ -36,6 +36,7 @@ public class TotalBagrutFragment extends Fragment {
     private RadioGroup sectorGroup;
     private List<SubjectGradeView> subjectGradeViews;
     private boolean isOptionalExpanded = false;
+    private boolean isArabicSector = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,6 +47,26 @@ public class TotalBagrutFragment extends Fragment {
         setupInitialState();
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("isOptionalExpanded", isOptionalExpanded);
+        outState.putBoolean("isArabicSector", isArabicSector);
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            isOptionalExpanded = savedInstanceState.getBoolean("isOptionalExpanded", false);
+            isArabicSector = savedInstanceState.getBoolean("isArabicSector", true);
+            refreshSubjects(isArabicSector);
+            if (isOptionalExpanded) {
+                toggleOptionalSubjects();
+            }
+        }
     }
 
     private void initViews(View view) {
@@ -61,7 +82,7 @@ public class TotalBagrutFragment extends Fragment {
 
     private void setupListeners() {
         sectorGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            boolean isArabicSector = checkedId == R.id.arabicSector;
+            isArabicSector = checkedId == R.id.arabicSector;
             refreshSubjects(isArabicSector);
         });
 
@@ -73,7 +94,7 @@ public class TotalBagrutFragment extends Fragment {
 
     private void setupInitialState() {
         optionalSubjectsLayout.setVisibility(View.GONE);
-        refreshSubjects(true);
+        refreshSubjects(isArabicSector);
     }
 
     private void refreshSubjects(boolean isArabicSector) {

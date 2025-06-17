@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class GoogleSignUpActivity extends AppCompatActivity {
-
     private EditText etUsername;
     private ImageView profileImageView;
     private FirebaseFirestore firestore;
@@ -34,8 +33,6 @@ public class GoogleSignUpActivity extends AppCompatActivity {
     private String userId, email, displayName;
     private Uri selectedImageUri = null;
     private String googleProfilePicUrl = null;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,7 +158,7 @@ public class GoogleSignUpActivity extends AppCompatActivity {
         User user = new User(username, email, profilePicUrl);
 
         if (profilePicUrl != null) {
-            user.setProfilePic(profilePicUrl);
+            user.setProfilePicUrl(profilePicUrl);
         }
 
         firestore.collection("Users").document(userId)

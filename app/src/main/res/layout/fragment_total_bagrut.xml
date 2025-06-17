@@ -19,7 +19,7 @@
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/rpt_bold"
             android:text="حساب معدل البجروت"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorDynamicFlipped"
             android:textSize="22sp" />
 
         <!-- Sector Selection -->
@@ -36,9 +36,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/rpt_bold"
-                android:text="الوسط العربي"
-                android:textColor="@color/white"
-                android:checked="true"/>
+                android:text="الوسط العربي/ الدرزي"
+                android:textColor="?attr/colorDynamicFlipped"
+                android:checked="true"
+                app:buttonTint="?attr/colorDynamicFlipped"
+                />
 
             <RadioButton
                 android:id="@+id/jewishSector"
@@ -46,7 +48,10 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rpt_bold"
                 android:text="الوسط اليهودي"
-                android:textColor="@color/white"/>
+                android:textColor="?attr/colorDynamicFlipped"
+                app:buttonTint="?attr/colorDynamicFlipped"
+
+                />
         </RadioGroup>
 
 
@@ -54,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="المواضيع الإلزامية"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorDynamicFlipped"
             android:fontFamily="@font/rpt_bold"
             android:textSize="16sp"
             android:layout_marginBottom="8dp"/>
@@ -72,7 +77,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/rpt_bold"
                 android:text="الموضوع"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorDynamicFlipped"
                 android:textSize="16sp" />
 
             <TextView
@@ -82,7 +87,7 @@
                 android:fontFamily="@font/rpt_bold"
                 android:text="العلامة"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorDynamicFlipped"
                 android:textSize="16sp" />
 
             <TextView
@@ -92,7 +97,7 @@
                 android:fontFamily="@font/rpt_bold"
                 android:text="الوحدات"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorDynamicFlipped"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -125,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="المواضيع الاختيارية"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorDynamicFlipped"
                     android:fontFamily="@font/rpt_bold"
                     android:textSize="16sp"/>
 
@@ -143,7 +148,7 @@
                 android:orientation="vertical"/>
         </LinearLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/calculateTotalButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -152,8 +157,9 @@
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/rpt_bold"
             android:padding="12dp"
+            android:background="?attr/colorDynamicFlipped"
             android:text="حساب المعدل"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorDynamic"
             android:textSize="18sp" />
 
         <TextView
@@ -164,7 +170,7 @@
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/rpt_bold"
             android:text="النتيجة هنا"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorDynamicFlipped"
             android:textSize="18sp" />
 
     </LinearLayout>

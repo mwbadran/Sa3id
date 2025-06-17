@@ -9,7 +9,7 @@ import android.widget.Button;
 import com.example.sa3id.BaseActivity;
 import com.example.sa3id.R;
 
-public class WhatsappGroups extends BaseActivity {
+public class WhatsappGroupsActivity extends BaseActivity {
     Button btnMainCommunity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

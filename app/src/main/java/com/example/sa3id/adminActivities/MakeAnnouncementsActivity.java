@@ -1,12 +1,12 @@
 package com.example.sa3id.adminActivities;
 
+import static com.example.sa3id.Constants.FIREBASE_REALTIME_LINK;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -17,11 +17,16 @@ import com.example.sa3id.BaseActivity;
 import com.example.sa3id.R;
 import com.example.sa3id.models.Announcement;
 import com.example.sa3id.userActivities.AnnouncementViewActivity;
-import com.example.sa3id.userActivities.CustomAlertDialog;
+import com.example.sa3id.dialogs.CustomAlertDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class MakeAnnouncementsActivity extends BaseActivity {
     private TextInputLayout titleLayout, descriptionLayout;
@@ -31,12 +36,18 @@ public class MakeAnnouncementsActivity extends BaseActivity {
     private int selectedImageResource = R.drawable.ic_image; // Default image
     private SharedPreferences sharedPreferences;
     private ArrayList<Announcement> announcements;
-
+    private Uri selectedImageUri;
+    private FirebaseStorage storage;
+    private DatabaseReference databaseReference;
     private ActivityResultLauncher<String> imagePickerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // Initialize Firebase
+        storage = FirebaseStorage.getInstance();
+        databaseReference = FirebaseDatabase.getInstance(FIREBASE_REALTIME_LINK).getReference("announcements");
         
         initViews();
         setupImagePicker();
@@ -60,10 +71,8 @@ public class MakeAnnouncementsActivity extends BaseActivity {
             new ActivityResultContracts.GetContent(),
             uri -> {
                 if (uri != null) {
+                    selectedImageUri = uri;
                     ivSelectedImage.setImageURI(uri);
-                    // For now, we'll keep using drawable resources
-                    // In a real app, you'd want to save this image to storage
-                    selectedImageResource = R.drawable.ic_image;
                 }
             }
         );
@@ -136,31 +145,76 @@ public class MakeAnnouncementsActivity extends BaseActivity {
         String title = etTitle.getText().toString().trim();
         String description = etDescription.getText().toString().trim();
         
-        // Add new announcement to the list
-        announcements.add(0, new Announcement(title, description, selectedImageResource));
-        
-        // Save to SharedPreferences
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("announcementCount", announcements.size());
-        
-        for (int i = 0; i < announcements.size(); i++) {
-            Announcement announcement = announcements.get(i);
-            editor.putString("announcement_title_" + i, announcement.getTitle());
-            editor.putString("announcement_description_" + i, announcement.getDescription());
-            editor.putInt("announcement_image_" + i, announcement.getImageResource());
+        if (selectedImageUri != null) {
+            // Upload image to Firebase Storage
+            String imageId = UUID.randomUUID().toString();
+            StorageReference imageRef = storage.getReference().child("announcements").child(imageId);
+            
+            imageRef.putFile(selectedImageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    // Get download URL
+                    imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        // Save announcement to Firebase Database
+                        String announcementId = databaseReference.push().getKey();
+                        Announcement announcement = new Announcement(
+                            announcementId,
+                            title,
+                            description,
+                            uri.toString(),
+                            String.valueOf(System.currentTimeMillis())
+                        );
+                        
+                        databaseReference.child(announcementId).setValue(announcement)
+                            .addOnSuccessListener(aVoid -> {
+                                // Show success message
+                                new CustomAlertDialog(this)
+                                    .show("تم نشر الإعلان بنجاح", R.drawable.baseline_check_circle_24);
+                                
+                                // Clear inputs
+                                clearInputs();
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(this, "فشل في نشر الإعلان: " + e.getMessage(), 
+                                    Toast.LENGTH_SHORT).show();
+                            });
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "فشل في رفع الصورة: " + e.getMessage(), 
+                        Toast.LENGTH_SHORT).show();
+                });
+        } else {
+            // Save local announcement without image
+            announcements.add(0, new Announcement(title, description, selectedImageResource));
+            
+            // Save to SharedPreferences
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("announcementCount", announcements.size());
+            
+            for (int i = 0; i < announcements.size(); i++) {
+                Announcement announcement = announcements.get(i);
+                editor.putString("announcement_title_" + i, announcement.getTitle());
+                editor.putString("announcement_description_" + i, announcement.getDescription());
+                editor.putInt("announcement_image_" + i, announcement.getImageResource());
+            }
+            
+            editor.apply();
+
+            // Show success message
+            new CustomAlertDialog(this)
+                .show("تم نشر الإعلان بنجاح", R.drawable.baseline_check_circle_24);
+
+            // Clear inputs
+            clearInputs();
         }
-        
-        editor.apply();
+    }
 
-        // Show success message
-        new CustomAlertDialog(this)
-            .show("تم نشر الإعلان بنجاح", R.drawable.baseline_check_circle_24);
-
-        // Clear inputs
+    private void clearInputs() {
         etTitle.setText("");
         etDescription.setText("");
         ivSelectedImage.setImageResource(R.drawable.ic_image);
         selectedImageResource = R.drawable.ic_image;
+        selectedImageUri = null;
     }
 
     @Override

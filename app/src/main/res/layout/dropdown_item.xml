@@ -7,4 +7,4 @@
     android:maxLines="1"
     android:textAppearance="?attr/textAppearanceSubtitle1"
     android:fontFamily="@font/rpt_bold"
-    android:textColor="#000000" />
+    android:textColor="?attr/colorDynamicFlipped" />

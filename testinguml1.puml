@@ -1,0 +1,1290 @@
+@startuml
+class com.example.sa3id.fragments.ExtraTimeSelectionFragment {
+- {static} String PREF_EXTRA_TIME
+- SharedPreferences prefs
+- ImageView noExtraTimeCheck
+- ImageView extraTime25Check
+- ImageView extraTime33Check
+- ImageView extraTime50Check
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onViewCreated(View,Bundle)
+- void selectExtraTime(String)
+- void updateExtraTimeSelection(String)
+}
+
+
+class com.example.sa3id.userActivities.AnnouncementsActivity {
+- ListView announcementsListView
+- ArrayList<Announcement> announcementsList
+- SharedPreferences sharedPreferences
+- ProgressBar progressBar
+- DatabaseReference databaseReference
+# void onCreate(Bundle)
+- void initViews()
+- void loadLocalAnnouncements()
+- void loadFirebaseAnnouncements()
+- void updateListView()
+# int getLayoutResourceId()
+}
+
+
+class com.example.sa3id.managers.NotificationManager {
+- {static} String CHANNEL_ID
+- {static} String CHANNEL_NAME
+- {static} String CHANNEL_DESC
+- {static} String PREF_NOTIFICATIONS_ENABLED
+- {static} String PREF_NOTIFICATION_HOUR
+- {static} String PREF_NOTIFICATION_MINUTE
+- {static} String PREF_DAYS_BEFORE
+- Context context
+- SharedPreferences prefs
++ <<Create>> NotificationManager(Context)
+- void createNotificationChannel()
++ boolean canScheduleExactAlarms()
++ void showExactAlarmPermissionDialog()
++ void scheduleExamNotification(Exam,String)
++ void rescheduleAllNotifications(List<Exam>,String)
++ void sendTestNotification()
++ void showExamNotification(String,String,String,String)
+}
+
+
+class com.example.sa3id.userActivities.UserSettingsActivity {
+# void onCreate(Bundle)
+# int getLayoutResourceId()
++ boolean onSupportNavigateUp()
++ void onBackPressed()
++ void onSettingsChanged()
+}
+
+class com.example.sa3id.fragments.SingleGradeFragment {
+- AutoCompleteTextView autoCompleteTextView
+- LinearLayout radioButtonsContainer
+- LinearLayout dynamicViewsContainer
+- Button btnCalculate
+- TextView resultTextView
+- int colorDynamicFlipped
+~ ArrayAdapter<String> subjectsAdapter
+~ RadioGroup radioGroup
+- Map<String,double[]> bagrutGradeWeights
+~ String[] subjectsArray
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+- void initViews(View)
+- void setupSubjectViews(String)
+- Typeface loadTypeface()
+- RadioButton createRadioButton(String)
+- EditText createEditText(String)
+- void addBagrutView(String,double,double)
+- void setupResultCalculation()
+- double calculateBagrutGrade(LinearLayout,double,double)
+- void setupMathViews()
+- void setupArabicViews()
+- void setupEnglishViews()
+- void setupComputerScienceViews()
+- void setupHistoryViews()
+- void setupCivicsViews()
+- void setupPhysicsViews()
+- void setupChemistryViews()
+- void setupBiologyViews()
+- void setupGeographyViews()
+- void setupIslamicStudiesViews()
+- void setupHealthSciencesViews()
+- void setupMechanicsViews()
+- void setupElectronicsViews()
+- void setupHebrewViews()
+}
+
+
+class com.example.sa3id.models.FeedbackMsg {
+- String id
+- String userId
+- String name
+- String email
+- String subject
+- String message
+- String timestamp
+- String status
+- String response
+- String respondedBy
+- String responseTimestamp
++ <<Create>> FeedbackMsg()
++ <<Create>> FeedbackMsg(String,String,String,String,String,String,String,String,String,String,String)
++ String getId()
++ void setId(String)
++ String getUserId()
++ void setUserId(String)
++ String getName()
++ void setName(String)
++ String getEmail()
++ void setEmail(String)
++ String getSubject()
++ void setSubject(String)
++ String getMessage()
++ void setMessage(String)
++ String getTimestamp()
++ void setTimestamp(String)
++ String getStatus()
++ void setStatus(String)
++ String getResponse()
++ void setResponse(String)
++ String getRespondedBy()
++ void setRespondedBy(String)
++ String getResponseTimestamp()
++ void setResponseTimestamp(String)
+}
+
+
+class com.example.sa3id.userActivities.AnnouncementViewActivity {
+- Intent comeIntent
+- String title
+- int imageResource
+- boolean isPreview
+- TextView tvTitle
+- ImageView announcementImage
+- MaterialButton btnWhatsAppShare
+# void onCreate(Bundle)
+# boolean handleChildBackPress()
+- void initViews()
+- void setDataToViews()
+- void setupClickListeners()
+- void showExpandedImage()
+- void shareToWhatsApp()
+- void shareToTelegram()
+- void shareGeneral()
+# int getLayoutResourceId()
+}
+
+
+class com.example.sa3id.adminActivities.ControlPanel {
+- CardView cardFeedbackRespond
+# void onCreate(Bundle)
+- void initViews()
+# int getLayoutResourceId()
+}
+
+
+class com.example.sa3id.userActivities.MaterialsChooseActivity {
+- LinearLayout electronicsButton
+~ Context context
+# void onCreate(Bundle)
+- void initViews()
+# int getLayoutResourceId()
+}
+
+
+abstract class com.example.sa3id.dialogs.EmailInputDialog {
+- EditText etEmailReset
+- Button btnCancel
+- CustomAlertDialog customAlertDialog
++ <<Create>> EmailInputDialog(Context)
+- void init(Context)
+- void validateAndSubmit()
+# {abstract}void onEmailSubmit(String)
+}
+
+
+class com.example.sa3id.managers.CalendarEventManager {
+- {static} String TAG
+- {static} String EVENTS_REF
+- DatabaseReference databaseReference
++ <<Create>> CalendarEventManager()
++ void getAllEvents(CalendarEventCallback)
++ void getEventsForDate(String,CalendarEventCallback)
++ void addEvent(CalendarEvent,CalendarEventCallback)
++ void deleteEvent(String,CalendarEventCallback)
+}
+
+
+interface com.example.sa3id.managers.CalendarEventManager$CalendarEventCallback {
+~ void onEventsLoaded(List<CalendarEvent>)
+~ void onEventAdded(boolean,String)
+~ void onEventDeleted(boolean)
+~ void onError(String)
+}
+
+class com.example.sa3id.userActivities.SubjectGradeView {
+- TextView subjectNameView
+- EditText gradeInput
+- EditText unitsInput
++ <<Create>> SubjectGradeView(Context)
+- void init(Context)
++ String getSubjectName()
++ void setSubject(String)
++ boolean hasValidGrade()
++ double getGrade()
++ int getUnits()
+}
+
+
+class com.example.sa3id.userActivities.UploadMaterialsActivity {
+- FirebaseAuth mAuth
+- FirebaseUser firebaseUser
+- FirebaseDatabase firebaseDatabase
+- StorageReference storageReference
+- DatabaseReference databaseReference
+- String requestTimeStamp
+- CheckBox approveCheckbox
+- EditText etDescription
+- Button btnSendRequest
+- ImageView btnChooseFiles
+- AutoCompleteTextView etSubject
+- RecyclerView rvMaterialsList
+- ArrayList<Uri> selectedFilesList
+- MaterialRequestItemAdapter materialAdapter
+- int FILE_REQUEST_CODE
+# int getLayoutResourceId()
+# void onCreate(Bundle)
+- void initViews()
+- void chooseFiles()
+# void onActivityResult(int,int,Intent)
+- String getFileExtension(Uri)
+- void sendUploadRequest()
+- void saveRequestToDatabase(String,ArrayList<String>)
+}
+
+
+class com.example.sa3id.adminActivities.ManageUsersActivity {
+- RecyclerView rvUsers
+- UserAdapter userAdapter
+- FirebaseFirestore firestore
+- FirebaseAuth mAuth
+# void onCreate(Bundle)
+- void initViews()
+- void loadUsers()
+# int getLayoutResourceId()
+}
+
+
+class com.example.sa3id.fragments.ThemeSelectionFragment {
+- {static} String PREF_THEME
+- SharedPreferences prefs
+- ImageView systemThemeCheck
+- ImageView lightThemeCheck
+- ImageView darkThemeCheck
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onViewCreated(View,Bundle)
+- void selectTheme(String)
+- void updateThemeSelection(String)
+}
+
+
+class com.example.sa3id.adapters.UserAdapter {
+- List<User> users
+- Context context
+- FirebaseFirestore firestore
++ <<Create>> UserAdapter(Context,List<User>)
++ UserViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(UserViewHolder,int)
++ int getItemCount()
++ void updateUsers(List<User>)
+}
+
+
+class com.example.sa3id.adapters.UserAdapter$UserViewHolder {
+~ TextView tvUsername
+~ SwitchMaterial switchAdmin
+~ ImageView ivUserIcon
+~ <<Create>> UserViewHolder(View)
+}
+
+
+class com.example.sa3id.adapters.CalendarEventAdapter {
+- {static} int TYPE_EXAM
+- {static} int TYPE_EVENT
+- List<Object> items
+- String extraTimeType
++ <<Create>> CalendarEventAdapter(String)
++ RecyclerView.ViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(RecyclerView.ViewHolder,int)
++ int getItemCount()
++ int getItemViewType(int)
++ void setItems(List<Object>)
++ void setExtraTimeType(String)
++ void clearItems()
++ void addItem(Object)
+}
+
+
+class com.example.sa3id.adapters.CalendarEventAdapter$ExamViewHolder {
+- TextView examNameText
+- TextView examDateText
+- TextView examTimeText
++ <<Create>> ExamViewHolder(View)
++ void bind(Exam,String)
+}
+
+
+class com.example.sa3id.adapters.CalendarEventAdapter$EventViewHolder {
+- TextView eventTitleText
+- TextView eventTypeText
+- TextView eventDateText
++ <<Create>> EventViewHolder(View)
++ void bind(CalendarEvent)
+}
+
+
+class com.example.sa3id.models.User {
+- String username
+- String email
+- boolean isAdmin
+- String profilePicUrl
++ <<Create>> User()
++ <<Create>> User(String,String)
++ <<Create>> User(String,String,String)
++ String getUsername()
++ void setUsername(String)
++ String getEmail()
++ void setEmail(String)
++ boolean isAdmin()
++ void setAdmin(boolean)
++ String getProfilePicUrl()
++ void setProfilePicUrl(String)
+}
+
+
+class com.example.sa3id.userActivities.GradesCalculatorActivity {
+- TabLayout tabLayout
+- Fragment totalBagrutFragment
+- Fragment singleGradeFragment
+# void onCreate(Bundle)
+# int getLayoutResourceId()
+}
+
+
+class com.example.sa3id.userActivities.MainActivity {
+~ SharedPreferences announcementsSP
+~ SharedPreferences.Editor annoucementsEditor
+~ ListView announcementsListView
+~ ArrayList<Announcement> announcementsList
+~ AnnouncementAdapter adapter
+~ ProgressBar progressBar
+~ DatabaseReference databaseReference
+~ NavigationView navigationView
+~ GridLayout gridLayout
+# void onCreate(Bundle)
+- void initViews()
+- void loadAnnouncements()
+- ArrayList<Announcement> getLocalAnnouncements()
+- void loadLocalAnnouncements()
+- void populateGridLayout()
+# void onResume()
+# int getLayoutResourceId()
+}
+
+
+class com.example.sa3id.userActivities.MainActivity$GridItem {
+~ int imageResId
+~ String label
+~ int navId
+~ <<Create>> GridItem(int,String,int)
+}
+
+
+class com.example.sa3id.userActivities.SignUpActivity {
+- {static} int RC_SIGN_IN
+- FirebaseAuth mAuth
+- FirebaseFirestore firestore
+- GoogleSignInClient mGoogleSignInClient
+- CustomAlertDialog customAlertDialog
+- EditText etUsername
+- TextView tvAlreadyHaveAnAccount
+- Button signupButton
+- Button btnGoogleSignIn
+# void onCreate(Bundle)
+- void setupBackNavigation()
+- void initViews()
+- void signInWithGoogle()
++ void onActivityResult(int,int,Intent)
+- void firebaseAuthWithGoogle(String)
+- void saveGoogleUserToFirestore(FirebaseUser)
+- void navigateToSignIn()
+- void registerUser()
+- void saveUserToFirestore(String,String,String)
+# void onStart()
+}
+
+
+class com.example.sa3id.userActivities.CalendarActivity {
+- {static} String TAG
+- CalendarView calendarView
+- RecyclerView recyclerViewDateExams
+- ProgressBar progressBar
+- LinearLayout adminControlsLayout
+- EditText editTextEventTitle
+- Button buttonAddEvent
+- Button buttonAddHoliday
+- TextView textViewExamsHeader
+- CalendarEventAdapter eventAdapter
+- ExamManager examManager
+- CalendarEventManager calendarEventManager
+- String userExtraTimeType
+- Set<String> userSubjects
+- List<Exam> allUserExams
+- Map<String,List<Object>> dateEventsMap
+- String selectedDate
+- boolean isAdmin
+- boolean isLoadingData
+# void onCreate(Bundle)
+- void showInitialState()
+- void initViews()
+- void checkCurrentUser()
+- void setupCalendar()
+- void setupAdminControls()
+- void addCalendarItem(String)
+- void loadUserSettings()
+- void loadExams()
+- void organizeExamsByDate()
+- void loadAllCalendarEvents()
+- void showEventsForDate(String)
+# void onDestroy()
+# int getLayoutResourceId()
+}
+
+
+class com.example.sa3id.models.UploadRequest {
+- String description
+- String subject
+- ArrayList<String> materialsList
+- String senderEmail
+- String timestamp
++ <<Create>> UploadRequest(String,ArrayList<String>,String,String)
++ <<Create>> UploadRequest()
++ {static} String getCurrentTimestamp()
++ String getSenderEmail()
++ void setSenderEmail(String)
++ String getDescription()
++ void setDescription(String)
++ ArrayList<String> getMaterialsList()
++ void setMaterialsList(ArrayList<String>)
++ String getTimestamp()
++ void setTimestamp(String)
++ String getSubject()
++ void setSubject(String)
+}
+
+
+class com.example.sa3id.userActivities.MaterialsActivity {
+- String rootFolder
+- {static} int REQUEST_CODE_SIGN_IN
+- Drive googleDriveService
+- RecyclerView recyclerView
+- DriveMaterialAdapter adapter
+- List<DriveMaterial> materialItemList
+- Stack<String> folderStack
+~ Intent backIntent
+# void onCreate(Bundle)
+# boolean handleChildBackPress()
+- void initViews()
+- void requestSignIn()
+# void onActivityResult(int,int,Intent)
+- void handleSignInResult(Task<GoogleSignInAccount>)
++ void listFilesInFolder(String)
+# int getLayoutResourceId()
+- void populateMaterials()
++ Drive getGoogleDriveService()
+}
+
+
+class com.example.sa3id.userActivities.EasterEggActivity {
+- MediaPlayer mediaPlayer
+- ImageView catImage
+- int currentCatIndex
+- float dx
+- float x
+- int screenWidth
+- ValueAnimator animator
+- Vibrator vibrator
+- boolean wasInCorner
+- int[] catImages
+# void onCreate(Bundle)
+- void startAnimation()
+- void updateCatImage()
+# void onPause()
+# void onResume()
+# void onDestroy()
+}
+
+
+class com.example.sa3id.userActivities.OurBooksActivity {
+# void onCreate(Bundle)
+# int getLayoutResourceId()
+}
+
+class com.example.sa3id.adapters.AnnouncementAdapter {
+- Context context
+- List<Announcement> objects
++ <<Create>> AnnouncementAdapter(Context,int,int,List<Announcement>)
++ View getView(int,View,ViewGroup)
++ {static} void openAnnouncementAsActivity(Context,String,String,int)
++ {static} void openAnnouncementAsActivity(Context,String,String,String)
+}
+
+
+class com.example.sa3id.userActivities.ProfileEditActivity {
+- ImageView profilePicture
+- FloatingActionButton fabEditPicture
+- TextInputEditText etUsername
+- TextInputEditText etEmail
+- Button btnSaveChanges
+- FirebaseFirestore firestore
+- FirebaseStorage storage
+- StorageReference storageRef
+- Uri selectedImageUri
+- String currentProfilePicUrl
+- CustomAlertDialog customAlertDialog
+- ActivityResultLauncher<Intent> cameraLauncher
+- ActivityResultLauncher<Intent> galleryLauncher
+# void onCreate(Bundle)
+- void initViews()
+- void setupClickListeners()
+- void validateAndSaveChanges()
+- void showImageSelectionDialog()
+- void openCamera()
+- void openGallery()
+- Uri getImageUri(Bitmap)
+- void loadCurrentUserProfile()
+- void uploadImageAndSaveUser(String,AlertDialog)
+- void updateUserDetails(String,String,AlertDialog)
+# int getLayoutResourceId()
+}
+
+
+class com.example.sa3id.receivers.ExamNotificationReceiver {
++ void onReceive(Context,Intent)
+}
+
+class com.example.sa3id.dialogs.CustomAlertDialog {
+- ImageView errorImageView
+- TextView messageTextView
+- Button closeButton
++ <<Create>> CustomAlertDialog(Context)
+- void init(Context)
++ void show(String,int)
+}
+
+
+class com.example.sa3id.fragments.SettingsFragment {
+- SwitchMaterial notificationSwitch
+- TextView timeText
+- Slider daysSlider
+- TextView daysText
+- LinearLayout notificationSettingsContainer
+- SharedPreferences prefs
+- DatabaseReference userRef
+- NotificationManager notificationManager
+- String userId
+- Set<String> userSubjects
+- String userExtraTimeType
+- {static} String PREF_NOTIFICATIONS_ENABLED
+- {static} String PREF_NOTIFICATION_HOUR
+- {static} String PREF_NOTIFICATION_MINUTE
+- {static} String PREF_DAYS_BEFORE
++ {static} String ACTION_NOTIFICATION_SETTINGS_CHANGED
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onViewCreated(View,Bundle)
+- void loadUserSettings()
+- void initializeViews(View)
+- void setupChildFragments()
+- void loadSettings()
+- void setupListeners()
+- void showTimePickerDialog()
+- void updateDaysText(int)
+- void notifySettingsChanged()
+- void loadAndRescheduleExams()
++ void saveSettingsToFirebase()
+}
+
+
+class com.example.sa3id.userActivities.SignInActivity {
+- {static} int RC_SIGN_IN
+- FirebaseAuth mAuth
+- FirebaseFirestore firestore
+- GoogleSignInClient mGoogleSignInClient
+- CustomAlertDialog customAlertDialog
+- EditText etEmail
+- TextView tvDontHaveAnAccount
+- Button loginButton
+- Button btnGoogleSignIn
+# void onCreate(Bundle)
+- void setupBackNavigation()
+- void initViews()
+- void sendPasswordReset()
+- void signInWithGoogle()
++ void onActivityResult(int,int,Intent)
+- void firebaseAuthWithGoogle(String)
+- void saveGoogleUserToFirestore(FirebaseUser)
+- void navigateToSignUp()
+- void loginUser()
+- void fetchUserDetails(String)
+# void onStart()
+}
+
+
+class com.example.sa3id.adminActivities.MakeAnnouncementsActivity {
+- TextInputLayout titleLayout
+- TextInputEditText etTitle
+- ImageView ivSelectedImage
+- Button btnSelectImage
+- int selectedImageResource
+- SharedPreferences sharedPreferences
+- ArrayList<Announcement> announcements
+- Uri selectedImageUri
+- FirebaseStorage storage
+- DatabaseReference databaseReference
+- ActivityResultLauncher<String> imagePickerLauncher
+# void onCreate(Bundle)
+- void initViews()
+- void setupImagePicker()
+- void loadExistingAnnouncements()
+- void setupClickListeners()
+- boolean validateInputs()
+- void previewAnnouncement()
+- void publishAnnouncement()
+- void clearInputs()
+# int getLayoutResourceId()
+}
+
+
+class com.example.sa3id.userActivities.MyFeedbackActivity {
+- RecyclerView recyclerViewMyFeedback
+- FirebaseAuth mAuth
+- DatabaseReference mDatabase
+- FirebaseRecyclerAdapter<FeedbackMsg,FeedbackViewHolder> adapter
+# void onCreate(Bundle)
+- void initViews()
+- void loadMyFeedback()
+# void onStart()
+# void onStop()
+# int getLayoutResourceId()
+}
+
+
+class com.example.sa3id.userActivities.MyFeedbackActivity$FeedbackViewHolder {
+~ TextView tvStatus
++ <<Create>> FeedbackViewHolder(View)
+}
+
+
+class com.example.sa3id.userActivities.GoogleSignUpActivity {
+- EditText etUsername
+- ImageView profileImageView
+- FirebaseFirestore firestore
+- FirebaseStorage storage
+- StorageReference storageRef
+- String userId
+- Uri selectedImageUri
+- String googleProfilePicUrl
+- ActivityResultLauncher<Intent> cameraLauncher
+- ActivityResultLauncher<Intent> galleryLauncher
+# void onCreate(Bundle)
+- void showImageSelectionDialog()
+- void openCamera()
+- void openGallery()
+- Uri getImageUri(Bitmap)
+- void validateAndSaveUser()
+- void uploadImageAndSaveUser(String,AlertDialog)
+- void saveUserToFirestore(String,String,AlertDialog)
++ void onBackPressed()
+}
+
+
+class com.example.sa3id.managers.BagrutSubjectsManager {
+- {static} List<BagrutSubject> getAllBagrutSubjects()
++ {static} List<BagrutSubject> getBagrutSubjectsForSector(boolean)
+}
+
+class com.example.sa3id.fragments.TotalBagrutFragment {
+- LinearLayout mandatoryContainer
+- LinearLayout optionalContainer
+- LinearLayout optionalSubjectsLayout
+- Button calculateTotalButton
+- TextView totalResultTextView
+- ImageView expandArrow
+- RadioGroup sectorGroup
+- List<SubjectGradeView> subjectGradeViews
+- boolean isOptionalExpanded
+- boolean isArabicSector
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onSaveInstanceState(Bundle)
++ void onViewStateRestored(Bundle)
+- void initViews(View)
+- void setupListeners()
+- void setupInitialState()
+- void refreshSubjects(boolean)
+- void toggleOptionalSubjects()
+- void calculateTotalBagrut()
+- boolean validateInputs()
+- void showValidationError(String,int)
++ void onDestroy()
+}
+
+
+enum com.example.sa3id.BagrutSubjectCategory {
++  MANDATORY
++  OPTIONAL
+}
+
+class com.example.sa3id.userActivities.FeedbackActivity {
+- TextInputEditText etName
+- MaterialButton btnSubmitFeedback
+- MaterialButton btnViewMyFeedback
+- FirebaseAuth mAuth
+- DatabaseReference mDatabase
+- FirebaseFirestore mFirestore
+- CustomAlertDialog customAlertDialog
+# void onCreate(Bundle)
+- void initViews()
+- void prefillUserInfo()
+- void submitFeedback()
+# int getLayoutResourceId()
+}
+
+
+class com.example.sa3id.models.DriveMaterial {
+- String title
+- String type
+- int iconResId
+- String url
+- String id
++ <<Create>> DriveMaterial()
++ <<Create>> DriveMaterial(String,String,int)
++ <<Create>> DriveMaterial(String,String,String,int,String,String)
++ String getArabicType()
++ void setArabicType(String)
++ void setTitle(String)
++ void setType(String)
++ void setIconResId(int)
++ String getUrl()
++ void setUrl(String)
++ String getId()
++ void setId(String)
++ String getTitle()
++ String getType()
++ int getIconResId()
+}
+
+
+class com.example.sa3id.userActivities.AboutActivity {
+# void onCreate(Bundle)
+# int getLayoutResourceId()
+}
+
+class com.example.sa3id.adapters.ExamAdapter {
+- List<Exam> exams
+- String extraTimeType
++ <<Create>> ExamAdapter(String)
++ ExamViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(ExamViewHolder,int)
++ int getItemCount()
++ void setExams(List<Exam>)
++ void setExtraTimeType(String)
++ List<Exam> getExams()
+}
+
+
+class com.example.sa3id.adapters.ExamAdapter$ExamViewHolder {
+- TextView examNameText
+- TextView examDateText
+- TextView examTimeText
++ <<Create>> ExamViewHolder(View)
++ void bind(Exam,String)
+}
+
+
+class com.example.sa3id.adapters.DriveMaterialAdapter {
+- List<DriveMaterial> materialItems
+~ Context context
++ <<Create>> DriveMaterialAdapter(List<DriveMaterial>)
++ DriveMaterialViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(DriveMaterialViewHolder,int)
+- void openFolderShortCut(DriveMaterial)
+- void openGenericFile(DriveMaterial)
+- void openImage(DriveMaterial)
+- void openFolder(DriveMaterial)
++ int getItemCount()
+}
+
+
+class com.example.sa3id.adapters.DriveMaterialAdapter$DriveMaterialViewHolder {
+~ TextView title
+~ ImageView icon
++ <<Create>> DriveMaterialViewHolder(View)
+}
+
+
+class com.example.sa3id.adminActivities.MaterialsCheckActivity {
+- TextInputEditText etSearchMaterials
+- CardView btnSearchMaterials
+- MaterialButton btnApproveAll
+- CardView cardNoMaterials
+- RecyclerView recyclerViewMaterials
+- DatabaseReference mDatabase
+- List<UploadRequest> uploadRequests
+- List<String> requestIds
+- MaterialsAdapter adapter
+# void onCreate(Bundle)
+- void initViews()
+- void setupListeners()
+- void searchMaterials()
+- void loadUploadRequests()
+- void updateNoMaterialsCardVisibility()
+- void approveRequest(String)
+- void rejectRequest(String)
+# int getLayoutResourceId()
+}
+
+
+class com.example.sa3id.adminActivities.MaterialsCheckActivity$MaterialsAdapter {
+- List<UploadRequest> requests
+- List<String> requestIds
++ <<Create>> MaterialsAdapter(List<UploadRequest>,List<String>)
++ ViewHolder onCreateViewHolder(android.view.ViewGroup,int)
++ void onBindViewHolder(ViewHolder,int)
++ int getItemCount()
+}
+
+
+class com.example.sa3id.adminActivities.MaterialsCheckActivity$MaterialsAdapter$ViewHolder {
+~ TextView tvMaterialTitle
+~ MaterialButton btnViewFile
+~ <<Create>> ViewHolder(View)
+}
+
+
+class com.example.sa3id.models.CalendarEvent {
+- String eventId
+- String title
+- String date
+- String type
+- String addedBy
++ <<Create>> CalendarEvent()
++ <<Create>> CalendarEvent(String,String,String,String,String)
++ String getEventId()
++ void setEventId(String)
++ String getTitle()
++ void setTitle(String)
++ String getDate()
++ void setDate(String)
++ String getType()
++ void setType(String)
++ String getAddedBy()
++ void setAddedBy(String)
+}
+
+
+class com.example.sa3id.Constants {
++ {static} String FIREBASE_REALTIME_LINK
++ {static} String userSP
++ {static} String announcementsSP
++ {static} String driveArabic
++ {static} String driveElectronics
++ {static} String driveMadanyat
++ {static} String driveHistory
++ {static} String driveMechanics
++ {static} String driveElectricity
++ {static} String driveIslam
++ {static} String driveEnglish
++ {static} String driveMath
++ {static} String driveBiology
++ {static} String driveHebrew
++ {static} String driveHealthScience
+}
+
+class com.example.sa3id.adapters.MaterialRequestItemAdapter {
+- Context context
+- ArrayList<Uri> materialsList
++ <<Create>> MaterialRequestItemAdapter(Context,ArrayList<Uri>)
++ MaterialViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(MaterialViewHolder,int)
+- Bitmap getVideoThumbnail(Uri)
++ int getItemCount()
+}
+
+
+class com.example.sa3id.adapters.MaterialRequestItemAdapter$MaterialViewHolder {
+~ TextView tvMaterialName
+~ ImageView ivMaterialIcon
+~ ImageView ivDelete
++ <<Create>> MaterialViewHolder(View)
+}
+
+
+class com.example.sa3id.models.BagrutSubject {
+- String name
+- BagrutSubjectCategory category
+- boolean isArabicSector
++ <<Create>> BagrutSubject(String,BagrutSubjectCategory,boolean,boolean)
++ String getName()
++ BagrutSubjectCategory getCategory()
++ boolean isArabicSector()
++ boolean isJewishSector()
+}
+
+
+class com.example.sa3id.userActivities.ExamsActivity {
+- {static} String TAG
+- RecyclerView recyclerView
+- ProgressBar progressBar
+- ExamAdapter examAdapter
+- ExamManager examManager
+- NotificationManager notificationManager
+- String userExtraTimeType
+- Set<String> userSubjects
+- BroadcastReceiver settingsReceiver
+- {static} int NOTIFICATION_PERMISSION_CODE
+# void onCreate(Bundle)
+- void loadUserSettings(String)
+- void loadExams()
+- void scheduleExamNotifications(List<Exam>)
+- void setupSettingsReceiver()
+# void onResume()
+# void onPause()
+- void requestNotificationPermission()
++ void onRequestPermissionsResult(int,String[],int[])
+# int getLayoutResourceId()
+}
+
+
+class com.example.sa3id.adminActivities.FeedbackRespondActivity {
+- TabLayout tabLayout
+- RecyclerView recyclerViewFeedback
+- CardView cardFeedbackDetails
+- TextView tvFeedbackSubject
+- TextInputEditText etAdminResponse
+- MaterialButton btnUpdateStatus
+- ImageButton btnCloseDetails
+- FirebaseAuth mAuth
+- DatabaseReference mDatabase
+- FirebaseFirestore mFirestore
+- FirebaseRecyclerAdapter<FeedbackMsg,FeedbackViewHolder> adapter
+- String currentFeedbackId
+- String currentStatus
+# void onCreate(Bundle)
+- void initViews()
+- void closeDetailsView()
+- void checkAdminAccess()
+- void loadFeedbackData(String)
+- void showFeedbackDetails(FeedbackMsg)
+- void showStatusUpdateDialog()
+- void updateFeedbackStatus(String)
+- void sendResponse()
+# void onStart()
+# void onStop()
+# int getLayoutResourceId()
+}
+
+
+class com.example.sa3id.adminActivities.FeedbackRespondActivity$FeedbackViewHolder {
+~ TextView tvSubject
++ <<Create>> FeedbackViewHolder(View)
+}
+
+
+class com.example.sa3id.userActivities.ChooseBagrutsActivity {
+- RadioGroup rgMathUnits
+- LinearLayout religionSection
+- ChipGroup chipGroupMajors
+- Button btnSaveSelections
+- SwitchMaterial switchAdvancedMode
+- CardView cardViewAdvanced
+- CardView examListContainer
+- LinearLayout mainContent
+- boolean isNewCurriculum
+- FirebaseFirestore firestore
+- FirebaseAuth mAuth
+- String userId
+- String selectedSector
+- Map<String,Integer> selectedUnits
+- List<String> selectedMajors
+- Map<String,List<String>> selectedExams
+# void onCreate(Bundle)
+- void initViews()
+- void hideAllContentUntilSectorSelected()
+- void showSectorAndCurriculumDialog()
+- void setupArabDefaults()
+- void setupDruzeDefaults()
+- void addDefaultSubjectsAndExams()
+- void setupRadioGroups()
+- void setupMajorsChips()
+- void autoSelectExamsForSubject(String)
+- void setupAdvancedMode()
+- void setupExamsList()
+- int addSubjectToContainer(LinearLayout,String,DataSnapshot)
+- boolean isSubjectRelevantToSector(String)
+- void setupButtons()
+- void saveUserSelections()
+- void loadUserSelections()
+- void loadExamsFromRealtimeDB()
+- void updateUnitSelection(String,int)
+- void updateMajorSelections()
+- void saveSelectedSubjects()
+# void onPause()
+}
+
+
+class com.example.sa3id.models.Exam {
+- String examId
+- String examName
+- String startHour
+- String duration
+- String endHour
+- String date
+- String subject
++ <<Create>> Exam()
++ <<Create>> Exam(String,String,String,String,String,String,String,String,String,String)
++ String getExamId()
++ void setExamId(String)
++ String getExamName()
++ void setExamName(String)
++ String getStartHour()
++ void setStartHour(String)
++ String getEndHour()
++ void setEndHour(String)
++ String getDuration()
++ void setDuration(String)
++ String getEndHour25()
++ void setEndHour25(String)
++ String getEndHour33()
++ void setEndHour33(String)
++ String getEndHour50()
++ void setEndHour50(String)
++ String getDate()
++ void setDate(String)
++ String getSubject()
++ void setSubject(String)
++ String getEndTimeByExtraTime(String)
+}
+
+
+class com.example.sa3id.adapters.AdminCalendarEventAdapter {
+- List<CalendarEvent> events
+- EventActionListener listener
++ <<Create>> AdminCalendarEventAdapter(EventActionListener)
++ EventViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(EventViewHolder,int)
++ int getItemCount()
++ void setEvents(List<CalendarEvent>)
++ List<CalendarEvent> getEvents()
++ void filterEvents(String,String,String)
+}
+
+
+interface com.example.sa3id.adapters.AdminCalendarEventAdapter$EventActionListener {
+~ void onEditEvent(CalendarEvent)
+~ void onDeleteEvent(CalendarEvent)
+}
+
+class com.example.sa3id.adapters.AdminCalendarEventAdapter$EventViewHolder {
+- TextView textEventTitle
+- TextView textEventDate
+- TextView textEventType
+- Button buttonEdit
+- Button buttonDelete
++ <<Create>> EventViewHolder(View)
++ void bind(CalendarEvent)
+}
+
+
+class com.example.sa3id.userActivities.WhatsappGroupsActivity {
+~ Button btnMainCommunity
+# void onCreate(Bundle)
+# int getLayoutResourceId()
+}
+
+
+class com.example.sa3id.models.Announcement {
+- String id
+- String title
+- String description
+- int imageResource
+- String imageUrl
+- String timestamp
+- boolean isLocal
++ <<Create>> Announcement()
++ <<Create>> Announcement(String,String,int)
++ <<Create>> Announcement(String,String,String,String,String)
++ String getId()
++ void setId(String)
++ String getDescription()
++ void setDescription(String)
++ String getTitle()
++ void setTitle(String)
++ int getImageResource()
++ void setImageResource(int)
++ String getImageUrl()
++ void setImageUrl(String)
++ String getTimestamp()
++ void setTimestamp(String)
++ boolean isLocal()
++ void setLocal(boolean)
+}
+
+
+class com.example.sa3id.userActivities.DonateActivity {
+# void onCreate(Bundle)
+# int getLayoutResourceId()
+}
+
+abstract class com.example.sa3id.BaseActivity {
+- TextView tvEmail
+- DrawerLayout drawerLayout
+- NavigationView navigationView
+- Toolbar toolbar
+- ImageView ivUserIcon
+# FirebaseUser firebaseUser
+- FrameLayout bottomSheet
+- BottomSheetBehavior<FrameLayout> bottomSheetBehavior
+- Button btnSignIn
+- FirebaseAuth mAuth
+- LinearLayout onlyForLoggedIn
+- LinearLayout llEditBagrutExams
+# boolean isAdmin
+~ Context context
+- Toast easterEggToast
+# void onCreate(Bundle)
+# boolean handleChildBackPress()
+# {abstract}int getLayoutResourceId()
+- void initViews()
+# void handleNavigation(int)
+- void initBottomSheet()
+# void fetchUserDetails(String)
+- void setupBottomSheetListeners()
++ void toggleBottomSheet()
++ void setDefaultCredentials()
++ void setCredentials(String,String,String)
+# void onStart()
+- void showOnlyFor(boolean)
+- void handleEasterEggClick()
+# void onStop()
+}
+
+
+class com.example.sa3id.managers.ExamManager {
+- {static} String EXAMS_REF
+- DatabaseReference databaseReference
++ <<Create>> ExamManager()
++ void getExamsForSubject(String,ExamCallback)
++ void getAllExams(ExamCallback)
++ void getExamsForUserSubjects(Set<String>,ExamCallback)
+}
+
+
+interface com.example.sa3id.managers.ExamManager$ExamCallback {
+~ void onExamsLoaded(List<Exam>)
+~ void onError(String)
+}
+
+class com.example.sa3id.adminActivities.AdminCalendarActivity {
+- {static} String TAG
+- EditText editTextEventTitle
+- EditText editTextEventDescription
+- Button buttonSelectDate
+- TextView textViewSelectedDate
+- RadioButton radioButtonEvent
+- RadioButton radioButtonHoliday
+- Button buttonAddEvent
+- Button buttonFilterStartDate
+- Button buttonFilterEndDate
+- CheckBox checkBoxEvents
+- CheckBox checkBoxHolidays
+- Button buttonApplyFilter
+- RecyclerView recyclerViewEvents
+- ProgressBar progressBar
+- TextView textViewEventsHeader
+- CalendarEventManager eventManager
+- AdminCalendarEventAdapter eventAdapter
+- String selectedDate
+- String filterStartDate
+- String filterEndDate
+- Calendar calendar
+- SimpleDateFormat dateFormat
+- CalendarEvent currentEditEvent
+# void onCreate(Bundle)
+- void initViews()
+- void setupListeners()
+- void loadEvents()
+- void addEvent(String,String)
+- void updateEvent(CalendarEvent,String,String)
+- void clearEventForm()
+- void applyFilters()
++ void onEditEvent(CalendarEvent)
++ void onDeleteEvent(CalendarEvent)
+# int getLayoutResourceId()
+}
+
+
+
+
+androidx.fragment.app.Fragment <|-- com.example.sa3id.fragments.ExtraTimeSelectionFragment
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.AnnouncementsActivity
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.UserSettingsActivity
+androidx.fragment.app.Fragment <|-- com.example.sa3id.fragments.SingleGradeFragment
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.AnnouncementViewActivity
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.adminActivities.ControlPanel
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.MaterialsChooseActivity
+android.app.Dialog <|-- com.example.sa3id.dialogs.EmailInputDialog
+com.example.sa3id.managers.CalendarEventManager +.. com.example.sa3id.managers.CalendarEventManager$CalendarEventCallback
+android.widget.LinearLayout <|-- com.example.sa3id.userActivities.SubjectGradeView
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.UploadMaterialsActivity
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.adminActivities.ManageUsersActivity
+androidx.fragment.app.Fragment <|-- com.example.sa3id.fragments.ThemeSelectionFragment
+com.example.sa3id.adapters.Adapter <|-- com.example.sa3id.adapters.UserAdapter
+com.example.sa3id.adapters.UserAdapter +.. com.example.sa3id.adapters.UserAdapter$UserViewHolder
+com.example.sa3id.adapters.ViewHolder <|-- com.example.sa3id.adapters.UserAdapter$UserViewHolder
+com.example.sa3id.adapters.Adapter <|-- com.example.sa3id.adapters.CalendarEventAdapter
+com.example.sa3id.adapters.CalendarEventAdapter +.. com.example.sa3id.adapters.CalendarEventAdapter$ExamViewHolder
+com.example.sa3id.adapters.ViewHolder <|-- com.example.sa3id.adapters.CalendarEventAdapter$ExamViewHolder
+com.example.sa3id.adapters.CalendarEventAdapter +.. com.example.sa3id.adapters.CalendarEventAdapter$EventViewHolder
+com.example.sa3id.adapters.ViewHolder <|-- com.example.sa3id.adapters.CalendarEventAdapter$EventViewHolder
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.GradesCalculatorActivity
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.MainActivity
+com.example.sa3id.userActivities.MainActivity +.. com.example.sa3id.userActivities.MainActivity$GridItem
+androidx.appcompat.app.AppCompatActivity <|-- com.example.sa3id.userActivities.SignUpActivity
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.CalendarActivity
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.MaterialsActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.sa3id.userActivities.EasterEggActivity
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.OurBooksActivity
+android.widget.ArrayAdapter <|-- com.example.sa3id.adapters.AnnouncementAdapter
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.ProfileEditActivity
+android.content.BroadcastReceiver <|-- com.example.sa3id.receivers.ExamNotificationReceiver
+android.app.Dialog <|-- com.example.sa3id.dialogs.CustomAlertDialog
+androidx.fragment.app.Fragment <|-- com.example.sa3id.fragments.SettingsFragment
+androidx.appcompat.app.AppCompatActivity <|-- com.example.sa3id.userActivities.SignInActivity
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.adminActivities.MakeAnnouncementsActivity
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.MyFeedbackActivity
+com.example.sa3id.userActivities.MyFeedbackActivity +.. com.example.sa3id.userActivities.MyFeedbackActivity$FeedbackViewHolder
+com.example.sa3id.userActivities.ViewHolder <|-- com.example.sa3id.userActivities.MyFeedbackActivity$FeedbackViewHolder
+androidx.appcompat.app.AppCompatActivity <|-- com.example.sa3id.userActivities.GoogleSignUpActivity
+androidx.fragment.app.Fragment <|-- com.example.sa3id.fragments.TotalBagrutFragment
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.FeedbackActivity
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.AboutActivity
+com.example.sa3id.adapters.Adapter <|-- com.example.sa3id.adapters.ExamAdapter
+com.example.sa3id.adapters.ExamAdapter +.. com.example.sa3id.adapters.ExamAdapter$ExamViewHolder
+com.example.sa3id.adapters.ViewHolder <|-- com.example.sa3id.adapters.ExamAdapter$ExamViewHolder
+com.example.sa3id.adapters.Adapter <|-- com.example.sa3id.adapters.DriveMaterialAdapter
+com.example.sa3id.adapters.DriveMaterialAdapter +.. com.example.sa3id.adapters.DriveMaterialAdapter$DriveMaterialViewHolder
+com.example.sa3id.adapters.ViewHolder <|-- com.example.sa3id.adapters.DriveMaterialAdapter$DriveMaterialViewHolder
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.adminActivities.MaterialsCheckActivity
+com.example.sa3id.adminActivities.MaterialsCheckActivity +.. com.example.sa3id.adminActivities.MaterialsCheckActivity$MaterialsAdapter
+com.example.sa3id.adminActivities.Adapter <|-- com.example.sa3id.adminActivities.MaterialsCheckActivity$MaterialsAdapter
+com.example.sa3id.adminActivities.MaterialsCheckActivity$MaterialsAdapter +.. com.example.sa3id.adminActivities.MaterialsCheckActivity$MaterialsAdapter$ViewHolder
+com.example.sa3id.adminActivities.ViewHolder <|-- com.example.sa3id.adminActivities.MaterialsCheckActivity$MaterialsAdapter$ViewHolder
+com.example.sa3id.adapters.Adapter <|-- com.example.sa3id.adapters.MaterialRequestItemAdapter
+com.example.sa3id.adapters.MaterialRequestItemAdapter +.. com.example.sa3id.adapters.MaterialRequestItemAdapter$MaterialViewHolder
+com.example.sa3id.adapters.ViewHolder <|-- com.example.sa3id.adapters.MaterialRequestItemAdapter$MaterialViewHolder
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.ExamsActivity
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.adminActivities.FeedbackRespondActivity
+com.example.sa3id.adminActivities.FeedbackRespondActivity +.. com.example.sa3id.adminActivities.FeedbackRespondActivity$FeedbackViewHolder
+com.example.sa3id.adminActivities.ViewHolder <|-- com.example.sa3id.adminActivities.FeedbackRespondActivity$FeedbackViewHolder
+androidx.appcompat.app.AppCompatActivity <|-- com.example.sa3id.userActivities.ChooseBagrutsActivity
+com.example.sa3id.adapters.Adapter <|-- com.example.sa3id.adapters.AdminCalendarEventAdapter
+com.example.sa3id.adapters.AdminCalendarEventAdapter +.. com.example.sa3id.adapters.AdminCalendarEventAdapter$EventActionListener
+com.example.sa3id.adapters.AdminCalendarEventAdapter +.. com.example.sa3id.adapters.AdminCalendarEventAdapter$EventViewHolder
+com.example.sa3id.adapters.ViewHolder <|-- com.example.sa3id.adapters.AdminCalendarEventAdapter$EventViewHolder
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.WhatsappGroupsActivity
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.userActivities.DonateActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.sa3id.BaseActivity
+com.example.sa3id.managers.ExamManager +.. com.example.sa3id.managers.ExamManager$ExamCallback
+com.example.sa3id.adminActivities.EventActionListener <|.. com.example.sa3id.adminActivities.AdminCalendarActivity
+com.example.sa3id.BaseActivity <|-- com.example.sa3id.adminActivities.AdminCalendarActivity
+@enduml

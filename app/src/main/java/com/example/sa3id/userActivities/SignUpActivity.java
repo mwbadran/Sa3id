@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.sa3id.dialogs.CustomAlertDialog;
 import com.example.sa3id.R;
 import com.example.sa3id.models.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -25,7 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class SignUp extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
     private FirebaseAuth mAuth;
     private FirebaseFirestore firestore;
@@ -46,10 +47,7 @@ public class SignUp extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         customAlertDialog = new CustomAlertDialog(this);
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.client_id))
-                .requestEmail()
-                .build();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.client_id)).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mGoogleSignInClient.signOut();
 
@@ -61,7 +59,7 @@ public class SignUp extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                startActivity(new Intent(SignUp.this, MainActivity.class));
+                startActivity(new Intent(SignUpActivity.this, MainActivity.class));
                 finish();
             }
         });
@@ -77,10 +75,8 @@ public class SignUp extends AppCompatActivity {
 
         Intent comeIntent = getIntent();
         if (comeIntent != null) {
-            etEmail.setText(comeIntent.getStringExtra("userEmail") != null ?
-                    comeIntent.getStringExtra("userEmail") : "");
-            etPassword.setText(comeIntent.getStringExtra("userPassword") != null ?
-                    comeIntent.getStringExtra("userPassword") : "");
+            etEmail.setText(comeIntent.getStringExtra("userEmail") != null ? comeIntent.getStringExtra("userEmail") : "");
+            etPassword.setText(comeIntent.getStringExtra("userPassword") != null ? comeIntent.getStringExtra("userPassword") : "");
         }
 
         signupButton.setOnClickListener(v -> registerUser());
@@ -103,30 +99,23 @@ public class SignUp extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
-                customAlertDialog.show(
-                    "فشل تسجيل الدخول عبر Google: " + e.getMessage(),
-                    R.drawable.baseline_error_24
-                );
+                customAlertDialog.show("فشل تسجيل الدخول عبر Google: " + e.getMessage(), R.drawable.baseline_error_24);
             }
         }
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null) {
-                            saveGoogleUserToFirestore(user);
-                        }
-                    } else {
-                        customAlertDialog.show(
-                            "فشل المصادقة",
-                            R.drawable.baseline_error_24
-                        );
-                    }
-                });
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                FirebaseUser user = mAuth.getCurrentUser();
+                if (user != null) {
+                    saveGoogleUserToFirestore(user);
+                }
+            } else {
+                customAlertDialog.show("فشل المصادقة", R.drawable.baseline_error_24);
+            }
+        });
     }
 
     private void saveGoogleUserToFirestore(FirebaseUser firebaseUser) {
@@ -134,31 +123,26 @@ public class SignUp extends AppCompatActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         Uri profilePicUri = account.getPhotoUrl();
         String profilePicUrl = profilePicUri != null ? profilePicUri.toString() : null;
-        firestore.collection("Users").document(userId).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (!documentSnapshot.exists()) {
-                        Intent intent = new Intent(this, GoogleSignUpActivity.class);
-                        intent.putExtra("userId", userId);
-                        intent.putExtra("email", firebaseUser.getEmail());
-                        intent.putExtra("displayName", firebaseUser.getDisplayName());
-                        intent.putExtra("profilePicUrl", profilePicUrl);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        startActivity(new Intent(this, MainActivity.class));
-                        finish();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    customAlertDialog.show(
-                        "فشل في التحقق من الحساب",
-                        R.drawable.baseline_error_24
-                    );
-                });
+        firestore.collection("Users").document(userId).get().addOnSuccessListener(documentSnapshot -> {
+            if (!documentSnapshot.exists()) {
+                Intent intent = new Intent(this, GoogleSignUpActivity.class);
+                intent.putExtra("userId", userId);
+                intent.putExtra("email", firebaseUser.getEmail());
+                intent.putExtra("displayName", firebaseUser.getDisplayName());
+                intent.putExtra("profilePicUrl", profilePicUrl);
+                startActivity(intent);
+                finish();
+            } else {
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+            }
+        }).addOnFailureListener(e -> {
+            customAlertDialog.show("فشل في التحقق من الحساب", R.drawable.baseline_error_24);
+        });
     }
 
     private void navigateToSignIn() {
-        Intent intent = new Intent(SignUp.this, SignIn.class);
+        Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
         intent.putExtra("userEmail", etEmail.getText().toString().trim());
         intent.putExtra("userPassword", etPassword.getText().toString().trim());
         startActivity(intent);
@@ -198,41 +182,29 @@ public class SignUp extends AppCompatActivity {
             return;
         }
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                        if (firebaseUser != null) {
-                            saveUserToFirestore(firebaseUser.getUid(), username, email);
-                        }
-                    } else {
-                        customAlertDialog.show(
-                            "فشل إنشاء الحساب. " + task.getException().getMessage(),
-                            R.drawable.baseline_error_24
-                        );
-                    }
-                });
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                if (firebaseUser != null) {
+                    saveUserToFirestore(firebaseUser.getUid(), username, email);
+                }
+            } else {
+                customAlertDialog.show("فشل إنشاء الحساب. " + task.getException().getMessage(), R.drawable.baseline_error_24);
+            }
+        });
     }
 
     private void saveUserToFirestore(String userId, String username, String email) {
         User user = new User(username, email);
 
-        firestore.collection("Users").document(userId)
-                .set(user)
-                .addOnSuccessListener(aVoid -> {
-                    Intent intent = new Intent(SignUp.this, GoogleSignUpActivity.class);
-                    intent.putExtra("userId", userId);
-                    intent.putExtra("email", email);
-                    intent.putExtra("displayName", username);
-                    startActivity(intent);
-                    finish();
-                })
-                .addOnFailureListener(e ->
-                    customAlertDialog.show(
-                        "فشل في حفظ بيانات المستخدم",
-                        R.drawable.baseline_error_24
-                    )
-                );
+        firestore.collection("Users").document(userId).set(user).addOnSuccessListener(aVoid -> {
+            Intent intent = new Intent(SignUpActivity.this, GoogleSignUpActivity.class);
+            intent.putExtra("userId", userId);
+            intent.putExtra("email", email);
+            intent.putExtra("displayName", username);
+            startActivity(intent);
+            finish();
+        }).addOnFailureListener(e -> customAlertDialog.show("فشل في حفظ بيانات المستخدم", R.drawable.baseline_error_24));
     }
 
     @Override

@@ -15,15 +15,19 @@
 
         <TextView
             android:id="@+id/textEventTitle"
+            android:text="حدث في التقويم"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:fontFamily="@font/rpt_bold"
             android:textColor="@android:color/black"
             android:layout_marginBottom="8dp" />
 
         <TextView
             android:id="@+id/textEventDate"
+            android:fontFamily="@font/rpt_bold"
+            android:text="xx/xx/xxxx"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
@@ -31,6 +35,8 @@
 
         <TextView
             android:id="@+id/textEventType"
+            android:text="النوع"
+            android:fontFamily="@font/rpt_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp" />

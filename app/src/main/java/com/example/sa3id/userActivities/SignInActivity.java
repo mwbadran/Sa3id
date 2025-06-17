@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.sa3id.dialogs.CustomAlertDialog;
+import com.example.sa3id.dialogs.EmailInputDialog;
 import com.example.sa3id.R;
 import com.example.sa3id.models.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -23,7 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class SignIn extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
     private FirebaseAuth mAuth;
     private FirebaseFirestore firestore;
@@ -45,10 +47,7 @@ public class SignIn extends AppCompatActivity {
         customAlertDialog = new CustomAlertDialog(this);
 
         // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.client_id))
-                .requestEmail()
-                .build();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.client_id)).requestEmail().build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
@@ -60,7 +59,7 @@ public class SignIn extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                startActivity(new Intent(SignIn.this, MainActivity.class));
+                startActivity(new Intent(SignInActivity.this, MainActivity.class));
                 finish();
             }
         });
@@ -77,10 +76,8 @@ public class SignIn extends AppCompatActivity {
         // prefill from signup if available
         Intent comeIntent = getIntent();
         if (comeIntent != null) {
-            etEmail.setText(comeIntent.getStringExtra("userEmail") != null ?
-                    comeIntent.getStringExtra("userEmail") : "");
-            etPassword.setText(comeIntent.getStringExtra("userPassword") != null ?
-                    comeIntent.getStringExtra("userPassword") : "");
+            etEmail.setText(comeIntent.getStringExtra("userEmail") != null ? comeIntent.getStringExtra("userEmail") : "");
+            etPassword.setText(comeIntent.getStringExtra("userPassword") != null ? comeIntent.getStringExtra("userPassword") : "");
         }
 
         // click handlers
@@ -91,30 +88,23 @@ public class SignIn extends AppCompatActivity {
     }
 
     private void sendPasswordReset() {
-        EmailInputDialog emailInputDialog = new EmailInputDialog(this, email -> {
-            mAuth.sendPasswordResetEmail(email)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            customAlertDialog.show(
-                                "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.",
-                                R.drawable.baseline_check_circle_24
-                            );
-                        } else {
-                            customAlertDialog.show(
-                                "فشل في إرسال رابط إعادة التعيين. تأكد من البريد الإلكتروني وحاول مرة أخرى.",
-                                R.drawable.baseline_error_24
-                            );
-                        }
-                    });
-        });
+        EmailInputDialog emailInputDialog = new EmailInputDialog(this) {
+            @Override
+            protected void onEmailSubmit(String email) {
+                mAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        customAlertDialog.show("تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.", R.drawable.baseline_check_circle_24);
+                    } else {
+                        customAlertDialog.show("فشل في إرسال رابط إعادة التعيين. تأكد من البريد الإلكتروني وحاول مرة أخرى.", R.drawable.baseline_error_24);
+                    }
+                });
+            }
+        };
         emailInputDialog.show();
     }
 
     private void signInWithGoogle() {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.client_id))
-                .requestEmail()
-                .build();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.client_id)).requestEmail().build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
@@ -132,59 +122,47 @@ public class SignIn extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
-                customAlertDialog.show(
-                    "Google sign in failed: " + e.getMessage(),
-                    R.drawable.baseline_error_24
-                );
+                customAlertDialog.show("Google sign in failed: " + e.getMessage(), R.drawable.baseline_error_24);
             }
         }
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null) {
-                            saveGoogleUserToFirestore(user);
-                        }
-                    } else {
-                        customAlertDialog.show(
-                            "Authentication failed.",
-                            R.drawable.baseline_error_24
-                        );
-                    }
-                });
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                FirebaseUser user = mAuth.getCurrentUser();
+                if (user != null) {
+                    saveGoogleUserToFirestore(user);
+                }
+            } else {
+                customAlertDialog.show("Authentication failed.", R.drawable.baseline_error_24);
+            }
+        });
     }
 
     private void saveGoogleUserToFirestore(FirebaseUser firebaseUser) {
         String userId = firebaseUser.getUid();
 
-        firestore.collection("Users").document(userId).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (!documentSnapshot.exists()) {
-                        Intent intent = new Intent(this, GoogleSignUpActivity.class);
-                        intent.putExtra("userId", userId);
-                        intent.putExtra("email", firebaseUser.getEmail());
-                        intent.putExtra("displayName", firebaseUser.getDisplayName());
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        startActivity(new Intent(this, MainActivity.class));
-                        finish();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    customAlertDialog.show(
-                        "فشل في التحقق من الحساب",
-                        R.drawable.baseline_error_24
-                    );
-                });
+        firestore.collection("Users").document(userId).get().addOnSuccessListener(documentSnapshot -> {
+            if (!documentSnapshot.exists()) {
+                Intent intent = new Intent(this, GoogleSignUpActivity.class);
+                intent.putExtra("userId", userId);
+                intent.putExtra("email", firebaseUser.getEmail());
+                intent.putExtra("displayName", firebaseUser.getDisplayName());
+                startActivity(intent);
+                finish();
+            } else {
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+            }
+        }).addOnFailureListener(e -> {
+            customAlertDialog.show("فشل في التحقق من الحساب", R.drawable.baseline_error_24);
+        });
     }
 
     private void navigateToSignUp() {
-        Intent intent = new Intent(SignIn.this, SignUp.class);
+        Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
         intent.putExtra("userEmail", etEmail.getText().toString().trim());
         intent.putExtra("userPassword", etPassword.getText().toString().trim());
         startActivity(intent);
@@ -217,37 +195,26 @@ public class SignIn extends AppCompatActivity {
             return;
         }
 
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                        if (firebaseUser != null) {
-                            fetchUserDetails(firebaseUser.getUid());
-                        }
-                    } else {
-                        customAlertDialog.show(
-                            "فشل تسجيل الدخول. تأكد من البريد الإلكتروني وكلمة المرور.",
-                            R.drawable.baseline_error_24
-                        );
-                    }
-                });
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                if (firebaseUser != null) {
+                    fetchUserDetails(firebaseUser.getUid());
+                }
+            } else {
+                customAlertDialog.show("فشل تسجيل الدخول. تأكد من البريد الإلكتروني وكلمة المرور.", R.drawable.baseline_error_24);
+            }
+        });
     }
 
     private void fetchUserDetails(String userId) {
-        firestore.collection("Users").document(userId)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    User user = documentSnapshot.toObject(User.class);
-                    if (user != null) {
-                        startActivity(new Intent(SignIn.this, MainActivity.class));
-                        finish();
-                    }
-                })
-                .addOnFailureListener(e -> 
-                    customAlertDialog.show(
-                        "Failed to fetch user details",
-                        R.drawable.baseline_error_24
-                    ));
+        firestore.collection("Users").document(userId).get().addOnSuccessListener(documentSnapshot -> {
+            User user = documentSnapshot.toObject(User.class);
+            if (user != null) {
+                startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                finish();
+            }
+        }).addOnFailureListener(e -> customAlertDialog.show("Failed to fetch user details", R.drawable.baseline_error_24));
     }
 
     @Override

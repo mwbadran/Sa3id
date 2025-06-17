@@ -13,12 +13,14 @@ import androidx.appcompat.app.AlertDialog;
 import com.example.sa3id.BaseActivity;
 import com.example.sa3id.R;
 import com.google.android.material.button.MaterialButton;
+import com.squareup.picasso.Picasso;
 
 public class AnnouncementViewActivity extends BaseActivity {
 
     private Intent comeIntent;
-    private String title, description;
+    private String title, description, imageUrl;
     private int imageResource;
+    private boolean isPreview;
 
     private TextView tvTitle, tvDescription;
     private ImageView announcementImage;
@@ -31,7 +33,13 @@ public class AnnouncementViewActivity extends BaseActivity {
         comeIntent = getIntent();
         title = comeIntent.getStringExtra("title");
         description = comeIntent.getStringExtra("description");
-        imageResource = Integer.parseInt(comeIntent.getStringExtra("imageResource"));
+        imageUrl = comeIntent.getStringExtra("imageUrl");
+        String imageResourceStr = comeIntent.getStringExtra("imageResource");
+        isPreview = comeIntent.getBooleanExtra("isPreview", false);
+
+        if (imageResourceStr != null) {
+            imageResource = Integer.parseInt(imageResourceStr);
+        }
 
         initViews();
         setDataToViews();
@@ -57,7 +65,17 @@ public class AnnouncementViewActivity extends BaseActivity {
     private void setDataToViews() {
         tvTitle.setText(title);
         tvDescription.setText(description);
-        announcementImage.setImageResource(imageResource);
+        
+        if (imageUrl != null) {
+            // Load image from Firebase Storage using Picasso
+            Picasso.get()
+                .load(imageUrl)
+                .placeholder(R.drawable.ic_image)
+                .error(R.drawable.ic_image)
+                .into(announcementImage);
+        } else {
+            announcementImage.setImageResource(imageResource);
+        }
     }
 
     private void setupClickListeners() {
@@ -74,7 +92,16 @@ public class AnnouncementViewActivity extends BaseActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_expanded_image, null);
         ImageView expandedImage = dialogView.findViewById(R.id.expandedImage);
-        expandedImage.setImageResource(imageResource);
+        
+        if (imageUrl != null) {
+            Picasso.get()
+                .load(imageUrl)
+                .placeholder(R.drawable.ic_image)
+                .error(R.drawable.ic_image)
+                .into(expandedImage);
+        } else {
+            expandedImage.setImageResource(imageResource);
+        }
 
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();

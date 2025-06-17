@@ -6,7 +6,7 @@ import android.webkit.WebView;
 import com.example.sa3id.BaseActivity;
 import com.example.sa3id.R;
 
-public class OurBooks extends BaseActivity {
+public class OurBooksActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.example.sa3id.R;
-import com.example.sa3id.userActivities.UserSettings;
+import com.example.sa3id.userActivities.UserSettingsActivity;
 
 public class ThemeSelectionFragment extends Fragment {
     private static final String PREF_THEME = "theme";
@@ -69,8 +69,8 @@ public class ThemeSelectionFragment extends Fragment {
         }
 
         // Notify activity
-        if (getActivity() instanceof UserSettings) {
-            ((UserSettings) getActivity()).onSettingsChanged();
+        if (getActivity() instanceof UserSettingsActivity) {
+            ((UserSettingsActivity) getActivity()).onSettingsChanged();
         }
 
         // Recreate activity to apply theme

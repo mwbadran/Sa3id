@@ -2,17 +2,20 @@ package com.example.sa3id.userActivities;
 
 import static com.example.sa3id.Constants.FIREBASE_REALTIME_LINK;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.example.sa3id.BaseActivity;
+import com.example.sa3id.dialogs.CustomAlertDialog;
 import com.example.sa3id.models.FeedbackMsg;
 import com.example.sa3id.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,6 +28,7 @@ import java.util.UUID;
 public class FeedbackActivity extends BaseActivity {
     private TextInputEditText etName, etEmail, etSubject, etMessage;
     private MaterialButton btnSubmitFeedback;
+    private MaterialButton btnViewMyFeedback;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private FirebaseFirestore mFirestore;
@@ -49,6 +53,7 @@ public class FeedbackActivity extends BaseActivity {
         etSubject = findViewById(R.id.etSubject);
         etMessage = findViewById(R.id.etMessage);
         btnSubmitFeedback = findViewById(R.id.btnSubmitFeedback);
+        btnViewMyFeedback = findViewById(R.id.btnViewMyFeedback);
 
         btnSubmitFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +61,37 @@ public class FeedbackActivity extends BaseActivity {
                 submitFeedback();
             }
         });
+
+        btnViewMyFeedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(FeedbackActivity.this, MyFeedbackActivity.class));
+            }
+        });
+
+        // Check if user has any feedback with responses
+        if (mAuth.getCurrentUser() != null) {
+            String userId = mAuth.getCurrentUser().getUid();
+            mDatabase.child("feedback")
+                    .orderByChild("userId")
+                    .equalTo(userId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            boolean hasResponses = false;
+                            for (DataSnapshot snapshot : task.getResult().getChildren()) {
+                                FeedbackMsg feedback = snapshot.getValue(FeedbackMsg.class);
+                                if (feedback != null && !feedback.getResponse().isEmpty()) {
+                                    hasResponses = true;
+                                    break;
+                                }
+                            }
+                            btnViewMyFeedback.setVisibility(hasResponses ? View.VISIBLE : View.GONE);
+                        }
+                    });
+        } else {
+            btnViewMyFeedback.setVisibility(View.GONE);
+        }
     }
 
     private void prefillUserInfo() {

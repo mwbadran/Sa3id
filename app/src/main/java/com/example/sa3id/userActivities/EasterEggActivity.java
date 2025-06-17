@@ -39,7 +39,7 @@ public class EasterEggActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_easter_egg);
 
-        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         View rootView = findViewById(android.R.id.content);
         catImage = findViewById(R.id.cat_image);
 

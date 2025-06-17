@@ -1,4 +1,4 @@
-package com.example.sa3id.userActivities;
+package com.example.sa3id.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;

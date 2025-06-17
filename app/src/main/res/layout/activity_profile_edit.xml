@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true"
     android:layoutDirection="rtl"
     android:background="@drawable/board_bg"
-    tools:context=".userActivities.ProfileEdit">
+    tools:context=".userActivities.ProfileEditActivity">
 
     <include layout="@layout/navigation_layout" />
 

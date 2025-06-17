@@ -1,5 +1,6 @@
 package com.example.sa3id.userActivities;
 
+import static com.example.sa3id.Constants.FIREBASE_REALTIME_LINK;
 import static com.example.sa3id.adapters.AnnouncementAdapter.openAnnouncementAsActivity;
 
 import android.content.SharedPreferences;
@@ -13,8 +14,11 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
@@ -23,28 +27,32 @@ import com.example.sa3id.adapters.AnnouncementAdapter;
 import com.example.sa3id.BaseActivity;
 import com.example.sa3id.R;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MainActivity extends BaseActivity {
 
-
     SharedPreferences announcementsSP, userDetailsSP;
     SharedPreferences.Editor annoucementsEditor, userDetailsEditor;
-
     ListView announcementsListView;
     ArrayList<Announcement> announcementsList;
     AnnouncementAdapter adapter;
-
-    LinearLayout announcementsButton, calenderButton, uploadMaterialsButton, examsButton, materialsButton, booksButton, contactUsButton, calculatorButton, whatsappButton, donateButton;
+    ProgressBar progressBar;
+    DatabaseReference databaseReference;
     NavigationView navigationView;
     GridLayout gridLayout;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         // Initialize SharedPreferences and editor
         announcementsSP = getSharedPreferences("AnnouncementsSP", MODE_PRIVATE);
@@ -52,184 +60,110 @@ public class MainActivity extends BaseActivity {
         userDetailsSP = getSharedPreferences("UserDetailsSP", MODE_PRIVATE);
         userDetailsEditor = userDetailsSP.edit();
 
+        // Initialize Firebase
+        databaseReference = FirebaseDatabase.getInstance(FIREBASE_REALTIME_LINK)
+            .getReference("announcements");
+
         initViews();
-
         populateGridLayout();
-
-        saveAnnouncementsToSP();
+        loadAnnouncements();
     }
 
     private void initViews() {
-
         navigationView = findViewById(R.id.nav_view);
         gridLayout = findViewById(R.id.grid_layout);
-
+        progressBar = findViewById(R.id.progressBar);
 
         announcementsListView = findViewById(R.id.announcementsListView);
         announcementsList = new ArrayList<>();
-        announcementsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                openAnnouncementAsActivity(MainActivity.this, announcementsList.get(i).getTitle(),announcementsList.get(i).getDescription(),announcementsList.get(i).getImageResource());
-            }
-        });
-
-        int abedwRevenge = R.drawable.abedw_revenge;
-        int nizarImage = R.drawable.nizar;
-        int abedwImage = R.drawable.abedw_skillz;
-        int abedwomarImage = R.drawable.abedwomar;
-        int wa7sh = R.drawable.a7madnaddaf;
-
-        //announcementsList.add(new Announcement("أطمستم هويتي بعد ظلمي!", "هذا ما قاله الشاعر والزمار الكبير عبد الرحمن بعد ما برز شخص ينفخ في اليرغول في اليوم التراثي في مدرسة جت الثانوية، وضح الشاعر والزمار الكبير عبد الرحمن من خلال حديثه ان بعد ظلمه من ناحية التطوع ومن ناحية المهمة التطبيقية وضح ان تم طمس هويته من خلال ظهور الزمار في اليوم تراث، غرد الزمار والشاعر الكبير عبد الرحمن خارج السرب", abedwRevenge));
-
-        announcementsList.add(new Announcement("ظلم في تصليح بجروت علم الحاسوب: طلاب يعانون من إجراءات غير عادلة", "واجه الطالب عمر محمد وتد ظلماً واضحاً في تصليح امتحان بجروت علم الحاسوب، حيث شعر أن درجاته لم تعكس جهوده وأدائه الفعلي في الامتحان. امتحان بجروت علم الحاسوب (رقم 899271) للصف الثاني عشر،  هذه الحالات تسلط الضوء على التحديات التي يواجهها الطلاب في النظام التعليمي وتأثيرها على مستقبلهم الأكاديمي.", abedwomarImage));
-        announcementsList.add(new Announcement("عبد الرحمن نمر وتد وظُلمه في المهمة التطبيقية لبجروت المدنيات", "عبد الرحمن نمر وتد، طالب مجتهد تعرض لظلم واضح في المهمة التطبيقية لبجروت المدنيات الداخلي، والتي كان من المفترض أن تكون أسهل من الامتحان الخارجي. تحت إشراف الأستاذ نزار غرة، حصل عبد الرحمن على علامة 85، وهي أقل بكثير من زملائه في المجموعة الذين حصلوا على 95، دون أي مبرر واضح لهذا الفارق. لم يكن عبد الرحمن الوحيد الذي شعر بالظلم، إذ يعاني العديد من الطلاب الآخرين من التمييز في العلامات، في ما يبدو أنه تفريق على أساس المحاباة والانحياز الشخصي.", nizarImage));
-        announcementsList.add(new Announcement("الطالب عبد الرحمن نمر وتد يحقق إنجازاً غير مسبوق في بجروت الأدب", "حقق الطالب عبد الرحمن نمر وتد إنجازاً استثنائياً في امتحان بجروت الأدب المصيري، حيث أحرز علامة 95، وهي علامة غير مسبوقة على مستوى المنطقة والمدرسة. يعتبر هذا النجاح تقديراً لجهوده الكبيرة في مواجهة تحديات هذا الموضوع الصعب، ويستحق تكريماً خاصاً نظراً للتفوق والتميز الذي أظهره.", abedwImage));
-        announcementsList.add(new Announcement(" شاهد قبل الحذف: سرقة هاتف من شخص هام في المجتمع ", "أبو وسام سرق تلفون أبو أحمد وأرسل صورة الضفدع مع حمد ونشرها على قوقل" , wa7sh));
-
-        //show only latest 2 items
-        ArrayList<Announcement> filteredAnnouncements = new ArrayList<>();
-        int size = announcementsList.size();
-        if (size > 2) {
-            filteredAnnouncements.add(announcementsList.get(1));
-            filteredAnnouncements.add(announcementsList.get(0));
-        } else {
-            filteredAnnouncements.addAll(announcementsList);
-        }
-
-        adapter = new AnnouncementAdapter(this, 0, 0, filteredAnnouncements);
-        announcementsListView.setAdapter(adapter);
-
-        announcementsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Toast.makeText(MainActivity.this,"i love shrek", Toast.LENGTH_SHORT).show();
-//                DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://sa3idsite-default-rtdb.europe-west1.firebasedatabase.app").getReference("Users");
-//                databaseReference.child("ssssss").setValue("shrek");
-
-            }
-        });
-
-
-    }
-
-    private void initMenuButtonsListeners() {
-//        announcementsButton = findViewById(R.id.arabic_button);
-//        calenderButton = findViewById(R.id.english_button);
-//        //examsButton = findViewById(R.id.exams_bank_button);
-//        materialsButton = findViewById(R.id.materials_page_button);
-//        booksButton = findViewById(R.id.our_books_button);
-//        uploadMaterialsButton = findViewById(R.id.upload_materials_button);
-//        contactUsButton = findViewById(R.id.contact_us_button);
-//        calculatorButton = findViewById(R.id.grades_calculator_button);
-//        whatsappButton = findViewById(R.id.whatsapp_groups_button);
-//        donateButton = findViewById(R.id.donate_button);
-
-//        announcementsButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                navigationView.getMenu().performIdentifierAction(R.id.nav_annoucements, 0);
-//            }
-//        });
-//
-//        calculatorButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                navigationView.getMenu().performIdentifierAction(R.id.nav_calender, 0);
-//            }
-//        });
-//
-//        uploadMaterialsButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                navigationView.getMenu().performIdentifierAction(R.id.nav_upload_materials, 0);
-//            }
-//        });
-//
-////        examsButton.setOnClickListener(new View.OnClickListener() {
-////            @Override
-////            public void onClick(View v) {
-////                navigationView.getMenu().performIdentifierAction(R.id.nav_exams_bank, 0);
-////            }
-////        });
-//
-//        materialsButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                navigationView.getMenu().performIdentifierAction(R.id.nav_materials, 0);
-//
-//            }
-//        });
-//
-//        booksButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                navigationView.getMenu().performIdentifierAction(R.id.nav_our_books, 0);
-//            }
-//        });
-//
-//        contactUsButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                navigationView.getMenu().performIdentifierAction(R.id.nav_contact_us, 0);
-//            }
-//        });
-//
-//        calculatorButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                navigationView.getMenu().performIdentifierAction(R.id.nav_grades_calculator, 0);
-//            }
-//        });
-//
-//        whatsappButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                navigationView.getMenu().performIdentifierAction(R.id.nav_whatsapp_groups, 0);
-//            }
-//        });
-//
-//        donateButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                navigationView.getMenu().performIdentifierAction(R.id.nav_donate, 0);
-//            }
-//        });
-
-
-    }
-
-    private void saveAnnouncementsToSP() {
-        // Store the number of announcements
-        annoucementsEditor.putInt("announcementCount", announcementsList.size());
-
-        // Store each announcement individually
-        for (int i = 0; i < announcementsList.size(); i++) {
+        announcementsListView.setOnItemClickListener((adapterView, view, i, position) -> {
             Announcement announcement = announcementsList.get(i);
-            annoucementsEditor.putString("announcement_title_" + i, announcement.getTitle());
-            annoucementsEditor.putString("announcement_description_" + i, announcement.getDescription());
-            annoucementsEditor.putInt("announcement_image_" + i, announcement.getImageResource());
-        }
-
-        annoucementsEditor.apply();
+            if (announcement.isLocal()) {
+                openAnnouncementAsActivity(MainActivity.this, 
+                    announcement.getTitle(),
+                    announcement.getDescription(),
+                    announcement.getImageResource());
+            } else {
+                openAnnouncementAsActivity(MainActivity.this,
+                    announcement.getTitle(),
+                    announcement.getDescription(),
+                    announcement.getImageUrl());
+            }
+        });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void loadAnnouncements() {
+        progressBar.setVisibility(View.VISIBLE);
+        
+        // Query Firebase for latest 2 announcements
+        Query query = databaseReference.orderByChild("timestamp").limitToLast(2);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Announcement> firebaseAnnouncements = new ArrayList<>();
+                
+                for (DataSnapshot announcementSnapshot : snapshot.getChildren()) {
+                    Announcement announcement = announcementSnapshot.getValue(Announcement.class);
+                    if (announcement != null) {
+                        firebaseAnnouncements.add(announcement);
+                    }
+                }
 
-        //tvEmail.setText(userDetailsSP.getString("userEmail", "Guest"));
+                // Sort Firebase announcements by timestamp (newest first)
+                firebaseAnnouncements.sort((a1, a2) ->
+                        a2.getTimestamp().compareTo(a1.getTimestamp()));
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        for (int i = 0; i < navigationView.getMenu().size(); i++) {
-            navigationView.getMenu().getItem(i).setChecked(false);
-        }
+                // If we have less than 2 Firebase announcements, get the rest from local storage
+                if (firebaseAnnouncements.size() < 2) {
+                    ArrayList<Announcement> localAnnouncements = getLocalAnnouncements();
+                    int remainingCount = 2 - firebaseAnnouncements.size();
+                    
+                    // Add local announcements until we have 2 total
+                    for (int i = 0; i < Math.min(remainingCount, localAnnouncements.size()); i++) {
+                        firebaseAnnouncements.add(localAnnouncements.get(i));
+                    }
+                }
+
+                // Update the UI with the combined announcements
+                announcementsList.clear();
+                announcementsList.addAll(firebaseAnnouncements);
+                adapter = new AnnouncementAdapter(MainActivity.this, 0, 0, announcementsList);
+                announcementsListView.setAdapter(adapter);
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, 
+                    "فشل في تحميل الإعلانات: " + error.getMessage(), 
+                    Toast.LENGTH_SHORT).show();
+                // Fall back to local announcements
+                loadLocalAnnouncements();
+                progressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private ArrayList<Announcement> getLocalAnnouncements() {
+        ArrayList<Announcement> localAnnouncements = new ArrayList<>();
+        int count = announcementsSP.getInt("announcementCount", 0);
 
+        for (int i = 0; i < count; i++) {
+            String title = announcementsSP.getString("announcement_title_" + i, "");
+            String description = announcementsSP.getString("announcement_description_" + i, "");
+            int imageResource = announcementsSP.getInt("announcement_image_" + i, R.drawable.ic_image);
+            localAnnouncements.add(new Announcement(title, description, imageResource));
+        }
+
+        return localAnnouncements;
+    }
+
+    private void loadLocalAnnouncements() {
+        ArrayList<Announcement> localAnnouncements = getLocalAnnouncements();
+        announcementsList.clear();
+        announcementsList.addAll(localAnnouncements);
+        adapter = new AnnouncementAdapter(MainActivity.this, 0, 0, announcementsList);
+        announcementsListView.setAdapter(adapter);
     }
 
     private void populateGridLayout() {
@@ -313,13 +247,13 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-
-
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Recreate the grid with updated theme colors
-        populateGridLayout();
+    protected void onResume() {
+        super.onResume();
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        for (int i = 0; i < navigationView.getMenu().size(); i++) {
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
     }
 
     @Override

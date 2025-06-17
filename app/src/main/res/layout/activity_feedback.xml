@@ -44,6 +44,8 @@
                     android:fontFamily="@font/rpt_bold"
                     android:layout_marginBottom="16dp"/>
 
+
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -148,7 +150,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="البريد الإلكتروني"
-                                android:textColor="@color/white"
+                                android:textColor="@color/gray"
                                 android:textSize="16sp"
                                 android:fontFamily="@font/rpt_bold"
                                 android:inputType="textEmailAddress"/>
@@ -220,8 +222,26 @@
                 </androidx.cardview.widget.CardView>
 
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnViewMyFeedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="عرض استفساراتي السابقة"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/rpt_bold"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="?attr/colorDynamic"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:drawableEnd="@drawable/baseline_history_24"
+                    app:iconGravity="textStart"
+                    app:iconTint="?android:attr/textColorPrimary"
+                    android:layout_marginBottom="16dp"/>
+
             </LinearLayout>
         </ScrollView>
+
+
+
     </LinearLayout>
 
     <include

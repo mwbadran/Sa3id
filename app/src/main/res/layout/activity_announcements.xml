@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="end"
     android:layoutDirection="rtl"
-    tools:context=".userActivities.Announcements"
+    tools:context=".userActivities.AnnouncementsActivity"
     >
 
     <include layout="@layout/navigation_layout"/>
@@ -45,14 +45,28 @@
                     android:fontFamily="@font/rpt_bold"
                     />
 
-                <ListView
-                    android:id="@+id/announcementsListView"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="16dp"
-                    android:divider="@android:color/transparent"
-                    android:dividerHeight="5dp"
-                    />
+                    android:layout_height="match_parent">
+
+                    <ListView
+                        android:id="@+id/announcementsListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="16dp"
+                        android:divider="@android:color/transparent"
+                        android:dividerHeight="5dp"
+                        />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        />
+
+                </FrameLayout>
 
             </LinearLayout>
 

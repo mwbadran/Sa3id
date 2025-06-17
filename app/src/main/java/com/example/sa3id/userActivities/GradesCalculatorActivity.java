@@ -9,7 +9,7 @@ import com.example.sa3id.fragments.SingleGradeFragment;
 import com.example.sa3id.fragments.TotalBagrutFragment;
 import com.google.android.material.tabs.TabLayout;
 
-public class GradesCalculator extends BaseActivity {
+public class GradesCalculatorActivity extends BaseActivity {
     private TabLayout tabLayout;
     private Fragment totalBagrutFragment;
     private Fragment singleGradeFragment;

@@ -40,7 +40,7 @@ public class MaterialsChooseActivity extends BaseActivity {
         arabicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, MaterialsPage.class);
+                Intent intent = new Intent(context, MaterialsActivity.class);
                 intent.putExtra("rootFolderId", Constants.driveArabic);
                 startActivity(intent);
             }
@@ -49,7 +49,7 @@ public class MaterialsChooseActivity extends BaseActivity {
         englishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, MaterialsPage.class);
+                Intent intent = new Intent(context, MaterialsActivity.class);
                 intent.putExtra("rootFolderId", Constants.driveEnglish);
                 startActivity(intent);
             }
@@ -58,7 +58,7 @@ public class MaterialsChooseActivity extends BaseActivity {
         electronicsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MaterialsPage.class);
+                Intent intent = new Intent(context, MaterialsActivity.class);
         intent.putExtra("rootFolderId", Constants.driveBiology); // Replace TargetActivity with the actual target Activity
                 intent.putExtra("rootFolderId", Constants.driveElectronics);
                 startActivity(intent);
@@ -68,7 +68,7 @@ public class MaterialsChooseActivity extends BaseActivity {
         electricityPhysicsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MaterialsPage.class);
+                Intent intent = new Intent(context, MaterialsActivity.class);
                 intent.putExtra("rootFolderId", Constants.driveElectricity);
                 startActivity(intent);
             }
@@ -77,7 +77,7 @@ public class MaterialsChooseActivity extends BaseActivity {
         mechanicsPhysicsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MaterialsPage.class);
+                Intent intent = new Intent(context, MaterialsActivity.class);
                 intent.putExtra("rootFolderId", Constants.driveMechanics);
                 startActivity(intent);
             }
@@ -86,7 +86,7 @@ public class MaterialsChooseActivity extends BaseActivity {
         mathButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MaterialsPage.class);
+                Intent intent = new Intent(context, MaterialsActivity.class);
                 intent.putExtra("rootFolderId", Constants.driveMath);
                 startActivity(intent);
             }
@@ -95,7 +95,7 @@ public class MaterialsChooseActivity extends BaseActivity {
         hebrewLanguageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MaterialsPage.class);
+                Intent intent = new Intent(context, MaterialsActivity.class);
                 intent.putExtra("rootFolderId", Constants.driveHebrew);
                 startActivity(intent);
             }
@@ -104,7 +104,7 @@ public class MaterialsChooseActivity extends BaseActivity {
         historyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MaterialsPage.class);
+                Intent intent = new Intent(context, MaterialsActivity.class);
                 intent.putExtra("rootFolderId", Constants.driveHistory);
                 startActivity(intent);
             }
@@ -113,7 +113,7 @@ public class MaterialsChooseActivity extends BaseActivity {
         civicsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MaterialsPage.class);
+                Intent intent = new Intent(context, MaterialsActivity.class);
                 intent.putExtra("rootFolderId", Constants.driveMadanyat);
                 startActivity(intent);
             }
@@ -122,7 +122,7 @@ public class MaterialsChooseActivity extends BaseActivity {
         islamicReligionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MaterialsPage.class);
+                Intent intent = new Intent(context, MaterialsActivity.class);
                 intent.putExtra("rootFolderId", Constants.driveIslam);
                 startActivity(intent);
             }
@@ -131,7 +131,7 @@ public class MaterialsChooseActivity extends BaseActivity {
         biologyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MaterialsPage.class);
+                Intent intent = new Intent(context, MaterialsActivity.class);
                 intent.putExtra("rootFolderId", Constants.driveBiology);
                 startActivity(intent);
             }
@@ -140,7 +140,7 @@ public class MaterialsChooseActivity extends BaseActivity {
         healthScienceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MaterialsPage.class);
+                Intent intent = new Intent(context, MaterialsActivity.class);
                 intent.putExtra("rootFolderId", Constants.driveHealthScience);
                 startActivity(intent);
             }

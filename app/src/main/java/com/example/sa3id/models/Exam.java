@@ -4,11 +4,8 @@ public class Exam {
     private String examId;
     private String examName;
     private String startHour;
-    private String endHour;
     private String duration;
-    private String endHour25;
-    private String endHour33;
-    private String endHour50;
+    private String endHour, endHour25, endHour33, endHour50;
     private String date;
     private String subject;
 

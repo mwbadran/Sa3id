@@ -16,6 +16,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.bumptech.glide.Glide;
 import com.example.sa3id.adminActivities.ControlPanel;
+import com.example.sa3id.dialogs.CustomAlertDialog;
 import com.example.sa3id.models.User;
 import com.example.sa3id.userActivities.*;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -130,44 +131,44 @@ public abstract class BaseActivity extends AppCompatActivity {
             return;
         }
 
-        if (itemId == R.id.nav_annoucements && !(this instanceof Announcements)) {
-            startActivity(new Intent(context, Announcements.class));
+        if (itemId == R.id.nav_annoucements && !(this instanceof AnnouncementsActivity)) {
+            startActivity(new Intent(context, AnnouncementsActivity.class));
             finish();
         } else if (itemId == R.id.nav_home && !(this instanceof MainActivity)) {
             startActivity(new Intent(context, MainActivity.class));
             finish();
-        } else if (itemId == R.id.nav_upload_materials && !(this instanceof UploadMaterials)) {
-            startActivity(new Intent(context, UploadMaterials.class));
+        } else if (itemId == R.id.nav_upload_materials && !(this instanceof UploadMaterialsActivity)) {
+            startActivity(new Intent(context, UploadMaterialsActivity.class));
             finish();
-        } else if (itemId == R.id.nav_our_books && !(this instanceof OurBooks)) {
-            startActivity(new Intent(context, OurBooks.class));
+        } else if (itemId == R.id.nav_our_books && !(this instanceof OurBooksActivity)) {
+            startActivity(new Intent(context, OurBooksActivity.class));
             finish();
         } else if (itemId == R.id.nav_materials && !(this instanceof MaterialsChooseActivity)) {
             startActivity(new Intent(context, MaterialsChooseActivity.class));
             finish();
-        } else if (itemId == R.id.nav_exams_calendar && !(this instanceof ExamsCalendar)) {
-            startActivity(new Intent(context, ExamsCalendar.class));
+        } else if (itemId == R.id.nav_exams_calendar && !(this instanceof CalendarActivity)) {
+            startActivity(new Intent(context, CalendarActivity.class));
             finish();
         } else if (itemId == R.id.nav_exams && !(this instanceof ExamsActivity)) {
             startActivity(new Intent(context, ExamsActivity.class));
             finish();
-        } else if (itemId == R.id.nav_settings && !(this instanceof UserSettings)) {
-            startActivity(new Intent(context, UserSettings.class));
+        } else if (itemId == R.id.nav_settings && !(this instanceof UserSettingsActivity)) {
+            startActivity(new Intent(context, UserSettingsActivity.class));
             finish();
         } else if (itemId == R.id.nav_contact_us && !(this instanceof FeedbackActivity)) {
             startActivity(new Intent(context, FeedbackActivity.class));
             finish();
-        } else if (itemId == R.id.nav_about_us && !(this instanceof AboutPage)) {
-            startActivity(new Intent(context, AboutPage.class));
+        } else if (itemId == R.id.nav_about_us && !(this instanceof AboutActivity)) {
+            startActivity(new Intent(context, AboutActivity.class));
             finish();
-        } else if (itemId == R.id.nav_grades_calculator && !(this instanceof GradesCalculator)) {
-            startActivity(new Intent(context, GradesCalculator.class));
+        } else if (itemId == R.id.nav_grades_calculator && !(this instanceof GradesCalculatorActivity)) {
+            startActivity(new Intent(context, GradesCalculatorActivity.class));
             finish();
-        } else if (itemId == R.id.nav_donate && !(this instanceof Donate)) {
-            startActivity(new Intent(context, Donate.class));
+        } else if (itemId == R.id.nav_donate && !(this instanceof DonateActivity)) {
+            startActivity(new Intent(context, DonateActivity.class));
             finish();
-        } else if (itemId == R.id.nav_whatsapp_groups && !(this instanceof WhatsappGroups)) {
-            startActivity(new Intent(context, WhatsappGroups.class));
+        } else if (itemId == R.id.nav_whatsapp_groups && !(this instanceof WhatsappGroupsActivity)) {
+            startActivity(new Intent(context, WhatsappGroupsActivity.class));
             finish();
         }
     }
@@ -221,7 +222,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
                 //Toast.makeText(this, user.getUsername(), Toast.LENGTH_SHORT).show();
-                setCredentials(user.getUsername(), user.getEmail(), user.getProfilePic());
+                setCredentials(user.getUsername(), user.getEmail(), user.getProfilePicUrl());
 
                 if (Boolean.TRUE.equals(documentSnapshot.getBoolean("admin"))) {
                     //Toast.makeText(getApplicationContext(), "Logged in as admin", Toast.LENGTH_SHORT).show();
@@ -244,12 +245,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void setupBottomSheetListeners() {
         //Buttonsw
         btnSignIn.setOnClickListener(view -> {
-            startActivity(new Intent(getApplicationContext(), SignIn.class));
+            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         });
 
         btnSignUp.setOnClickListener(view -> {
-            startActivity(new Intent(getApplicationContext(), SignUp.class));
+            startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         });
 
@@ -282,7 +283,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         llUserSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(context, UserSettings.class));
+                startActivity(new Intent(context, UserSettingsActivity.class));
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
         });
@@ -296,7 +297,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                     dialog.show("يرجى تسجيل الدخول أولاً", R.drawable.baseline_error_24);
                     return;
                 }
-                Intent intent = new Intent(this, ProfileEdit.class);
+                Intent intent = new Intent(this, ProfileEditActivity.class);
                 startActivity(intent);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             });

@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Stack;
 
 
-public class MaterialsPage extends BaseActivity {
+public class MaterialsActivity extends BaseActivity {
 
     private String rootFolder = "1b6dJPYVzU0ZGO9Zlj7De2GDRwzpNf4NT";
     private static final int REQUEST_CODE_SIGN_IN = 1;

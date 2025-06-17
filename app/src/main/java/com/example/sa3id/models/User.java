@@ -1,10 +1,16 @@
 package com.example.sa3id.models;
 
+import com.google.firebase.firestore.Exclude;
+
 public class User {
     private String username;
     private String email;
-    private final boolean isAdmin;
-    private String profilePic;
+    private boolean isAdmin;
+    private String profilePicUrl;
+
+    public User() {
+        // Required empty constructor for Firestore
+    }
 
     public User(String username, String email) {
         this.username = username;
@@ -12,30 +18,13 @@ public class User {
         this.isAdmin = false;
     }
 
-    public User(String username, String email, String profilePic) {
+    public User(String username, String email, String profilePicUrl) {
         this.username = username;
         this.email = email;
         this.isAdmin = false;
-        this.profilePic = profilePic;
+        this.profilePicUrl = profilePicUrl;
     }
 
-    public User() {
-        this.isAdmin = false;
-    }
-
-    public String getProfilePic() {
-        return profilePic;
-    }
-
-    public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
-    }
-
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    // Getter and Setter methods
     public String getUsername() {
         return username;
     }
@@ -50,6 +39,22 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+    public String getProfilePicUrl() {
+        return profilePicUrl;
+    }
+
+    public void setProfilePicUrl(String profilePicUrl) {
+        this.profilePicUrl = profilePicUrl;
     }
 }
 

@@ -13,8 +13,7 @@ public class FeedbackMsg {
     private String respondedBy;
     private String responseTimestamp;
 
-    public FeedbackMsg() {
-    }
+    public FeedbackMsg() {}
 
     public FeedbackMsg(String id, String userId, String name, String email, String subject, String message, String timestamp, String status, String response, String respondedBy, String responseTimestamp) {
         this.id = id;

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.bumptech.glide.Glide;
 import com.example.sa3id.BaseActivity;
+import com.example.sa3id.dialogs.CustomAlertDialog;
 import com.example.sa3id.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -30,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class ProfileEdit extends BaseActivity {
+public class ProfileEditActivity extends BaseActivity {
 
     private ImageView profilePicture;
     private FloatingActionButton fabEditPicture;
@@ -48,7 +49,6 @@ public class ProfileEdit extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // Initialize Firebase components
         firestore = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();

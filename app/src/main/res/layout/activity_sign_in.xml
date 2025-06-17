@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:layoutDirection="rtl"
-    tools:context=".userActivities.SignIn"
+    tools:context=".userActivities.SignInActivity"
     android:background="@drawable/board_bg">
 
     <View

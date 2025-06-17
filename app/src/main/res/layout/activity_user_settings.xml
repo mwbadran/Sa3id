@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:layoutDirection="rtl"
-    tools:context=".userActivities.UserSettings"
+    tools:context=".userActivities.UserSettingsActivity"
     tools:openDrawer="end">
 
     <include layout="@layout/navigation_layout" />

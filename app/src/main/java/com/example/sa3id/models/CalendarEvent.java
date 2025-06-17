@@ -4,11 +4,10 @@ public class CalendarEvent {
     private String eventId;
     private String title;
     private String date;
-    private String type; // "event" or "holiday"
-    private String addedBy; // User ID who added the event
+    private String type;
+    private String addedBy;
 
-    public CalendarEvent() {
-    }
+    public CalendarEvent() {}
 
     public CalendarEvent(String eventId, String title, String date, String type, String addedBy) {
         this.eventId = eventId;

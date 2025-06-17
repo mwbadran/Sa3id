@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="end"
     android:layoutDirection="rtl"
-    tools:context=".userActivities.Donate"
+    tools:context=".userActivities.DonateActivity"
     >
 
     <include layout="@layout/navigation_layout"/>

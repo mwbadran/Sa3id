@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sa3id.BaseActivity;
+import com.example.sa3id.dialogs.CustomAlertDialog;
 import com.example.sa3id.adapters.MaterialRequestItemAdapter;
 import com.example.sa3id.R;
 import com.example.sa3id.models.UploadRequest;
@@ -36,7 +37,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 
-public class UploadMaterials extends BaseActivity {
+public class UploadMaterialsActivity extends BaseActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
@@ -70,7 +71,7 @@ public class UploadMaterials extends BaseActivity {
         if (firebaseUser == null) {
             //AlertDialog
             Toast.makeText(this, "No user logged In!!!", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, SignIn.class));
+            startActivity(new Intent(this, SignInActivity.class));
             finish();
             return;
         }
@@ -113,7 +114,7 @@ public class UploadMaterials extends BaseActivity {
                 if (approveCheckbox.isChecked())
                     sendUploadRequest();
                 else {
-                    CustomAlertDialog dialog = new CustomAlertDialog(UploadMaterials.this);
+                    CustomAlertDialog dialog = new CustomAlertDialog(UploadMaterialsActivity.this);
                     dialog.show("الرجاء التصريح بامتلاك الصلاحة لنشر المواد", R.drawable.baseline_error_24);
                 }
             }

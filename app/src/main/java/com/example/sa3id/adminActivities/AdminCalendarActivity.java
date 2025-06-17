@@ -1,9 +1,8 @@
-package com.example.sa3id.userActivities;
+package com.example.sa3id.adminActivities;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -38,7 +37,6 @@ public class AdminCalendarActivity extends BaseActivity implements AdminCalendar
     private EditText editTextEventDescription;
     private Button buttonSelectDate;
     private TextView textViewSelectedDate;
-    private RadioGroup radioGroupEventType;
     private RadioButton radioButtonEvent;
     private RadioButton radioButtonHoliday;
     private Button buttonAddEvent;
@@ -93,7 +91,6 @@ public class AdminCalendarActivity extends BaseActivity implements AdminCalendar
         editTextEventDescription = findViewById(R.id.editTextEventDescription);
         buttonSelectDate = findViewById(R.id.buttonSelectDate);
         textViewSelectedDate = findViewById(R.id.textViewSelectedDate);
-        radioGroupEventType = findViewById(R.id.radioGroupEventType);
         radioButtonEvent = findViewById(R.id.radioButtonEvent);
         radioButtonHoliday = findViewById(R.id.radioButtonHoliday);
         buttonAddEvent = findViewById(R.id.buttonAddEvent);

@@ -69,13 +69,14 @@
                             android:textColorHint="@android:color/white"
                             android:layout_marginBottom="8dp">
 
-                            <EditText
+                            <androidx.appcompat.widget.AppCompatEditText
                                 android:id="@+id/editTextEventTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="عنوان المناسبة"
-                                android:textColor="@android:color/white"
-                                android:background="@android:drawable/edit_text"
+                                android:textColorHint="?attr/colorDynamicFlipped"
+                                android:textColor="?attr/colorDynamicFlipped"
+                                android:background="?attr/colorDynamicAlphaFlipped"
                                 android:padding="12dp"
                                 android:fontFamily="@font/rpt_bold" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -86,13 +87,14 @@
                             android:textColorHint="@android:color/white"
                             android:layout_marginBottom="8dp">
 
-                            <EditText
+                            <androidx.appcompat.widget.AppCompatEditText
                                 android:id="@+id/editTextEventDescription"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="وصف المناسبة (اختياري)"
-                                android:textColor="@android:color/white"
-                                android:background="@android:drawable/edit_text"
+                                android:textColorHint="?attr/colorDynamicFlipped"
+                                android:textColor="?attr/colorDynamicFlipped"
+                                android:background="?attr/colorDynamicAlphaFlipped"
                                 android:padding="12dp"
                                 android:minLines="2"
                                 android:fontFamily="@font/rpt_bold" />

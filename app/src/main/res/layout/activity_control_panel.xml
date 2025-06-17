@@ -32,14 +32,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp"
-                android:background="#6F000000">
+                >
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="لوحة التحكم"
                     android:textSize="28sp"
-                    android:textColor="#FFFFFF"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:fontFamily="@font/rpt_bold"
                     android:layout_marginBottom="16dp"/>
 
@@ -60,7 +60,7 @@
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="4dp"
-                        app:cardBackgroundColor="#1d1c1c"
+                        app:cardBackgroundColor="?attr/colorDynamic"
                         android:layout_marginBottom="16dp">
 
                         <LinearLayout
@@ -76,7 +76,7 @@
                                 android:src="@drawable/baseline_send_24"
                                 android:padding="8dp"
                                 android:backgroundTint="#25D366"
-                                app:tint="@color/white" />
+                                app:tint="?android:attr/textColorPrimary" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -89,7 +89,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="الرد على التعليقات"
                                     android:textSize="20sp"
-                                    android:textColor="@color/white"
+                                    android:textColor="?android:attr/textColorPrimary"
                                     android:fontFamily="@font/rpt_bold" />
 
                                 <TextView
@@ -97,7 +97,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="الرد على استفسارات وتعليقات المستخدمين"
                                     android:textSize="14sp"
-                                    android:textColor="#CCCCCC"
+                                    android:textColor="?android:attr/textColorSecondary"
                                     android:fontFamily="@font/rpt_bold" />
                             </LinearLayout>
                         </LinearLayout>
@@ -110,7 +110,7 @@
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="4dp"
-                        app:cardBackgroundColor="#1d1c1c"
+                        app:cardBackgroundColor="?attr/colorDynamic"
                         android:layout_marginBottom="16dp">
 
                         <LinearLayout
@@ -126,7 +126,7 @@
                                 android:src="@drawable/upload_materials"
                                 android:padding="8dp"
                                 android:backgroundTint="#3498DB"
-                                app:tint="@color/white" />
+                                app:tint="?android:attr/textColorPrimary" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -139,7 +139,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="فحص المواد"
                                     android:textSize="20sp"
-                                    android:textColor="@color/white"
+                                    android:textColor="?android:attr/textColorPrimary"
                                     android:fontFamily="@font/rpt_bold" />
 
                                 <TextView
@@ -147,7 +147,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="الموافقة على طلبات تحميل المواد التعليمية"
                                     android:textSize="14sp"
-                                    android:textColor="#CCCCCC"
+                                    android:textColor="?android:attr/textColorSecondary"
                                     android:fontFamily="@font/rpt_bold" />
                             </LinearLayout>
                         </LinearLayout>
@@ -160,7 +160,7 @@
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="4dp"
-                        app:cardBackgroundColor="#1d1c1c"
+                        app:cardBackgroundColor="?attr/colorDynamic"
                         android:layout_marginBottom="16dp">
 
                         <LinearLayout
@@ -176,7 +176,7 @@
                                 android:src="@drawable/baseline_people_24"
                                 android:padding="8dp"
                                 android:backgroundTint="#9B59B6"
-                                app:tint="@color/white" />
+                                app:tint="?android:attr/textColorPrimary" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -189,7 +189,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="إدارة المستخدمين"
                                     android:textSize="20sp"
-                                    android:textColor="@color/white"
+                                    android:textColor="?android:attr/textColorPrimary"
                                     android:fontFamily="@font/rpt_bold" />
 
                                 <TextView
@@ -197,7 +197,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="عرض وتعديل وإدارة حسابات المستخدمين"
                                     android:textSize="14sp"
-                                    android:textColor="#CCCCCC"
+                                    android:textColor="?android:attr/textColorSecondary"
                                     android:fontFamily="@font/rpt_bold" />
                             </LinearLayout>
                         </LinearLayout>
@@ -210,7 +210,7 @@
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="4dp"
-                        app:cardBackgroundColor="#1d1c1c"
+                        app:cardBackgroundColor="?attr/colorDynamic"
                         android:layout_marginBottom="16dp">
 
                         <LinearLayout
@@ -226,7 +226,7 @@
                                 android:src="@android:drawable/ic_dialog_alert"
                                 android:padding="8dp"
                                 android:backgroundTint="#E74C3C"
-                                app:tint="@color/white" />
+                                app:tint="?android:attr/textColorPrimary" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -239,7 +239,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="نشر الإعلانات"
                                     android:textSize="20sp"
-                                    android:textColor="@color/white"
+                                    android:textColor="?android:attr/textColorPrimary"
                                     android:fontFamily="@font/rpt_bold" />
 
                                 <TextView
@@ -247,7 +247,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="إنشاء ونشر إعلانات للمستخدمين"
                                     android:textSize="14sp"
-                                    android:textColor="#CCCCCC"
+                                    android:textColor="?android:attr/textColorSecondary"
                                     android:fontFamily="@font/rpt_bold" />
                             </LinearLayout>
                         </LinearLayout>
@@ -267,7 +267,7 @@
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="4dp"
-                        app:cardBackgroundColor="#1d1c1c"
+                        app:cardBackgroundColor="?attr/colorDynamic"
                         android:layout_marginBottom="16dp">
 
                         <LinearLayout
@@ -283,7 +283,7 @@
                                 android:src="@drawable/baseline_people_24"
                                 android:padding="8dp"
                                 android:backgroundTint="#F39C12"
-                                app:tint="@color/white" />
+                                app:tint="?android:attr/textColorPrimary" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -296,7 +296,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="إدارة امتحانات البجروت"
                                     android:textSize="20sp"
-                                    android:textColor="@color/white"
+                                    android:textColor="?android:attr/textColorPrimary"
                                     android:fontFamily="@font/rpt_bold" />
 
                                 <TextView
@@ -304,7 +304,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="عرض وتنظيم امتحانات البجروت"
                                     android:textSize="14sp"
-                                    android:textColor="#CCCCCC"
+                                    android:textColor="?android:attr/textColorSecondary"
                                     android:fontFamily="@font/rpt_bold" />
                             </LinearLayout>
                         </LinearLayout>
@@ -317,7 +317,7 @@
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="4dp"
-                        app:cardBackgroundColor="#1d1c1c"
+                        app:cardBackgroundColor="?attr/colorDynamic"
                         android:layout_marginBottom="16dp">
 
                         <LinearLayout
@@ -330,10 +330,10 @@
                             <ImageView
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:src="@android:drawable/ic_menu_my_calendar"
+                                android:src="@drawable/baseline_edit_calendar_24"
                                 android:padding="8dp"
                                 android:backgroundTint="#2ECC71"
-                                app:tint="@color/white" />
+                                app:tint="?android:attr/textColorPrimary" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -346,7 +346,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="إدارة التقويم والمناسبات"
                                     android:textSize="20sp"
-                                    android:textColor="@color/white"
+                                    android:textColor="?android:attr/textColorPrimary"
                                     android:fontFamily="@font/rpt_bold" />
 
                                 <TextView
@@ -354,7 +354,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="إضافة وتعديل المناسبات والعطل في التقويم"
                                     android:textSize="14sp"
-                                    android:textColor="#CCCCCC"
+                                    android:textColor="?android:attr/textColorSecondary"
                                     android:fontFamily="@font/rpt_bold" />
                             </LinearLayout>
                         </LinearLayout>

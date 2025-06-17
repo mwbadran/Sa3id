@@ -1,11 +1,14 @@
 package com.example.sa3id.models;
 
-public class DriveMaterial {
+public class
+DriveMaterial {
     private String title;
     private String type, arabicType;
     private int iconResId;
     private String url;
     private String id;
+
+    public DriveMaterial() {}
 
     public DriveMaterial(String title, String type, int iconResId) {
         this.title = title;
@@ -29,8 +32,6 @@ public class DriveMaterial {
     public void setArabicType(String arabicType) {
         this.arabicType = arabicType;
     }
-
-    public DriveMaterial() {}
 
     public void setTitle(String title) {
         this.title = title;

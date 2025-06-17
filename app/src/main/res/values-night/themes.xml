@@ -9,5 +9,6 @@
         <item name="colorDynamic">@color/dark_background</item>
         <item name="colorDynamicAlpha">@color/dark_background_alpha</item>
         <item name="colorDynamicFlipped">@color/light_background</item>
+        <item name="colorDynamicAlphaFlipped">@color/light_background_alpha</item>
     </style>
 </resources>

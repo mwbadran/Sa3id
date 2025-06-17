@@ -1,0 +1,102 @@
+Sa3id App Features and Files
+
+1. User Authentication System
+   - SignInActivity.java + activity_sign_in.xml
+   - SignUpActivity.java + activity_sign_up.xml
+   - GoogleSignUpActivity.java + activity_google_sign_up.xml
+   - ProfileEditActivity.java + activity_profile_edit.xml
+   - User.java (model)
+   - dialog_email_input.xml
+   - EmailInputDialog.java
+   - dropdown_item.xml
+
+2. Bagrut Exam Management
+   - ExamsActivity.java + activity_exams.xml
+   - ExamsCalendarActivity.java + activity_exams_calendar.xml
+   - ChooseBagrutsActivity.java + activity_choose_bagruts.xml
+   - Exam.java (model)
+   - ExamAdapter.java
+   - ExamNotificationReceiver.java
+   - fragment_extra_time_selection.xml
+   - ExtraTimeSelectionFragment.java
+   - item_exam.xml
+   - subject_selector_item.xml
+
+3. Study Materials System
+   - MaterialsActivity.java + activity_materials_page.xml
+   - MaterialsChooseActivity.java + activity_materials_choose.xml
+   - UploadMaterialsActivity.java + activity_upload_materials.xml
+   - MaterialsCheckActivity.java + activity_materials_check.xml
+   - DriveMaterial.java (model)
+   - UploadRequest.java (model)
+   - DriveMaterialAdapter.java
+   - MaterialRequestItemAdapter.java
+   - material_request_item_layout.xml
+   - drive_material_layout.xml
+   - item_material_check.xml
+   - dialog_sector_curriculum.xml
+
+4. Grades Calculator
+   - GradesCalculatorActivity.java + activity_grades_calculator.xml
+   - SubjectGradeView.java + view_subject_grade.xml
+   - TotalBagrutFragment.java + fragment_total_bagrut.xml
+   - SingleGradeFragment.java + fragment_single_grade.xml
+
+5. Announcements System
+   - AnnouncementsActivity.java + activity_annoucements.xml
+   - AnnouncementViewActivity.java + activity_announcement_view.xml
+   - MakeAnnouncementsActivity.java + activity_make_announcements.xml
+   - Announcement.java (model)
+   - AnnouncementAdapter.java
+   - announcement_layout.xml
+   - dialog_expanded_image.xml
+
+6. WhatsApp Groups
+   - WhatsappGroupsActivity.java + activity_whatsapp_groups.xml
+
+7. User Settings
+   - UserSettingsActivity.java + activity_user_settings.xml
+   - SettingsFragment.java + fragment_settings.xml
+   - ThemeSelectionFragment.java + fragment_theme_selection.xml
+
+8. Feedback System
+   - FeedbackActivity.java + activity_feedback.xml
+   - FeedbackRespondActivity.java + activity_feedback_respond.xml
+   - FeedbackMsg.java (model)
+   - item_feedback.xml
+
+9. Admin Control Panel
+   - ControlPanel.java + activity_control_panel.xml
+   - AdminCalendarActivity.java + activity_admin_calendar.xml
+   - AdminCalendarEventAdapter.java
+   - item_admin_calendar_event.xml
+
+10. Calendar System
+    - CalenderActivity.java + activity_calender.xml
+    - CalendarEvent.java (model)
+    - CalendarEventAdapter.java
+    - item_calendar_event.xml
+
+11. Book Management
+    - OurBooksActivity.java + activity_our_books.xml
+
+12. Donation System
+    - DonateActivity.java + activity_donate.xml
+
+13. About & Information
+    - AboutActivity.java + activity_about_page.xml
+
+14. Easter Egg Feature
+    - EasterEggActivity.java + activity_easter_egg.xml
+
+15. Base Components
+    - MainActivity.java + activity_main.xml
+    - BaseActivity.java + toolbar_layout.xml
+    - CustomAlertDialog.java + dialog_custom.xml
+    - Constants.java
+    - BagrutSubjectCategory.java
+    - BagrutSubject.java (model)
+    - bottomsheetlayout.xml
+    - navigation_layout.xml
+    - bottom_sheet_to_include.xml
+    - header.xml 

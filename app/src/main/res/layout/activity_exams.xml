@@ -38,18 +38,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/btnTestNotification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:backgroundTint="?attr/colorDynamicFlipped"
-                android:fontFamily="@font/rpt_bold"
-                android:text="اختبار الإشعارات"
-                android:textColor="?attr/colorDynamic"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
+<!--            <Button-->
+<!--                android:id="@+id/btnTestNotification"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:backgroundTint="?attr/colorDynamicFlipped"-->
+<!--                android:fontFamily="@font/rpt_bold"-->
+<!--                android:text="اختبار الإشعارات"-->
+<!--                android:textColor="?attr/colorDynamic"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/textViewTitle" />-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewExams"
@@ -65,7 +65,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnTestNotification" />
+        />
 
             <ProgressBar
                 android:id="@+id/progressBar"

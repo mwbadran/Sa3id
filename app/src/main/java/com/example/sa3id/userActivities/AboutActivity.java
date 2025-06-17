@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.example.sa3id.BaseActivity;
 import com.example.sa3id.R;
 
-public class AboutPage extends BaseActivity {
+public class AboutActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

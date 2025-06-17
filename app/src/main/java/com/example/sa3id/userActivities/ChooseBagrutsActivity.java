@@ -18,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.example.sa3id.dialogs.CustomAlertDialog;
 import com.example.sa3id.R;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -46,11 +47,10 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
     private ChipGroup chipGroupMajors;
     private Button btnSaveSelections;
     private SwitchMaterial switchAdvancedMode;
-    private CardView cardViewMandatory, cardViewMajors, cardViewAdvanced;
-    private CardView examListContainer, sectorContainer;
+    private CardView cardViewAdvanced;
+    private CardView examListContainer;
     private LinearLayout mainContent;
     private boolean isNewCurriculum = false;
-
     private FirebaseFirestore firestore;
     private FirebaseAuth mAuth;
     private String userId;
@@ -74,17 +74,17 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
             userId = currentUser.getUid();
         } else {
             // If user is not logged in, redirect to sign in
-            startActivity(new Intent(this, SignIn.class));
+            startActivity(new Intent(this, SignInActivity.class));
             finish();
             return;
         }
 
         initViews();
         hideAllContentUntilSectorSelected();
-        
+
         // Show combined sector and curriculum dialog
         showSectorAndCurriculumDialog();
-        
+
         // Initialize default religion selection (Islam)
         List<String> defaultReligionExams = new ArrayList<>();
         defaultReligionExams.add("47111"); // 20% داخلي مراقب
@@ -101,20 +101,14 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
             List<String> religionExams = new ArrayList<>();
             if (checkedId == R.id.rbIslam) {
                 if (isNewCurriculum) {
-                    religionExams.add("47111"); // 20% داخلي مراقب
-                    religionExams.add("47183"); // 30% تقييم بديل
-                    religionExams.add("47115"); // 50% الإمتحان
-                    religionExams.add("47157"); // 100% exam without tasks
-                    religionExams.add("47158"); // Alternative full exam
+                    religionExams.add("47111");
                 } else {
-                    religionExams.add("47181"); // 70% إمتحان
-                    religionExams.add("47183"); // 30% وظيفة
+                    religionExams.add("47181");
                 }
                 selectedExams.put("דת האסלאם", religionExams);
             } else if (checkedId == R.id.rbChristian) {
-                religionExams.add("73111"); // 20% داخلي
-                religionExams.add("73183"); // 30% وظيفة
-                religionExams.add("73115"); // 50% امتحان
+                religionExams.add("73182");
+                religionExams.add("73115");
                 selectedExams.put("דת נוצרית", religionExams);
             }
 
@@ -137,8 +131,6 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
 
     private void initViews() {
         // Sector selection
-        sectorContainer = findViewById(R.id.cardViewSector);
-        rgSector = findViewById(R.id.rgSector);
         mainContent = findViewById(R.id.mainContent);
 
         // Religion selection (for Arab sector)
@@ -156,8 +148,6 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
 
         // Advanced mode
         switchAdvancedMode = findViewById(R.id.switchAdvancedMode);
-        cardViewMandatory = findViewById(R.id.cardViewMandatory);
-        cardViewMajors = findViewById(R.id.cardViewMajors);
         cardViewAdvanced = findViewById(R.id.cardViewAdvanced);
         examListContainer = findViewById(R.id.cardViewExamsList);
 
@@ -173,42 +163,40 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_sector_curriculum, null);
         builder.setView(dialogView);
-        
+
         final RadioGroup rgDialogSector = dialogView.findViewById(R.id.rgDialogSector);
         final RadioGroup rgDialogCurriculum = dialogView.findViewById(R.id.rgDialogCurriculum);
         Button btnConfirm = dialogView.findViewById(R.id.btnConfirmSelection);
-        
+
         final AlertDialog dialog = builder.create();
         dialog.setCancelable(false);
-        
+
         // Set dialog window attributes
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        
+
         btnConfirm.setOnClickListener(v -> {
             // Get sector selection
             int sectorId = rgDialogSector.getCheckedRadioButtonId();
             if (sectorId == R.id.rbDialogArab) {
                 selectedSector = "arab";
                 religionSection.setVisibility(View.VISIBLE);
-                rgSector.check(R.id.rbArab);
                 setupArabDefaults();
             } else if (sectorId == R.id.rbDialogDruze) {
                 selectedSector = "druze";
                 religionSection.setVisibility(View.GONE);
-                rgSector.check(R.id.rbDruze);
                 setupDruzeDefaults();
             }
-            
+
             // Get curriculum selection
             int curriculumId = rgDialogCurriculum.getCheckedRadioButtonId();
             isNewCurriculum = (curriculumId == R.id.rbDialogNewCurriculum);
-            
+
             // Apply selections and show main content
             addDefaultSubjectsAndExams();
             mainContent.setVisibility(View.VISIBLE);
             dialog.dismiss();
         });
-        
+
         dialog.show();
     }
 
@@ -263,13 +251,9 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
     }
 
     private void addDefaultSubjectsAndExams() {
-        // Add אזרחות (Citizenship)
+        //Mandatory Subjests
         autoSelectExamsForSubject("אזרחות");
-
-        // Add היסטוריה (History) based on sector
         autoSelectExamsForSubject("היסטוריה");
-
-        // Make sure Math, English, Arabic and Hebrew are set
         autoSelectExamsForSubject("מתמטיקה");
         autoSelectExamsForSubject("אנגלית");
         autoSelectExamsForSubject("עברית");
@@ -362,8 +346,7 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
         // Add chips for each major
         for (String major : majors) {
             // Skip subjects that are sector-specific and shouldn't be shown
-            if (selectedSector.equals("druze") &&
-                    (major.equals("דת האסלאם") || major.equals("דת נוצרית"))) {
+            if (selectedSector.equals("druze") && (major.equals("דת האסלאם") || major.equals("דת נוצרית"))) {
                 continue;
             }
             if (selectedSector.equals("arab") && major.equals("מורשת הדרוזים")) {
@@ -438,7 +421,7 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
             case "אנגלית":
                 if (selectedUnits.get("english") == 3) {
                     defaultExams.add("16381"); // 27% A
-                    defaultExams.add("16383"); // 26% תלקיט
+                    //defaultExams.add("16383"); // 26% תלקיט
                     defaultExams.add("16382"); // 27% C
                     defaultExams.add("16385"); // 20% شفهي
                 } else if (selectedUnits.get("english") == 4) {
@@ -449,7 +432,7 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
                     defaultExams.add("16486"); // Alternative iTest
                 } else if (selectedUnits.get("english") == 5) {
                     defaultExams.add("16471"); // 27% E
-                    defaultExams.add("16583"); // 26% F
+                    //defaultExams.add("16583"); // 26% F no need
                     defaultExams.add("16582"); // 27% G
                     defaultExams.add("16587"); // 20% iTest
                     defaultExams.add("16586"); // Alternative iTest
@@ -489,7 +472,7 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
                 }
                 break;
 
-            case "אזرחות":
+            case "אזרחות":
                 if (isNewCurriculum) {
                     defaultExams.add("34211"); // 17% المهمة الأولى
                     defaultExams.add("34212"); // 18% المهمة الثانية
@@ -537,10 +520,18 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
                 }
                 break;
 
+            case "מדעי המחשב":
+                defaultExams.add("899271");
+                defaultExams.add("899371");
+                break;
+
             case "אלקטרוניקה ומחשבים":
                 defaultExams.add("815381"); // 70% امتحان
                 defaultExams.add("815283"); // 30% داخلي
                 break;
+
+            default:
+                new CustomAlertDialog(ChooseBagrutsActivity.this).show("الرجاء اختيار الامتحانات الخاصة بـ" + subject + " في الاسفل", R.drawable.baseline_error_24);
         }
 
         if (!defaultExams.isEmpty()) {
@@ -591,7 +582,7 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
                 // First process all subjects except "אחר"
                 for (DataSnapshot subjectSnapshot : dataSnapshot.getChildren()) {
                     String subject = subjectSnapshot.getKey();
-                    
+
                     if ("אחר".equals(subject)) {
                         otherSnapshot = subjectSnapshot;
                         continue;
@@ -616,16 +607,13 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
                     noExamsText.setPadding(16, 16, 16, 16);
                     examListContainer.addView(noExamsText);
                 } else {
-                    Toast.makeText(ChooseBagrutsActivity.this,
-                            "Loaded " + examCount + " exams", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChooseBagrutsActivity.this, "Loaded " + examCount + " exams", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(ChooseBagrutsActivity.this,
-                        "Error loading exams: " + databaseError.getMessage(),
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChooseBagrutsActivity.this, "Error loading exams: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -649,9 +637,7 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
         // Container for exams
         LinearLayout examContainer = new LinearLayout(this);
         examContainer.setOrientation(LinearLayout.VERTICAL);
-        examContainer.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+        examContainer.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
         for (DataSnapshot dateSnapshot : subjectSnapshot.getChildren()) {
             for (DataSnapshot examSnapshot : dateSnapshot.getChildren()) {
@@ -663,11 +649,7 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
                 }
 
                 // Skip Jewish-specific exams in "אחר"
-                if (subject.equals("אחר") && (
-                        examName.contains("תנ\"ך") ||
-                                examName.contains("ספרות") ||
-                                examName.contains("מחשבת ישראל") ||
-                                examName.contains("תלמוד"))) {
+                if (subject.equals("אחר") && (examName.contains("תנ\"ך") || examName.contains("ספרות") || examName.contains("מחשבת ישראל") || examName.contains("תלמוד"))) {
                     continue;
                 }
 
@@ -677,8 +659,7 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
                 examCheckBox.setTextColor(getResources().getColor(R.color.white));
 
                 // Set checkbox state based on selectedExams
-                boolean checked = selectedExams.containsKey(subject) &&
-                        selectedExams.get(subject).contains(examId);
+                boolean checked = selectedExams.containsKey(subject) && selectedExams.get(subject).contains(examId);
                 examCheckBox.setChecked(checked);
 
                 examCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -696,9 +677,7 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
                     }
                 });
 
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 params.setMargins(0, 8, 0, 8);
                 examCheckBox.setLayoutParams(params);
                 examContainer.addView(examCheckBox);
@@ -710,8 +689,7 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
 
         // Add divider
         View divider = new View(this);
-        LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, 1);
+        LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
         dividerParams.setMargins(0, 16, 0, 16);
         divider.setLayoutParams(dividerParams);
         container.addView(divider);
@@ -723,9 +701,7 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
         if (selectedSector.equals("arab")) {
             return !subject.contains("דרוזים") && !subject.contains("יהודים");
         } else if (selectedSector.equals("druze")) {
-            return !subject.contains("ערבים") &&
-                    !subject.contains("האסלאם") &&
-                    !subject.contains("נוצרית") && !subject.contains("יהודים");
+            return !subject.contains("ערבים") && !subject.contains("האסלאם") && !subject.contains("נוצרית") && !subject.contains("יהודים");
         }
         return true;
     }
@@ -742,99 +718,79 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
         userBagruts.put("majors", selectedMajors);
 
         // Save to Firestore
-        firestore.collection("Users").document(userId)
-                .update("bagruts", userBagruts)
-                .addOnSuccessListener(aVoid -> {
-                    // Save to Realtime Database for exam-specific data
-                    DatabaseReference userRef = FirebaseDatabase.getInstance(FIREBASE_REALTIME_LINK)
-                            .getReference()
-                            .child("users")
-                            .child(userId);
+        firestore.collection("Users").document(userId).update("bagruts", userBagruts).addOnSuccessListener(aVoid -> {
+            // Save to Realtime Database for exam-specific data
+            DatabaseReference userRef = FirebaseDatabase.getInstance(FIREBASE_REALTIME_LINK).getReference().child("users").child(userId);
 
-                    Map<String, Object> examData = new HashMap<>();
-                    examData.put("selectedExams", selectedExams);
-                    examData.put("selectedSubjects", new ArrayList<>(selectedExams.keySet()));
-                    examData.put("lastUpdated", ServerValue.TIMESTAMP);
+            Map<String, Object> examData = new HashMap<>();
+            examData.put("selectedExams", selectedExams);
+            examData.put("selectedSubjects", new ArrayList<>(selectedExams.keySet()));
+            examData.put("lastUpdated", ServerValue.TIMESTAMP);
 
-                    userRef.updateChildren(examData)
-                            .addOnSuccessListener(aVoid2 -> {
-                                Toast.makeText(this, "تم حفظ اختياراتك بنجاح", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
-                            })
-                            .addOnFailureListener(e -> {
-                                Toast.makeText(this, "فشل في حفظ الامتحانات: " + e.getMessage(),
-                                        Toast.LENGTH_SHORT).show();
-                            });
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "فشل في حفظ الاختيارات: " + e.getMessage(),
-                            Toast.LENGTH_SHORT).show();
-                });
+            userRef.updateChildren(examData).addOnSuccessListener(aVoid2 -> {
+                Toast.makeText(this, "تم حفظ اختياراتك بنجاح", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }).addOnFailureListener(e -> {
+                Toast.makeText(this, "فشل في حفظ الامتحانات: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            });
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, "فشل في حفظ الاختيارات: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void loadUserSelections() {
-        firestore.collection("Users").document(userId)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists() && documentSnapshot.contains("bagruts")) {
-                        Map<String, Object> bagrutsData = (Map<String, Object>) documentSnapshot.get("bagruts");
-                        if (bagrutsData != null) {
-                            // Load sector
-                            String sector = (String) bagrutsData.get("sector");
-                            if (sector != null) {
-                                selectedSector = sector;
-                                if (sector.equals("arab")) {
-                                    rgSector.check(R.id.rbArab);
-                                    religionSection.setVisibility(View.VISIBLE);
-                                } else if (sector.equals("druze")) {
-                                    rgSector.check(R.id.rbDruze);
-                                    religionSection.setVisibility(View.GONE);
-                                }
-                            }
-
-                            // Load units
-                            Map<String, Long> units = (Map<String, Long>) bagrutsData.get("units");
-                            if (units != null) {
-                                for (String subject : units.keySet()) {
-                                    int unitValue = units.get(subject).intValue();
-                                    selectedUnits.put(subject, unitValue);
-                                    updateUnitSelection(subject, unitValue);
-                                }
-                            }
-
-                            // Load majors
-                            List<String> majors = (List<String>) bagrutsData.get("majors");
-                            if (majors != null) {
-                                selectedMajors.addAll(majors);
-                                updateMajorSelections();
-                            }
-
-                            // Load exams from Realtime Database
-                            loadExamsFromRealtimeDB();
+        firestore.collection("Users").document(userId).get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists() && documentSnapshot.contains("bagruts")) {
+                Map<String, Object> bagrutsData = (Map<String, Object>) documentSnapshot.get("bagruts");
+                if (bagrutsData != null) {
+                    // Load sector
+                    String sector = (String) bagrutsData.get("sector");
+                    if (sector != null) {
+                        selectedSector = sector;
+                        if (sector.equals("arab")) {
+                            religionSection.setVisibility(View.VISIBLE);
+                        } else if (sector.equals("druze")) {
+                            religionSection.setVisibility(View.GONE);
                         }
                     }
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "فشل في تحميل البيانات: " + e.getMessage(),
-                            Toast.LENGTH_SHORT).show();
-                });
+
+                    // Load units
+                    Map<String, Long> units = (Map<String, Long>) bagrutsData.get("units");
+                    if (units != null) {
+                        for (String subject : units.keySet()) {
+                            int unitValue = units.get(subject).intValue();
+                            selectedUnits.put(subject, unitValue);
+                            updateUnitSelection(subject, unitValue);
+                        }
+                    }
+
+                    // Load majors
+                    List<String> majors = (List<String>) bagrutsData.get("majors");
+                    if (majors != null) {
+                        selectedMajors.addAll(majors);
+                        updateMajorSelections();
+                    }
+
+                    // Load exams from Realtime Database
+                    loadExamsFromRealtimeDB();
+                }
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, "فشل في تحميل البيانات: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void loadExamsFromRealtimeDB() {
-        DatabaseReference userRef = FirebaseDatabase.getInstance(FIREBASE_REALTIME_LINK)
-                .getReference()
-                .child("users")
-                .child(userId)
-                .child("selectedExams");
+        DatabaseReference userRef = FirebaseDatabase.getInstance(FIREBASE_REALTIME_LINK).getReference().child("users").child(userId).child("selectedExams");
 
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     selectedExams = (Map<String, List<String>>) snapshot.getValue();
-                    
+
                     // Update religion selection based on exams
                     if (selectedSector.equals("arab")) {
                         if (selectedExams.containsKey("דת האסלאם")) {
@@ -843,7 +799,7 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
                             rgReligion.check(R.id.rbChristian);
                         }
                     }
-                    
+
                     if (switchAdvancedMode.isChecked()) {
                         setupExamsList();
                     }
@@ -852,9 +808,7 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ChooseBagrutsActivity.this,
-                        "Error loading exams: " + error.getMessage(),
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChooseBagrutsActivity.this, "Error loading exams: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -899,10 +853,7 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
             return;
         }
 
-        DatabaseReference userRef = FirebaseDatabase.getInstance(FIREBASE_REALTIME_LINK)
-                .getReference()
-                .child("users")
-                .child(currentUser.getUid());
+        DatabaseReference userRef = FirebaseDatabase.getInstance(FIREBASE_REALTIME_LINK).getReference().child("users").child(currentUser.getUid());
 
         // Convert selected exams to subjects list
         Set<String> selectedSubjects = new HashSet<>(selectedExams.keySet());
@@ -912,17 +863,14 @@ public class ChooseBagrutsActivity extends AppCompatActivity {
         updates.put("selectedExams", selectedExams);
         updates.put("lastUpdated", ServerValue.TIMESTAMP);
 
-        userRef.updateChildren(updates)
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Subjects saved successfully", Toast.LENGTH_SHORT).show();
-                    // Start ExamsActivity to show the selected exams
-                    startActivity(new Intent(this, ExamsActivity.class));
-                    finish();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Failed to save subjects: " + e.getMessage(),
-                            Toast.LENGTH_SHORT).show();
-                });
+        userRef.updateChildren(updates).addOnSuccessListener(aVoid -> {
+            Toast.makeText(this, "Subjects saved successfully", Toast.LENGTH_SHORT).show();
+            // Start ExamsActivity to show the selected exams
+            startActivity(new Intent(this, ExamsActivity.class));
+            finish();
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, "Failed to save subjects: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override

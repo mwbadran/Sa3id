@@ -1,5 +1,6 @@
 package com.example.sa3id.fragments;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
@@ -31,22 +32,23 @@ public class SingleGradeFragment extends Fragment {
     private LinearLayout dynamicViewsContainer;
     private Button btnCalculate;
     private TextView resultTextView;
+    private int colorDynamicFlipped;
     ArrayAdapter<String> subjectsAdapter;
     RadioGroup radioGroup;
     private Map<String, double[]> bagrutGradeWeights;
     String[] subjectsArray;
 
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_single_grade, container, false);
 
+        colorDynamicFlipped = com.google.android.material.color.MaterialColors.getColor(view, R.attr.colorDynamicFlipped, Color.WHITE);
+
+
         subjectsArray = getResources().getStringArray(R.array.subjects);
         bagrutGradeWeights = new HashMap<>();
         initViews(view);
-
 
 
         return view;
@@ -148,7 +150,7 @@ public class SingleGradeFragment extends Fragment {
     }
 
     private void addBagrutView(String labelText, double bagrutWeight, double magenWeight) {
-        boolean onlyMagen = bagrutWeight==0;
+        boolean onlyMagen = bagrutWeight == 0;
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -158,10 +160,10 @@ public class SingleGradeFragment extends Fragment {
         label.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.3f));  // Small width for label
         label.setTypeface(loadTypeface());
         label.setGravity(View.TEXT_ALIGNMENT_TEXT_START);
-        label.setTextColor(getResources().getColor(android.R.color.white));
+        label.setTextColor(colorDynamicFlipped);
 
         EditText bagrutGrade = createEditText("علامة البجروت");
-        EditText magenGrade = createEditText((!onlyMagen)?"علامة المجين":"علامة الداخلي");
+        EditText magenGrade = createEditText((!onlyMagen) ? "علامة المجين" : "علامة الداخلي");
 
         linearLayout.addView(label);
         if (!onlyMagen) linearLayout.addView(bagrutGrade);
@@ -179,15 +181,15 @@ public class SingleGradeFragment extends Fragment {
 
             for (int i = 0; i < dynamicViewsContainer.getChildCount(); i++) {
                 LinearLayout modelLayout = (LinearLayout) dynamicViewsContainer.getChildAt(i);
-                EditText magenInput=null, bagrutInput =null;
-                double bagrutGrade=100, magenGrade, currentGrade;
-                if (modelLayout.getChildAt(2) ==null) {
+                EditText magenInput = null, bagrutInput = null;
+                double bagrutGrade = 100, magenGrade, currentGrade;
+                if (modelLayout.getChildAt(2) == null) {
                     magenInput = (EditText) modelLayout.getChildAt(1);
                 } else {
                     bagrutInput = (EditText) modelLayout.getChildAt(1);
                     magenInput = (EditText) modelLayout.getChildAt(2);
                 }
-                String bagrutStr = (bagrutInput!=null)? bagrutInput.getText().toString() : "";
+                String bagrutStr = (bagrutInput != null) ? bagrutInput.getText().toString() : "";
                 String magenStr = magenInput.getText().toString();
 
                 if (!bagrutStr.isEmpty() && !magenStr.isEmpty()) {
@@ -330,8 +332,6 @@ public class SingleGradeFragment extends Fragment {
     }
 
 
-
-
     private void setupComputerScienceViews() {
     }
 
@@ -361,7 +361,6 @@ public class SingleGradeFragment extends Fragment {
         addBagrutView("معمل", 0.15, 0);
         addBagrutView("بحث داخلي", 0.3, 0);
     }
-
 
 
     private void setupGeographyViews() {

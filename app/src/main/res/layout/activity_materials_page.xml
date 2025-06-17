@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="end"
     android:layoutDirection="rtl"
-    tools:context=".userActivities.MaterialsPage"
+    tools:context=".userActivities.MaterialsActivity"
     >
 
     <include layout="@layout/navigation_layout"/>

@@ -5,8 +5,7 @@ import com.example.sa3id.BagrutSubjectCategory;
 public class BagrutSubject {
     private String name;
     private BagrutSubjectCategory category;
-    private boolean isArabicSector;
-    private boolean isJewishSector;
+    private boolean isArabicSector, isJewishSector;
 
     public BagrutSubject(String name, BagrutSubjectCategory category, boolean isArabicSector, boolean isJewishSector) {
         this.name = name;

@@ -4,6 +4,7 @@
         <attr name="colorDynamic" format="color" />
         <attr name="colorDynamicAlpha" format="color" />
         <attr name="colorDynamicFlipped" format="color" />
+        <attr name="colorDynamicAlphaFlipped" format="color" />
     </declare-styleable>
 
 </resources> 

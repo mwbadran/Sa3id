@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="end"
     android:layoutDirection="rtl"
-    tools:context=".userActivities.OurBooks"
+    tools:context=".userActivities.OurBooksActivity"
     >
 
     <include layout="@layout/navigation_layout"/>

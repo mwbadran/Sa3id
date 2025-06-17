@@ -4,28 +4,36 @@
     <style name="menu_element_style">
         <item name="fontFamily">@font/rpt_bold</item>
         <item name="android:textSize">15sp</item>
-
+        <item name="android:textColor">?attr/colorDynamic</item>
     </style>
 
     <style name="tab_text_rpt_bold" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:fontFamily">@font/rpt_bold</item>
+        <item name="android:textColor">?attr/colorDynamic</item>
     </style>
 
     <style name="ChipTextStyle" parent="TextAppearance.MaterialComponents.Chip">
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">?attr/colorDynamic</item>
         <item name="android:fontFamily">@font/rpt_bold</item>
     </style>
 
     <style name="CalendarDateTextAppearance">
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">?attr/colorDynamic</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/rpt_bold</item>
     </style>
 
     <style name="CalendarWeekTextAppearance">
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">?attr/colorDynamic</item>
         <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">@font/rpt_bold</item>
+    </style>
+
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/sa3id_green</item>
+        <item name="hintTextColor">@color/sa3id_green</item>
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+        <item name="android:textColorHint">?attr/colorDynamicAlphaFlipped</item>
     </style>
 
 </resources>

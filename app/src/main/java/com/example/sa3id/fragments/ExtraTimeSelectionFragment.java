@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.sa3id.R;
-import com.example.sa3id.userActivities.UserSettings;
+import com.example.sa3id.userActivities.UserSettingsActivity;
 
 public class ExtraTimeSelectionFragment extends Fragment {
     private static final String PREF_EXTRA_TIME = "extra_time";
@@ -58,8 +58,8 @@ public class ExtraTimeSelectionFragment extends Fragment {
         updateExtraTimeSelection(extraTime);
 
         // Notify activity
-        if (getActivity() instanceof UserSettings) {
-            ((UserSettings) getActivity()).onSettingsChanged();
+        if (getActivity() instanceof UserSettingsActivity) {
+            ((UserSettingsActivity) getActivity()).onSettingsChanged();
         }
     }
 

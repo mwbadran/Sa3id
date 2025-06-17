@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorDynamicFlipped"
             android:fontFamily="@font/rpt_bold"
             android:layout_marginBottom="4dp"
             tools:text="موضوع الاستفسار"/>
@@ -37,7 +37,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:textColor="#E0E0E0"
+                android:textColor="@color/gray"
                 android:fontFamily="@font/rpt_bold"
                 tools:text="اسم المرسل"/>
 
@@ -52,3 +52,4 @@
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
+

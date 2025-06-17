@@ -2,14 +2,8 @@ package com.example.sa3id.userActivities;
 
 import static com.example.sa3id.Constants.FIREBASE_REALTIME_LINK;
 
-import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -17,13 +11,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sa3id.BaseActivity;
+import com.example.sa3id.dialogs.CustomAlertDialog;
 import com.example.sa3id.R;
 import com.example.sa3id.adapters.CalendarEventAdapter;
 import com.example.sa3id.managers.CalendarEventManager;
@@ -39,10 +32,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -51,7 +42,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-public class ExamsCalendar extends BaseActivity {
+public class CalendarActivity extends BaseActivity {
     private static final String TAG = "ExamsCalendar";
 
     // UI components
@@ -182,12 +173,12 @@ public class ExamsCalendar extends BaseActivity {
             @Override
             public void onEventAdded(boolean success, String eventId) {
                 if (success) {
-                    CustomAlertDialog dialog = new CustomAlertDialog(ExamsCalendar.this);
+                    CustomAlertDialog dialog = new CustomAlertDialog(CalendarActivity.this);
                     dialog.show("تمت إضافة المناسبة بنجاح", R.drawable.baseline_check_circle_24);
                     editTextEventTitle.setText("");
                     loadAllCalendarEvents();
                 } else {
-                    CustomAlertDialog dialog = new CustomAlertDialog(ExamsCalendar.this);
+                    CustomAlertDialog dialog = new CustomAlertDialog(CalendarActivity.this);
                     dialog.show("فشل في إضافة المناسبة", R.drawable.baseline_error_24);
                 }
             }
@@ -197,7 +188,7 @@ public class ExamsCalendar extends BaseActivity {
 
             @Override
             public void onError(String error) {
-                CustomAlertDialog dialog = new CustomAlertDialog(ExamsCalendar.this);
+                CustomAlertDialog dialog = new CustomAlertDialog(CalendarActivity.this);
                 dialog.show("حدث خطأ: " + error, R.drawable.baseline_error_24);
             }
         });
@@ -236,7 +227,7 @@ public class ExamsCalendar extends BaseActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                CustomAlertDialog dialog = new CustomAlertDialog(ExamsCalendar.this);
+                CustomAlertDialog dialog = new CustomAlertDialog(CalendarActivity.this);
                 dialog.show("فشل في تحميل إعدادات المستخدم", R.drawable.baseline_error_24);
                 progressBar.setVisibility(View.GONE);
             }
@@ -282,7 +273,7 @@ public class ExamsCalendar extends BaseActivity {
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    CustomAlertDialog dialog = new CustomAlertDialog(ExamsCalendar.this);
+                    CustomAlertDialog dialog = new CustomAlertDialog(CalendarActivity.this);
                     dialog.show("فشل في تحميل الامتحانات", R.drawable.baseline_error_24);
                 }
             });
@@ -328,7 +319,7 @@ public class ExamsCalendar extends BaseActivity {
 
             @Override
             public void onError(String error) {
-                CustomAlertDialog dialog = new CustomAlertDialog(ExamsCalendar.this);
+                CustomAlertDialog dialog = new CustomAlertDialog(CalendarActivity.this);
                 dialog.show("فشل في تحميل المناسبات: " + error, R.drawable.baseline_error_24);
                 progressBar.setVisibility(View.GONE);
             }
@@ -362,6 +353,6 @@ public class ExamsCalendar extends BaseActivity {
 
     @Override
     protected int getLayoutResourceId() {
-        return R.layout.activity_exams_calendar;
+        return R.layout.activity_calendar;
     }
 }

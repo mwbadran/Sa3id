@@ -8,16 +8,10 @@ import androidx.cardview.widget.CardView;
 
 import com.example.sa3id.BaseActivity;
 import com.example.sa3id.R;
-import com.example.sa3id.userActivities.AdminCalendarActivity;
 
 public class ControlPanel extends BaseActivity {
 
-    private CardView cardFeedbackRespond;
-    private CardView cardMaterialsCheck;
-    private CardView cardManageUsers;
-    private CardView cardMakeAnnouncements;
-    private CardView cardManageBagrutExams; // new
-    private CardView cardManageCalendar; // new calendar card
+    private CardView cardFeedbackRespond, cardMaterialsCheck, cardManageUsers, cardMakeAnnouncements, cardManageBagrutExams, cardManageCalendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +45,7 @@ public class ControlPanel extends BaseActivity {
         cardManageUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(ControlPanel.this, ManageUsersActivity.class));
+                startActivity(new Intent(ControlPanel.this, ManageUsersActivity.class));
             }
         });
 

@@ -8,7 +8,7 @@
 
 ## 📖 Introduction
 
-_Saʿid_ is a comprehensive mobile platform designed for Israeli high‑school students preparing for the Bagrut exams. It bundles:
+_Sa3id_ is a comprehensive mobile platform designed for Israeli high‑school students preparing for the Bagrut exams. It bundles:
 
 - **Exam calendar & reminders** – auto‑imported from MoE CSV → JSON pipeline  
 - **Grades calculator** – real‑time tracking of final scores per subject  
@@ -82,9 +82,10 @@ The app follows an MVVM‑inspired structure with:
 
 ## 🖼️ Screenshots
 
-
-![Sign‑In Screen](docs/screens/signin.png)
-![Dashboard](docs/screens/dashboard.png)
+![Main Screen](docs/main_activity.png)
+<p align="center">
+  <img src="docs/signin.png" alt="Sign‑In Screen" />
+</p>
 
 
 

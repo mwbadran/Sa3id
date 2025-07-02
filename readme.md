@@ -1,4 +1,4 @@
-# Saʿid – High‑School Bagrut Preparation App
+# Sa3id – High‑School Bagrut Preparation App
 
 **Author:** Muhammad Badran  
 **Platform:** Android Studio
@@ -62,24 +62,7 @@ _Saʿid_ is a comprehensive mobile platform designed for Israeli high‑school s
   - Storage  
   - Authentication enabled  
 
-### Installation
 
-1. **Clone the repo**  
-   ```bash
-   git clone https://github.com/your‑username/sa3id‑app.git
-   cd sa3id‑app
-````
-
-2. **Configure Firebase**
-
-   * Place your `google-services.json` in `app/`.
-   * Update the Realtime DB URL in `Constants.java`.
-
-3. **Build & Run**
-
-   * Sync Gradle, then run on emulator or device.
-
----
 
 ## 🏗️ Architecture & UML
 
@@ -93,9 +76,9 @@ The app follows an MVVM‑inspired structure with:
 
 > *(Let me know when you’re ready and send the UML image, and I’ll insert it here.)*
 
-```markdown
+
 ![UML Diagram](docs/uml.png)
-```
+
 
 ---
 
@@ -103,11 +86,11 @@ The app follows an MVVM‑inspired structure with:
 
 > *(Provide screenshots for key screens: Sign‑In, Main Dashboard, Exams List, Grades Calculator.)*
 
-```markdown
+
 ![Sign‑In Screen](docs/screens/signin.png)
 ![Dashboard](docs/screens/dashboard.png)
 ![Exam Calendar](docs/screens/calendar.png)
-```
+
 
 ---
 
